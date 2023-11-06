@@ -17,8 +17,8 @@ import java.util.List;
 public class User {
     @Id
     private String id;
+    private String name;
     private String username;
-    private String nickname;
     private String password;
     private String imageurl;
     private List<User> followerlist = new ArrayList<>(); //follower와 ManyToMany 관계

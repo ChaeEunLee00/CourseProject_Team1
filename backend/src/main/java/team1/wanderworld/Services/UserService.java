@@ -25,7 +25,7 @@ public class UserService {
 
     // [회원등록]
     public User createUser(User user) {
-        verifyExistsNickName(user.getNickname());
+        verifyExistsUserName(user.getUsername());
 
         // 회원가입시, 사용자 password 암호화
         //String encryptedPassword = passwordEncoder.encode(user.getPassword());
@@ -42,10 +42,10 @@ public class UserService {
     public User updateUser(User user) {
 
         User findUser = findVerifiedUser(user.getId());
+        Optional.ofNullable(user.getName())
+                .ifPresent(name -> findUser.setName(name));
         Optional.ofNullable(user.getUsername())
                 .ifPresent(userName -> findUser.setUsername(userName));
-        Optional.ofNullable(user.getNickname())
-                .ifPresent(nickName -> findUser.setNickname(nickName));
         Optional.ofNullable(user.getPassword())
                 .ifPresent(password -> findUser.setPassword(password));
         Optional.ofNullable(user.getImageurl())
@@ -67,9 +67,9 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    // 이미 등록된 닉네임인지 확인
-    private void verifyExistsNickName(String nickName) {
-        Optional<User> user = userRepository.findByNickname(nickName);
+    // 이미 등록된 username인지 확인
+    private void verifyExistsUserName(String userName) {
+        Optional<User> user = userRepository.findByUsername(userName);
         if (user.isPresent())
             throw new BusinessLogicException(ExceptionCode.USER_EXIST);
     }

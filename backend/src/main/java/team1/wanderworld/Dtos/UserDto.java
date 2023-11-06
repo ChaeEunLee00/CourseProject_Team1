@@ -14,9 +14,9 @@ public class UserDto {
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PostDto{
         @NotBlank
-        private String username;
+        private String name;
         @NotBlank
-        private String nickname;
+        private String username;
         @NotBlank
         private String password;
         private String imageurl;
@@ -29,8 +29,8 @@ public class UserDto {
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PutDto{
         String id;
+        private String name;
         private String username;
-        private String nickname;
         private String password;
         private String imageurl;
     }
@@ -41,8 +41,8 @@ public class UserDto {
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class UserResponseDto{
         String id;
+        private String name;
         private String username;
-        private String nickname;
         private String password;
         private String imageurl;
     }
