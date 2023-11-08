@@ -65,15 +65,6 @@ public class UserDto {
 //        private List<UsersAnswerResponseDto> answers;
 //        private List<UsersTagResponseDto.UserTagResponseDtos> tags;
 //    }
-
-    @Getter
-    @Setter
-    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class UserAuthDto{
-        private String id;
-        private String displayName;
-        private String imageUrl;
-    }
 }
 
 
