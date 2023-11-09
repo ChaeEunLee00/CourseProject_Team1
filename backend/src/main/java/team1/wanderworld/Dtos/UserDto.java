@@ -1,7 +1,5 @@
 package team1.wanderworld.Dtos;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +9,6 @@ import lombok.Setter;
 public class UserDto {
     // [회원가입 요청 DTO]
     @Getter
-    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PostDto{
         @NotBlank
         private String name;
@@ -26,7 +23,6 @@ public class UserDto {
     @Getter
     @Setter
     @AllArgsConstructor
-    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PutDto{
         private String id;
         private String name;
@@ -38,12 +34,10 @@ public class UserDto {
     // [회원가입 응답 DTO]
     @Getter
     @Setter
-    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class UserResponseDto{
         private String id;
         private String name;
         private String username;
-        private String password;
         private String imageurl;
     }
 
@@ -65,15 +59,6 @@ public class UserDto {
 //        private List<UsersAnswerResponseDto> answers;
 //        private List<UsersTagResponseDto.UserTagResponseDtos> tags;
 //    }
-
-    @Getter
-    @Setter
-    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class UserAuthDto{
-        private String id;
-        private String displayName;
-        private String imageUrl;
-    }
 }
 
 

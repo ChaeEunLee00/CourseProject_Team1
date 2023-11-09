@@ -1,7 +1,6 @@
 package team1.wanderworld.Services;
 
-
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team1.wanderworld.Models.User;
 import team1.wanderworld.Repositories.UserRepository;
@@ -14,13 +13,13 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    //private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository
-    //                   ,PasswordEncoder passwordEncoder
+                       ,PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
-     //   this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // [회원등록]
@@ -28,12 +27,10 @@ public class UserService {
         verifyExistsUserName(user.getUsername());
 
         // 회원가입시, 사용자 password 암호화
-        //String encryptedPassword = passwordEncoder.encode(user.getPassword());
-        //user.setPassword(encryptedPassword);
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
         User saveUser = userRepository.save(user);
 
-        // 신규회원등록시 인증 이메일전송을 위한 event 발생로직
-        //publisher.publishEvent(new UserRegistrationEvent(this,saveUser));
         return saveUser;
     }
 

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import team1.wanderworld.Mappers.UserMapper;
 import team1.wanderworld.Models.User;
 import team1.wanderworld.Services.UserService;
 
+import java.util.Map;
 
 @Slf4j
 @Validated
@@ -39,25 +41,16 @@ public class UserController {
         return new ResponseEntity<>(userMapper.userToUserResponseDto(createdUser), HttpStatus.CREATED);
     }
 
-
     // [회원프로필 수정]
-    @PutMapping("/{user-id}/edit")
-    public ResponseEntity putUser(@PathVariable("user-id") String userId,
-                                  @Valid @RequestBody UserDto.PutDto requestBody
-//                                    ,Authentication authentication
-    ){
+    @PutMapping("/edit")
+    public ResponseEntity putUser(@Valid @RequestBody UserDto.PutDto requestBody){
+        Map<String,Object> principal = (Map) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId = (String) principal.get("id");
 
-//        Map<String,Object> principal = (Map) authentication.getPrincipal();
-//        long jwtUserId = ((Number) principal.get("userId")).longValue();
-//
-//        if(jwtUserId != (userId)){
-//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//        }
         requestBody.setId(userId);
         User updatedUser = userService.updateUser(userMapper.userPutDtoToUser(requestBody));
         return new ResponseEntity<>(userMapper.userToUserResponseDto(updatedUser), HttpStatus.OK);
     }
-
 
     // [회원프로필 조회]
     @GetMapping("/{user-id}")
@@ -66,20 +59,12 @@ public class UserController {
         return new ResponseEntity<>(userMapper.userToUserResponseDto(foundUser), HttpStatus.OK);
     }
 
-
-
     // [회원탈퇴]
-    @DeleteMapping("/{user-id}")
-    public ResponseEntity deleteUser(@PathVariable("user-id") String userId
-//            ,Authentication authentication
-    ){
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteUser(){
+        Map<String,Object> principal = (Map) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId = (String) principal.get("id");
 
-//        Map<String,Object> principal = (Map) authentication.getPrincipal();
-//        long jwtUserId = ((Number) principal.get("userId")).longValue();
-//
-//        if(jwtUserId != userId){
-//            return new ResponseEntity(HttpStatus.FORBIDDEN);
-//        }
         userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
