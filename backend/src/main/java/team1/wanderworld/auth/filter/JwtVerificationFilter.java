@@ -57,7 +57,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private void setAuthenticationToContext(Map<String, Object> claims){
         Map<String, Object> principal = new HashMap<>();
-        principal.put("userId", claims.get("userId"));
+        principal.put("id", claims.get("id"));
         principal.put("username", claims.get("username"));
         //String username = (String) claims.get("username");
         //List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles")); 권한사용시 필요
