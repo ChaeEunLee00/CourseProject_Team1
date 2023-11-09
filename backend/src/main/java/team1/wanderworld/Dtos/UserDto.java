@@ -28,7 +28,7 @@ public class UserDto {
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PutDto{
-        String id;
+        private String id;
         private String name;
         private String username;
         private String password;
@@ -40,7 +40,7 @@ public class UserDto {
     @Setter
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class UserResponseDto{
-        String id;
+        private String id;
         private String name;
         private String username;
         private String password;

@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import team1.wanderworld.Dtos.PostDto;
 import org.springframework.web.bind.annotation.*;
 import team1.wanderworld.Models.Post;
 import team1.wanderworld.Services.PostService;
+import team1.wanderworld.Mappers.PostMapper;
 
 @Slf4j
 @Validated
@@ -15,15 +17,17 @@ import team1.wanderworld.Services.PostService;
 @RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
+    private final PostMapper postMapper;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, PostMapper postMapper) {
         this.postService = postService;
+        this.postMapper = postMapper;
     }
 
     // 포스트 작성
     @PostMapping
-    public ResponseEntity postPost(@Valid @RequestBody PostDto.PostDto requestBody){
-        Post createdPost = postService.createPost(postMapper.postPostDtoToPost(requestBody));
+    public ResponseEntity createPost(@Valid @RequestBody PostDto.CreateDto requestBody){
+        Post createdPost = postService.createPost(postMapper.postCreateDtoToPost(requestBody));
         return new ResponseEntity<>(postMapper.postToPostResponseDto(createdPost), HttpStatus.CREATED);
     }
 
@@ -37,7 +41,7 @@ public class PostController {
     }
 
     // 포스트 삭제
-    @DeleteMapping("/{post-id}")
+    @DeleteMapping("/{post-id}/delete")
     public ResponseEntity deletePost(@PathVariable("post-id") String postId){
         postService.deletePost(postId);
         return new ResponseEntity<>(HttpStatus.OK);
