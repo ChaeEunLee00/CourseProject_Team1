@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.index.TextIndexed;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,7 @@ public class User {
     @Id
     private String id;
     private String name;
+    @TextIndexed
     private String username;
     private String password;
     private String imageurl;
