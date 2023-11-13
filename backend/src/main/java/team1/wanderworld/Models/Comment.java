@@ -14,12 +14,12 @@ public class Comment {
 
     @CreatedDate
     private LocalDateTime createdAt;
-    //private User user;
+    private User user;
     private String content;
     private String postId;
 
-    public Comment(String content) {
-        //this.user = user;
+    public Comment(User user, String content) {
+        this.user = user;
         this.content = content;
     }
 
@@ -31,12 +31,12 @@ public class Comment {
         return createdAt;
     }
 
-    //public User getUser() {return user;}
+    public User getUser() {return user;}
 
     public String getContent() {
         return content;
     }
-    //public void setUser(User user) {this.user = user;}
+    public void setUser(User user) {this.user = user;}
 
     public void setContent(String content) {
         this.content = content;
@@ -46,13 +46,13 @@ public class Comment {
         return postId;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public void setPostId(Long postId) {
+        this.postId = String.valueOf(postId);
     }
 
-    //public String getUserId() {return user.getId();}
+    public String getUserId() {return user.getId();}
 
-    //public void setUserId(String userId) {user.setId(userId);}
+    public void setUserId(String userId) {user.setId(userId);}
 
     public String getText() {
         return content;
@@ -67,6 +67,7 @@ public class Comment {
         return "Comment{" +
                 "id='" + id + '\'' +
                 ", createdAt=" + createdAt +
+                ", user=" + user +
                 ", content='" + content + '\'' +
                 ", postId='" + postId + '\'' +
                 '}';
