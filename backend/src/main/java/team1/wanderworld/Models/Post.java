@@ -44,4 +44,7 @@ public class Post {
                 .map(MatchResult::group)
                 .collect(Collectors.toList());
     }
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
 }
