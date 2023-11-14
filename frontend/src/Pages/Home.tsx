@@ -12,11 +12,17 @@ const Home = () => {
       <div>
         <ul className="ul">
           <li>
-            <Button sx={{ margin: "2% 3%" }} variant="outlined">
+          <Button sx={{ margin:"2% 3%"}} variant="outlined">
+            <Link to="/login">
+              LogIn
+            </Link>
             </Button>
           </li>
           <li>
-            <Button sx={{ margin: "2% 3%" }} variant="outlined">
+          <Button sx={{ margin:"2% 3%"}} variant="outlined">
+            <Link to="/signup">
+              SignUp 
+            </Link>
             </Button>
           </li>
         </ul>

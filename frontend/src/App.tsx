@@ -1,19 +1,21 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
+import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import Home from "./Pages/Home";
+import Login from "./Pages/Login";
+import Signup from "./Pages/Signup";
 
 function App() {
-
   return (
-    <div className="App">
-      <h1>WanderWorld</h1>
-      <div className="card">
-        <button>
-          sign up 
-        </button>
-      </div>
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App
