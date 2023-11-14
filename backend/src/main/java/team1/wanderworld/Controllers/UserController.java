@@ -69,6 +69,26 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // [팔로우]
+    @PostMapping("/{follow-id}/follow")
+    public ResponseEntity followUser(@PathVariable("follow-id") String followId){
+        Map<String,Object> principal = (Map) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId = (String) principal.get("id");
+
+        User user = userService.followUser(userId,followId);
+        return new ResponseEntity<>(userMapper.userToUserResponseDto(user), HttpStatus.OK);
+    }
+
+    // [팔로우 취소]
+    @PostMapping("/{unfollow-id}/unfollow")
+    public ResponseEntity unfollowUser(@PathVariable("unfollow-id") String unfollowId){
+        Map<String,Object> principal = (Map) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId = (String) principal.get("id");
+
+        User user = userService.unfollowUser(userId,unfollowId);
+        return new ResponseEntity<>(userMapper.userToUserResponseDto(user), HttpStatus.OK);
+    }
+
 
 //    // [팔로잉] [내가 팔로우 하는 USER 목록 보기], [나를 팔로우 하는 USER 목록 보기],
 //       [내가 생성한 글 목록 조회],[내가 좋아요 누른 POST 목록 보기]

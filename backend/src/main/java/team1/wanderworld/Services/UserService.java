@@ -7,6 +7,7 @@ import team1.wanderworld.Repositories.UserRepository;
 import team1.wanderworld.common.exception.BusinessLogicException;
 import team1.wanderworld.common.exception.ExceptionCode;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -62,6 +63,48 @@ public class UserService {
     public void deleteUser(String userId) {
         User user = findVerifiedUser(userId);
         userRepository.delete(user);
+    }
+
+    // 팔로우 -> 팔로우 요청한 유저의 팔로잉 리스트에 팔로우 하는 유저 추가
+    //       -> 팔로우 받는 유저의 팔로워 리스트에 팔로우 요청한 유저 추가
+    public User followUser(String userId, String followId) {
+        User user = findVerifiedUser(userId);
+        User followUser = findVerifiedUser(followId);
+
+        //팔로우 요청한 유저의 팔로잉 리스트에 팔로우 하는 유저 추가
+        List<String> followingList = user.getFollowinglist();
+        followingList.add(followId);
+        user.setFollowinglist(followingList);
+        userRepository.save(user);
+
+        //팔로우 받는 유저의 팔로워 리스트에 팔로우 요청한 유저 추가
+        List<String> followerList = followUser.getFollowerlist();
+        followerList.add(userId);
+        followUser.setFollowerlist(followerList);
+        userRepository.save(followUser);
+
+        return user;
+    }
+
+    // 팔로우취소 -> 팔로우 취소 요청한 유저의 팔로잉 리스트에 팔로우 하는 유저 삭제
+    //          -> 팔로우 받았던 유저의 팔로워 리스트에 팔로우 취소 요청한 유저 삭제
+    public User unfollowUser(String userId, String unfollowId) {
+        User user = findVerifiedUser(userId);
+        User unfollowUser = findVerifiedUser(unfollowId);
+
+        //팔로우 취소 요청한 유저의 팔로잉 리스트에 팔로우 하는 유저 삭제
+        List<String> followingList = user.getFollowinglist();
+        followingList.remove(unfollowId);
+        user.setFollowinglist(followingList);
+        userRepository.save(user);
+
+        //팔로우 받았던 유저의 팔로워 리스트에 팔로우 취소 요청한 유저 삭제
+        List<String> followerList = unfollowUser.getFollowerlist();
+        followerList.remove(userId);
+        unfollowUser.setFollowerlist(followerList);
+        userRepository.save(unfollowUser);
+
+        return user;
     }
 
     // 이미 등록된 username인지 확인

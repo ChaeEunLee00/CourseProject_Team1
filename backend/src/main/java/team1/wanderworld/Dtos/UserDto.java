@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 
 public class UserDto {
     // [회원가입 요청 DTO]
@@ -39,6 +41,8 @@ public class UserDto {
         private String name;
         private String username;
         private String imageurl;
+        private List<String> followerlist;
+        private List<String> followinglist;
     }
 
 //    @Getter
