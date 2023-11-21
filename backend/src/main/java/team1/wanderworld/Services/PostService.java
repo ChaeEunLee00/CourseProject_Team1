@@ -31,6 +31,9 @@ public class PostService {
     public Post createPost(Post post) {
         Post savePost = postRepository.save(post);
 
+        //hashtag
+        hashtagService.saveHashtag(post.getHashtags(), post.getId());
+
 //        // content에서 hashtag 추출
 //        List<String> hashtags = post.extractHashtags();
 //

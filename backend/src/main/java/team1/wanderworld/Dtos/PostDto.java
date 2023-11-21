@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import team1.wanderworld.Models.Comment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class PostDto {
         @NotBlank
         private List<String> destinations;
         private List<String> pictures;
+        private List<String> hashtags;
     }
 
     // 포스트 수정 요청 DTO
