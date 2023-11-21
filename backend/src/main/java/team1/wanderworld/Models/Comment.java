@@ -46,7 +46,7 @@ public class Comment {
         return postId;
     }
 
-    public void setPostId(Long postId) {
+    public void setPostId(String postId) {
         this.postId = String.valueOf(postId);
     }
 
