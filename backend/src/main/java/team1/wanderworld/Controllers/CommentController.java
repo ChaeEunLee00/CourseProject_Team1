@@ -21,6 +21,7 @@ import java.util.List;
 public class CommentController {
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
     private PostRepository postRepository;
     private final CommentService commentService;
 
@@ -35,7 +36,7 @@ public class CommentController {
     }
 
     @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<Comment> addComment(@PathVariable Long postId, @RequestBody Comment comment) {
+    public ResponseEntity<Comment> addComment(@PathVariable String postId, @RequestBody Comment comment) {
         boolean check = commentService.isValidComment(comment);
         if (!check) {
             return ResponseEntity.badRequest().build();
