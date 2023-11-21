@@ -5,7 +5,7 @@ import team1.wanderworld.Models.Post;
 
 import java.util.Optional;
 
-public interface PostRepository extends MongoRepository<Post,Long> {
+public interface PostRepository extends MongoRepository<Post,String> {
     //Optional<Post> findByPostname(String postName);
     Optional<Post> findById(String id);
 }
