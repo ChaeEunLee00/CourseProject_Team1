@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import team1.wanderworld.Dtos.PostDto;
 import org.springframework.web.bind.annotation.*;
 import team1.wanderworld.Models.Post;
+import team1.wanderworld.Models.User;
 import team1.wanderworld.Services.PostService;
 import team1.wanderworld.Mappers.PostMapper;
 
@@ -58,5 +59,12 @@ public class PostController {
 
         postService.deletePost(userId,postId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // 포스트 조회
+    @GetMapping("/{post-id}")
+    public ResponseEntity getUser(@PathVariable("post-id") String postId){
+        Post foundPost = postService.findPost(postId);
+        return new ResponseEntity<>(postMapper.postToPostResponseDto(foundPost), HttpStatus.OK);
     }
 }

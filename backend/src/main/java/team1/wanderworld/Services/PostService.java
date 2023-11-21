@@ -78,6 +78,12 @@ public class PostService {
         postRepository.delete(findPost);
     }
 
+    //포스트 조회
+    public Post findPost(String postId) {
+        Post post = findVerifiedPost(postId);
+        return post;
+    }
+
     // Post id matching
     private Post findVerifiedPost(String postId) {
         Optional<Post> optionalPost = postRepository.findById(postId);
