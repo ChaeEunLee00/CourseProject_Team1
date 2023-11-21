@@ -24,7 +24,7 @@ public class Post {
     // id, username, destinations[], content,, city, duration, likenum, hashtag[],  pics[], comentID[]
     @Id
     private String id;
-    private String username; //user에서 username 수정하면 포스트에서도 바뀌어야될듯
+    private String userId; //user에서 username 수정하면 포스트에서도 바뀌어야될듯
     @TextIndexed
     private String content;
     private String city;

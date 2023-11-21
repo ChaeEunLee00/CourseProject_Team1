@@ -16,9 +16,12 @@ import java.util.Optional;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final UserService userService;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository,
+                       UserService userService) {
         this.postRepository = postRepository;
+        this.userService = userService;
     }
 
     @Autowired
@@ -28,41 +31,56 @@ public class PostService {
     public Post createPost(Post post) {
         Post savePost = postRepository.save(post);
 
-        // content에서 hashtag 추출
-        List<String> hashtags = post.extractHashtags();
-
-        // hashtag와 post 연결
-        for (String hashtagName : hashtags) {
-            Hashtag hashtag = hashtagService.getOrCreateHashtag(hashtagName);
-            hashtagService.connectHashtagToPost(hashtag, post);
-        }
+//        // content에서 hashtag 추출
+//        List<String> hashtags = post.extractHashtags();
+//
+//        // hashtag와 post 연결
+//        for (String hashtagName : hashtags) {
+//            Hashtag hashtag = hashtagService.getOrCreateHashtag(hashtagName);
+//            hashtagService.connectHashtagToPost(hashtag, post);
+//        }
 
         return savePost;
     }
 
 
     // 포스트 수정
-    public Post updatePost(Post post) {
+    public Post updatePost(String userId, Post post) {
         // id, username, destinations[], content,, city, duration, likenum, hashtag[],  pics[], comentID[]
 
-        Post findPost = findVerifiedUser(post.getId());
+        //존재하는 user인지 확인
+        userService.findVerifiedUser(userId);
+        //존재하는 post인지 확인
+        Post findPost = findVerifiedPost(post.getId());
+
+        // 수정하려는 user와 post 작성자인 user가 일치하는지 확인
+        if(!userId.equals(findPost.getUserId())){
+            throw new BusinessLogicException(ExceptionCode.POST_USER_DIFFERENT);
+        }
+
         Optional.ofNullable(post.getContent())
                 .ifPresent(content -> findPost.setContent(content));
-        Optional.ofNullable(post.getUsername())
-                .ifPresent(username -> findPost.setUsername(username));
 
         return postRepository.save(findPost);
     }
-//
+
     // 포스트 삭제
-    public void deletePost(String postId) {
-        Post post = findVerifiedUser(postId);
-        postRepository.delete(post);
+    public void deletePost(String userId, String postId) {
+        //존재하는 user인지 확인
+        userService.findVerifiedUser(userId);
+        //존재하는 post인지 확인
+        Post findPost = findVerifiedPost(postId);
+
+        // 수정하려는 user와 post 작성자인 user가 일치하는지 확인
+        if(!userId.equals(findPost.getUserId())){
+            throw new BusinessLogicException(ExceptionCode.POST_USER_DIFFERENT);
+        }
+        postRepository.delete(findPost);
     }
 
     // Post id matching
-    private Post findVerifiedUser(String userId) {
-        Optional<Post> optionalPost = postRepository.findById(userId);
+    private Post findVerifiedPost(String postId) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
         Post findPost = optionalPost.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
         return findPost;
     }

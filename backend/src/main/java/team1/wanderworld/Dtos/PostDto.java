@@ -13,10 +13,10 @@ import java.util.List;
 public class PostDto {
     // 포스트 작성 요청 DTO
     @Getter
+    @Setter
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class CreateDto{
-        @NotBlank
-        private String username;
+        private String userId;
         private String content;
         @NotBlank
         private String city;
@@ -33,7 +33,7 @@ public class PostDto {
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PutDto{
         private String id;
-        private String username;
+        private String userId;
         private String content;
         private String city;
         private Integer duration;
@@ -47,7 +47,7 @@ public class PostDto {
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PostResponseDto{
         private String id;
-        private String username;
+        private String userId;
         private String content;
         private String city;
         private Integer duration;

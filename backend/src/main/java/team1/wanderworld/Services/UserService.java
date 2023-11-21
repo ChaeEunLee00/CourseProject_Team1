@@ -116,7 +116,7 @@ public class UserService {
 
 
     // 존재하는 회원인지 확인
-    private User findVerifiedUser(String userId) {
+    public User findVerifiedUser(String userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         User findUser = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         return findUser;
