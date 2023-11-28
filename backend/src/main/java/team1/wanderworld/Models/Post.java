@@ -24,7 +24,7 @@ public class Post {
     // id, username, destinations[], content,, city, duration, likenum, hashtag[],  pics[], comentID[]
     @Id
     private String id;
-    private String username; //user에서 username 수정하면 포스트에서도 바뀌어야될듯
+    private String userId; //user에서 username 수정하면 포스트에서도 바뀌어야될듯
     @TextIndexed
     private String content;
     private String city;
@@ -33,7 +33,7 @@ public class Post {
     private List<String> destinations = new ArrayList<>();
     private List<String> hashtags = new ArrayList<>();
     private List<String> pictures = new ArrayList<>(); //picture url ?
-    private List<Comment> comments = new ArrayList<>();
+    private List<String> comments = new ArrayList<>();
 
     // #로 시작하는 String을 content에서 추출하여 리턴
     public List<String> extractHashtags() {
@@ -44,7 +44,7 @@ public class Post {
                 .map(MatchResult::group)
                 .collect(Collectors.toList());
     }
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
+    public void addComment(String commentId) {
+        this.comments.add(commentId);
     }
 }
