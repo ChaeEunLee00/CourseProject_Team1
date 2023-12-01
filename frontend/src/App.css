@@ -1,42 +1,121 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* 전반적인 스타일을 관리하는 파일입니다. 사용자 프로필, 피드, 댓글, 버튼 등에 대한 스타일을 정의할 수 있다.
+  아래 wander-world-logo의 line-spacing이 원래 -1.52px이었음.
+*/
+.wander-world-logo {
+  color: #1170a7;
+  font-family: 'Gellatio';
+  font-size: 25px;
+  font-weight: 300;
+  letter-spacing: -1px;
+  line-height: 92px;
+  /* position: absolute; */
+  /* text-align: center; */
+  white-space: nowrap;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.wander-world-logo.login {
+  height: 42px;
+  left: 80px;
+  position: absolute;
+  top: 30px;
+  width: 209px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.wander-world-logo.signup {
+  height: 56px;
+  left: 80px;
+  position: absolute;
+  top: 20px;
+  width: 279px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.wander-world-logo.navigationBar {
+  /* position: absolute; */
+  width: 280px;
+  height: 50px;
+  font-size: 25px;
+  margin-left: 50px;
+  /* top: 8px; */
+  /* left: 60px; */
 }
 
-.card {
-  padding: 2em;
+.username.login {
+  left: 33px;
+  top: 130px;
+  position: absolute;
 }
 
-.read-the-docs {
-  color: #888;
+.username.signup {
+  position: absolute;
+  top: 220px;
+  left: 33px;
+}
+
+.password.login {
+  left: 33px;
+  top: 180px;
+  position: absolute;
+}
+
+.password.signup {
+  position: absolute;
+  left: 33px;
+  top: 320px;
+}
+
+.nameform.signup {
+  position: absolute;
+  top: 270px;
+  left: 33px;
+}
+
+.about-wander-world.login {
+
+}
+
+.about-wander-world.signup {
+
+}
+
+.social-login.login {
+  left: 95px;
+  position: absolute;
+  top: 328px;
+}
+
+.social-login.signup {
+  position: absolute;
+  top: 470px;
+  left: 90px;
+}
+
+.or-text.login {
+  top: 288px;
+  position: absolute;
+  left: 165px;
+}
+
+.or-text.signup {
+  top: 430px;
+  left: 160px;
+  position: absolute;
+}
+
+.like-button{
+  cursor:pointer;
+  transition: transform 300ms ease;
+  font-size: 30px;
+}
+
+.like-button.red{
+color:red;
+}
+
+h3{
+  height: 30px;
+  width: 100px;
+}
+
+.like-button:hover{
+  transform: scale(1.1);
 }
