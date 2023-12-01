@@ -68,11 +68,16 @@ public class UserService {
     // 팔로우 -> 팔로우 요청한 유저의 팔로잉 리스트에 팔로우 하는 유저 추가
     //       -> 팔로우 받는 유저의 팔로워 리스트에 팔로우 요청한 유저 추가
     public User followUser(String userId, String followId) {
+        //본인이 본인 팔로우 x
+        if(userId.equals(followId)) throw new BusinessLogicException(ExceptionCode.USER_FOLLOW_SAME);
+
         User user = findVerifiedUser(userId);
         User followUser = findVerifiedUser(followId);
 
         //팔로우 요청한 유저의 팔로잉 리스트에 팔로우 하는 유저 추가
         List<String> followingList = user.getFollowinglist();
+        //이미 팔로우 한 유저라면 팔로우 x
+        if(followingList.contains(followId)) throw new BusinessLogicException(ExceptionCode.USER_FOLLOW_EXIST);
         followingList.add(followId);
         user.setFollowinglist(followingList);
         userRepository.save(user);
@@ -89,6 +94,8 @@ public class UserService {
     // 팔로우취소 -> 팔로우 취소 요청한 유저의 팔로잉 리스트에 팔로우 하는 유저 삭제
     //          -> 팔로우 받았던 유저의 팔로워 리스트에 팔로우 취소 요청한 유저 삭제
     public User unfollowUser(String userId, String unfollowId) {
+        //본인이 본인 언팔로우 x
+        if(userId.equals(unfollowId)) throw new BusinessLogicException(ExceptionCode.USER_UNFOLLOW_SAME);
         User user = findVerifiedUser(userId);
         User unfollowUser = findVerifiedUser(unfollowId);
 

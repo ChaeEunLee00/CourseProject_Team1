@@ -9,7 +9,11 @@ public enum ExceptionCode {
     COMMENT_NOT_FOUND(404,"Comment not found"),
     USER_EXIST(409, "User exists"),
     POST_USER_DIFFERENT(409, "Post User Different"),
-    COMMENT_USER_DIFFERENT(409, "Comment User Different");
+    COMMENT_USER_DIFFERENT(409, "Comment User Different"),
+    USER_FOLLOW_SAME(409, "User Follow Same"),
+    USER_UNFOLLOW_SAME(409, "User Unfollow Same"),
+    USER_FOLLOW_EXIST(409, "User Unfollow Exist");
+
 
     @Getter
     private int status;
