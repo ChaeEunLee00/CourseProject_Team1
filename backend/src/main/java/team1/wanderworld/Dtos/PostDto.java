@@ -42,6 +42,7 @@ public class PostDto {
         private Integer duration;
         private List<String> destinations;
         private List<String> pictures;
+        private List<String> hashtags;
     }
 
     // 포스트 작성 응답 DTO
@@ -56,6 +57,7 @@ public class PostDto {
         private Integer duration;
         private List<String> destinations;
         private List<String> pictures;
+        private List<String> hashtags;
     }
 
 //    @Getter

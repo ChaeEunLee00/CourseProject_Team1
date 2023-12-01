@@ -54,6 +54,25 @@ public class HashtagService {
         }
     }
 
+    public void updatdHashtag(List<String> hashtags, String postId) {
+
+        for(String hashtag : hashtags){
+            Optional<Hashtag> optionalHashTag = verifyExistsHashTag(hashtag);
+            //기존에 있는 hashtag일 경우 -> 수정 전 사용했던 hashtag 일 경우 postId 삭제
+            if(optionalHashTag.isPresent()){
+                Hashtag findHashTag = optionalHashTag.get();
+                List<String> postIdList = findHashTag.getPostIdList();
+
+                postIdList.remove(postId);
+                findHashTag.setPostIdList(postIdList);
+                findHashTag.setCount(postIdList.size());
+                hashtagRepository.save(findHashTag);
+            }
+        }
+        //수정된 hashtag들 새로 저장
+        saveHashtag(hashtags,postId);
+    }
+
     private Optional<Hashtag> verifyExistsHashTag(String hashTag) {
         return hashtagRepository.findByName(hashTag);
     }

@@ -63,6 +63,11 @@ public class PostService {
 
         Optional.ofNullable(post.getContent())
                 .ifPresent(content -> findPost.setContent(content));
+        Optional.ofNullable(post.getHashtags())
+                .ifPresent(hashtags -> {
+                    findPost.setHashtags(hashtags);
+                    hashtagService.updatdHashtag(hashtags, post.getId());}
+                    );
 
         return postRepository.save(findPost);
     }
