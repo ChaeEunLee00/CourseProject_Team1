@@ -148,7 +148,7 @@ public class PostService {
     }
 
     // Post id matching
-    private Post findVerifiedPost(String postId) {
+    public Post findVerifiedPost(String postId) {
         Optional<Post> optionalPost = postRepository.findById(postId);
         Post findPost = optionalPost.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
         return findPost;

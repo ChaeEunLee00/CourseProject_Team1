@@ -15,6 +15,7 @@ import team1.wanderworld.Repositories.UserRepository;
 import team1.wanderworld.common.exception.BusinessLogicException;
 import team1.wanderworld.common.exception.ExceptionCode;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,14 +24,17 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UserService userService;
+    private final PostService postService;
 
     public CommentService(CommentRepository commentRepository
             ,PostRepository postRepository
             ,UserService userService
+            ,PostService postService
     ) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
         this.userService = userService;
+        this.postService = postService;
     }
 
     public Comment addComment(String postId, Comment comment){
@@ -61,12 +65,18 @@ public class CommentService {
 
         userService.findVerifiedUser(userId); //check user is verified
         Comment findComment = findVerifiedComment(commentId); //check comment is verified
+        Post findPost= postService.findVerifiedPost(findComment.getPostId()); // Check if the post exists
+
+        // Update the corresponding Post object with the comment
+        List<String> comments = findPost.getComments();
+        comments.remove(commentId);
+        findPost.setComments(comments);
+        postRepository.save(findPost);
 
         //check userId is equal to userId of comment
         if(!userId.equals(findComment.getUserId())){
             throw new BusinessLogicException(ExceptionCode.COMMENT_USER_DIFFERENT);
         }
-
         commentRepository.delete(findComment);
     }
 
