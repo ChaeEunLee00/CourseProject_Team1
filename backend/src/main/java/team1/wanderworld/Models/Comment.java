@@ -15,9 +15,8 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     private String id;
-
     @CreatedDate
-    private LocalDateTime createdAt;
+    private LocalDateTime creationDate = LocalDateTime.now();
     private String userId;
     private String content;
     private String postId;

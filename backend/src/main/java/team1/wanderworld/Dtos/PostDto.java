@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import team1.wanderworld.Models.Comment;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +59,7 @@ public class PostDto {
         private String city;
         private Integer duration;
         private Integer likenum;
+        private LocalDateTime creationDate;
         private List<String> destinations;
         private List<String> hashtags;
         private List<String> pictures;
@@ -75,6 +77,7 @@ public class PostDto {
         private String city;
         private Integer duration;
         private Integer likenum;
+        private LocalDateTime creationDate;
         private List<String> destinations;
         private List<String> hashtags;
         private List<String> pictures;

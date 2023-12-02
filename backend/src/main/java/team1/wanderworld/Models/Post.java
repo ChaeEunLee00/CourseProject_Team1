@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.MatchResult;
@@ -30,6 +31,7 @@ public class Post {
     private String city;
     private Integer duration; //hours
     private Integer likenum;
+    private LocalDateTime creationDate = LocalDateTime.now();
     private List<String> destinations = new ArrayList<>();
     private List<String> hashtags = new ArrayList<>();
     private List<String> pictures = new ArrayList<>(); //picture url ?
