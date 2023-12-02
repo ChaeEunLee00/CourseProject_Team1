@@ -1,9 +1,7 @@
 package team1.wanderworld.Repositories;
 
-import com.mongodb.client.AggregateIterable;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.*;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
@@ -14,6 +12,8 @@ import team1.wanderworld.Models.User;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
+
 @Component
 public class SearchRepoImplement implements SearchRepository{
 
@@ -29,15 +29,23 @@ public class SearchRepoImplement implements SearchRepository{
 
         MongoCollection<Document> collection = database.getCollection("post");
 
-        AggregateIterable<Document> result = collection.aggregate(Arrays.asList(new Document("$search",
-                        new Document("text",
-                                new Document("query", text)
-                                        .append("path", Arrays.asList("content", "hashtags")))),
-                new Document("$limit", 5L)));
+        BasicDBObject regexQuery = new BasicDBObject();
+        Pattern pattern = Pattern.compile(text, Pattern.CASE_INSENSITIVE);
+        regexQuery.put("$regex", pattern);
+
+        BasicDBObject searchQuery = new BasicDBObject("$or",
+                Arrays.asList(
+                        new BasicDBObject("content", regexQuery),
+                        new BasicDBObject("hashtags", regexQuery)
+                )
+        );
+
+        FindIterable<Document> result = collection.find(searchQuery);
 
         result.forEach(doc -> posts.add(converter.read(Post.class, doc)));
         return posts;
     }
+
 
     @Override
     public List<User> FindInUsers(String text) {
@@ -50,7 +58,7 @@ public class SearchRepoImplement implements SearchRepository{
                         new Document("text",
                                 new Document("query", text)
                                         .append("path", Arrays.asList("username")))),
-                new Document("$limit", 5L)));
+                new Document("$limit", 1L)));
 
         result.forEach(doc -> users.add(converter.read(User.class, doc)));
         return users;
