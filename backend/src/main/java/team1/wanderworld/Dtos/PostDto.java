@@ -73,7 +73,6 @@ public class PostDto {
     public static class GetAllResponseDto{
         private String id;
         private String userId;
-        private String content;
         private String city;
         private Integer duration;
         private Integer likenum;

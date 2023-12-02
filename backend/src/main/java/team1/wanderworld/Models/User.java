@@ -26,8 +26,7 @@ public class User {
     private String imageurl;
     private List<String> followerlist = new ArrayList<>(); //follower와 ManyToMany 관계 -> id 값만 저장
     private List<String> followinglist = new ArrayList<>(); //following과 ManyToMany 관계 관계 -> id 값만 저장
-    private List<Post> likedposts = new ArrayList<>(); //포스트와 oneToMany 관계 관계 -> id 값만 저장 - 아직 안함
-    private List<Post> myposts = new ArrayList<>(); //post와 oneToMany관계 관계 -> id 값만 저장 - 아직 안함
+    private List<String> likedposts = new ArrayList<>(); //포스트와 oneToMany 관계 관계 -> id 값만 저장 - 아직 안함
 
 }
 

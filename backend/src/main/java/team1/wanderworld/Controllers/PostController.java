@@ -76,4 +76,12 @@ public class PostController {
         List<PostDto.GetAllResponseDto> postResponseDtos  = postMapper.postsToGetAllResponseDtos(posts);
         return new ResponseEntity<>(postResponseDtos, HttpStatus.OK);
     }
+
+    @GetMapping("/user/{user-id}")
+    public ResponseEntity getMyPosts(@PathVariable("user-id") String userId) {
+        List<Post> posts = postService.findMyPosts(userId);
+
+        List<PostDto.GetAllResponseDto> postResponseDtos  = postMapper.postsToGetAllResponseDtos(posts);
+        return new ResponseEntity<>(postResponseDtos, HttpStatus.OK);
+    }
 }
