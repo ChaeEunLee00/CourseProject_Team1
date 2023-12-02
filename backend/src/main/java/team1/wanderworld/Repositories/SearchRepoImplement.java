@@ -40,7 +40,7 @@ public class SearchRepoImplement implements SearchRepository{
                 )
         );
 
-        FindIterable<Document> result = collection.find(searchQuery).limit(5);
+        FindIterable<Document> result = collection.find(searchQuery);
 
         result.forEach(doc -> posts.add(converter.read(Post.class, doc)));
         return posts;
