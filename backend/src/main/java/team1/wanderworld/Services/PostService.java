@@ -92,6 +92,10 @@ public class PostService {
         return post;
     }
 
+    public List<Post> findPosts() {
+        return postRepository.findAll();
+    }
+
     // Post id matching
     private Post findVerifiedPost(String postId) {
         Optional<Post> optionalPost = postRepository.findById(postId);

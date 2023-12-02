@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import team1.wanderworld.Models.Comment;
 
 import java.util.ArrayList;
@@ -55,10 +57,45 @@ public class PostDto {
         private String content;
         private String city;
         private Integer duration;
+        private Integer likenum;
         private List<String> destinations;
-        private List<String> pictures;
         private List<String> hashtags;
+        private List<String> pictures;
+        private List<String> comments;
+
     }
+
+    @Getter
+    @Setter
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class GetAllResponseDto{
+        private String id;
+        private String userId;
+        private String content;
+        private String city;
+        private Integer duration;
+        private Integer likenum;
+        private List<String> destinations;
+        private List<String> hashtags;
+        private List<String> pictures;
+    }
+
+//    @Getter
+//    @Setter
+//    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+//    public static class PostUserDto{
+//        private String id;
+//        private String username;
+//        private String imageurl;
+//    }
+//
+//    @Getter
+//    @Setter
+//    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+//    public static class PostHashtagDto{
+//        private String id;
+//        private String name;
+//    }
 
 //    @Getter
 //    @Setter

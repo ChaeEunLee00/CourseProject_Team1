@@ -13,6 +13,7 @@ import team1.wanderworld.Models.User;
 import team1.wanderworld.Services.PostService;
 import team1.wanderworld.Mappers.PostMapper;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -63,8 +64,16 @@ public class PostController {
 
     // 포스트 조회
     @GetMapping("/{post-id}")
-    public ResponseEntity getUser(@PathVariable("post-id") String postId){
+    public ResponseEntity getPost(@PathVariable("post-id") String postId){
         Post foundPost = postService.findPost(postId);
         return new ResponseEntity<>(postMapper.postToPostResponseDto(foundPost), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity getPosts() {
+        List<Post> posts = postService.findPosts();
+
+        List<PostDto.GetAllResponseDto> postResponseDtos  = postMapper.postsToGetAllResponseDtos(posts);
+        return new ResponseEntity<>(postResponseDtos, HttpStatus.OK);
     }
 }
