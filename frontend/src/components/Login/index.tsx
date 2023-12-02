@@ -49,7 +49,7 @@ export const Login = () => {
             }
         );
 
-        // 세션 ID를 localstorage에 저장
+        // 세션 ID를 localge에 저장
         localStorage.setItem('userId', response.data.id);
         localStorage.setItem('accessToken', response.data.access_token);
 

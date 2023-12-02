@@ -55,7 +55,7 @@ const customModalStyles = {
     }
 }
 
-export const MyProfileButton = ({ Picture }: { Picture: string }) => {
+export const MyProfileButton = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => {
@@ -77,7 +77,7 @@ export const MyProfileButton = ({ Picture }: { Picture: string }) => {
                 style={customModalStyles}
                 contentLabel="My Profile"
             >
-                <MyProfile Picture = {Picture}/>
+                <MyProfile/>
             </Modal>
         </>
     )

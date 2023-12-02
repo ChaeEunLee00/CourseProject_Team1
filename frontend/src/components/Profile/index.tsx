@@ -5,6 +5,7 @@ import { MyProfileButton } from '../MyProfileButton';
 import { useState } from "react";
 import Modal from "react-modal";
 import { FollowList } from '../FollowList';
+import axios from 'axios';
 
 const Container = styled.div`
     background-color: #FFFFFF;
@@ -143,7 +144,11 @@ const customModalStyles = {
 
 export const Profile = ({ Picture }: { Picture: string }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [ShowFollowing, setIsFollowing] = useState(false);
+    const [ShowFollowing, setIsFollowing] = useState(true);
+    const [username, setUsername] = useState<string | null>(null);
+    const [imageURL, setImage] = useState<string | null>(null);
+    const [followingNum, setFollowingNum] = useState<number | null>(null);
+    const [followerNum, setFollowerNum] = useState<number | null>(null);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -161,24 +166,36 @@ export const Profile = ({ Picture }: { Picture: string }) => {
         setIsFollowing(false);
     };
 
+    const userId = localStorage.getItem('userId');
+    // const accessToken = localStorage.getItem('accessToken');        
+    axios
+    .get("http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/users/"+userId)
+    .then((response => {
+        setUsername(response.data.username)
+        setImage(response.data.imageurl)
+        setFollowingNum(response.data.followinglist.length)
+        setFollowerNum(response.data.followerlist.length)
+    }))
+    .catch((error)=>console.log(error.response.data));
+
     //팔로잉
     if (ShowFollowing){
         return (
             <>
             <Container>
-                <ProfilePictureShow Picture = {Picture}/>
-                <Text>김아이폰</Text>
+                <ProfilePictureShow Picture = {imageURL}/>
+                <Text>{username}</Text>
                 <FollowContainer>
                     <FollowInnerContainer onClick={() => {openModal();openFollowing();}}>
-                        <Text>13</Text>
+                        <Text>{followingNum}</Text>
                         <Text>following</Text>
                     </FollowInnerContainer>
                     <FollowInnerContainer onClick={() => {openModal();openFollower();}}>
-                        <Text>134</Text>
+                        <Text>{followerNum}</Text>
                         <Text>follower</Text>
                     </FollowInnerContainer>
                 </FollowContainer>
-                <MyProfileButton Picture = {Picture}/>
+                <MyProfileButton/>
             </Container>
             <Modal
                 isOpen={isModalOpen}
@@ -199,19 +216,19 @@ export const Profile = ({ Picture }: { Picture: string }) => {
     return (
         <>
         <Container>
-            <ProfilePictureShow Picture = {Picture}/>
-            <Text>김아이폰</Text>
+            <ProfilePictureShow Picture = {imageURL}/>
+            <Text>{username}</Text>
             <FollowContainer>
                 <FollowInnerContainer onClick={() => {openModal();openFollowing();}}>
-                    <Text>13</Text>
+                    <Text>{followingNum}</Text>
                     <Text>following</Text>
                 </FollowInnerContainer>
                 <FollowInnerContainer onClick={() => {openModal();openFollower();}}>
-                    <Text>134</Text>
+                    <Text>{followerNum}</Text>
                     <Text>follower</Text>
                 </FollowInnerContainer>
             </FollowContainer>
-            <MyProfileButton Picture = {Picture}/>
+            <MyProfileButton/>
         </Container>
         <Modal
             isOpen={isModalOpen}

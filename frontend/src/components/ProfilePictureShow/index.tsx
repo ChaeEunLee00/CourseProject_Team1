@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 const CircleImage = styled.img`
     text-align: center;    
+    vertical-align: center;
     border-radius: 50%;
     width: 200px;
     height: 200px;
@@ -11,12 +12,8 @@ const CircleImage = styled.img`
     margin: 50px;
 `;
 
-export const ProfilePictureShow = ({ Picture }: { Picture: string }) => {
-    const imageUrl = Picture ? { Picture } : undefined// URL.createObjectURL(Picture) : undefined;
-
+export const ProfilePictureShow = ({ Picture }: { Picture: string | null }) => {
     return (
-        <div>
-            <CircleImage src={Picture} alt="Profile" />
-        </div>
-    );
+        <CircleImage src={Picture}/> //alt="No Image" 
+    )
 };

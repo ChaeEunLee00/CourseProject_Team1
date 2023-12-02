@@ -164,7 +164,11 @@ const customModalStyles = {
     }
 }
 
-export const MyProfile = ({ Picture }: { Picture: string }) => {
+export const MyProfile = () => {
+    const [name, setName] = useState<string | null>(null);
+    const [username, setUsername] = useState<string | null>(null);
+    const [imageURL, setImage] = useState<string | null>(null);
+    
     const [isMain, setIsMain] = useState(true);
     const [isDelete, setIsDelete] = useState(false);
 
@@ -184,14 +188,25 @@ export const MyProfile = ({ Picture }: { Picture: string }) => {
         setIsDelete(false);
     };
 
+    const userId = localStorage.getItem('userId');
+    axios
+    .get("http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/users/"+userId)
+    .then((response => {
+        setName(response.data.name)
+        setUsername(response.data.username)
+        setImage(response.data.imageurl)
+    }))
+    .catch((error)=>console.log(error.response.data));
+
+
     if (isMain){
         return (
             <Container>
-                <ProfilePictureShow Picture = {Picture}/>
+                <ProfilePictureShow Picture = {imageURL}/>
                 <Category>Name</Category>
-                <Content>김애플</Content>
+                <Content>{name}</Content>
                 <Category>Username</Category>
-                <Content>김아이폰</Content>
+                <Content>{username}</Content>
                 <Button onClick={openEdit} style={blue}>
                     <ButtonText color='#034070'>Edit Account</ButtonText>
                 </Button>
@@ -221,11 +236,11 @@ export const MyProfile = ({ Picture }: { Picture: string }) => {
     else {
         return (
             <Container>
-                <ProfilePictureShow Picture = {Picture}/>
+                <ProfilePictureShow Picture = {imageURL}/>
                 <Category>Name</Category>
-                <ContentEdit type="text" placeholder="김애플" />
+                <ContentEdit type="text" placeholder={name} />
                 <Category>Username</Category>
-                <ContentEdit type="text" placeholder="김아이폰" />
+                <ContentEdit type="text" placeholder={username} />
                 <Category>Password</Category>
                 <ContentEdit type="text" placeholder="********" />
                 <Button onClick={openMain} style={blue}>
