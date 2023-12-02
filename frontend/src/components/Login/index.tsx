@@ -32,6 +32,12 @@ export const Login = () => {
     const passwordLength = password.length;
     const navigate = useNavigate();
 
+    const handleOnKeyPress = e => {
+        if (e.key == 'Enter') {
+            handleLogin();
+        }
+    }
+
     const handleLogin = async () => {
         // 로그인 정보를 서버로 전송
         try {
@@ -61,11 +67,11 @@ export const Login = () => {
 
     return (
         <Container>
-            <InnerContainer>
+            <InnerContainer onKeyDown={handleOnKeyPress}>
                 <WanderWorldLogo className='login' />
                 <LoginButton handleLogin={handleLogin} passwordLength={passwordLength} />
                 <UsernameForm setUsername={setUsername} className='login'/>
-                <PasswordForm setPassword={setPassword} className="login"/>
+                <PasswordForm username={username} setPassword={setPassword} className="login"/>
                 <OrText className='login'/>
                 {/* <ForgotPassword /> */}
                 <SocialLogin className='login'/>
