@@ -21,10 +21,6 @@ const Container = styled.div`
 
 
 const NavigationBar = () => {
-    const handleReload = () => {
-        window.location.reload();
-      };
-
     return (
         <Container>
             <WanderWorldLogo className='navigationBar'/>
