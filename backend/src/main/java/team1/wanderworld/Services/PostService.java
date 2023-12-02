@@ -102,7 +102,7 @@ public class PostService {
     }
 
     public List<Post> findMyPosts(String userId) {
-        return postRepository.findByUserId(userId);
+        return postRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "id"));
     }
 
     // 좋아요 -> user의 likedPost에 postId 추가
