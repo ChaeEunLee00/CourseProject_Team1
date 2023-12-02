@@ -49,7 +49,11 @@ export const AddPostButton = () => {
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
+        // 확인 창 표시
+        const confirmClose = window.confirm("정말 나가시겠습니까?");
+        if (confirmClose) {
+            setIsModalOpen(false);
+        }
     };
 
     return (
@@ -63,7 +67,7 @@ export const AddPostButton = () => {
                 style={customModalStyles}
                 contentLabel="Create Post Modal"
             >
-                <AddPost />
+                <AddPost handleClose={closeModal}/>
             </Modal>
         </>
     )

@@ -5,12 +5,14 @@ import { useState, useRef } from "react";
 // Place 사진과 이름, 사진을 추가하는 버튼까지 
 
 interface PlaceWhenPostProps {
-    onImageChange: (file: File) => void;
+    onImageChange: (file: File, placeName: string) => void;
 }
 
 const Container = styled.div`
     width: 600px;
     height: 120px;
+    display: flex;
+    justify-content: center;
 `;
 
 const ImageContainer = styled.div`
@@ -38,17 +40,24 @@ const HiddenPictureInput = styled.input`
     display: none;
 `;
 
+const PlaceName = styled.input`
+    width: 150px;
+    height: 20px;
+    margin-top: 35px;
+    margin-left: 40px;
+`;
+
 
 export const PlaceWhenPost: React.FC<PlaceWhenPostProps> = ({onImageChange}) => {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
-    const [placeName, setPlaceName] = useState<string | null>(null);
+    const [placeName, setPlaceName] = useState<string>('');
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files && e.target.files[0];
 
         if (file) {
-            onImageChange(file);
+            onImageChange(file, placeName);
 
             const imageUrl = URL.createObjectURL(file);
             setImageUrl(imageUrl);
@@ -74,6 +83,12 @@ export const PlaceWhenPost: React.FC<PlaceWhenPostProps> = ({onImageChange}) => 
                     onChange={handleInputChange}
                 />
             </ImageContainer>
+            <PlaceName
+                type="text"
+                placeholder="Place Name"
+                value={placeName}
+                onChange={(e) => setPlaceName(e.target.value)}
+            />
         </Container>
     )
 }

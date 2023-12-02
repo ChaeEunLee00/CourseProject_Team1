@@ -43,23 +43,26 @@ export const SignupBox = () => {
     const handleSignup = async () => {
         try {
             // 회원가입 정보를 서버로 전송
-            const formData = new FormData();
-            formData.append("username", username);
-            formData.append("name", name);
-            formData.append("password", password);
-            if (profileImage) {
-                formData.append("profileImage", profileImage);
-            }
+            const requestData = {
+                username,
+                name,
+                password,
+                profileImage: profileImage ? profileImage : null,
+            };
 
-            const response = await axios.post("/api/signup", formData, {
+            const response = await axios.post("http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/users", requestData, {
                 headers: {
-                    "Content-Type": "multipart/form-data", // 파일 전송 시 필요한 헤더
+                    "Content-Type": "application/json", // 파일 전송 시 필요한 헤더
                 },
-            });
+                withCredentials: true
+            }
+            );
 
             // 서버 응답 처리(현재는 콘솔에 데이터를 출력)
-            console.log(response.data);
+            console.log(response.data)
+            alert("회원가입 성공");
         } catch (error) {
+            alert('회원가입 실패' + error);
             console.log('회원가입 실패', error);
         }
     };
