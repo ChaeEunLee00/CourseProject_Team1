@@ -30,7 +30,7 @@ public class Post {
     private String content;
     private String city;
     private Integer duration; //hours
-    private Integer likenum;
+    private Integer likenum = 0;
     private LocalDateTime creationDate = LocalDateTime.now();
     private List<String> destinations = new ArrayList<>();
     private List<String> hashtags = new ArrayList<>();

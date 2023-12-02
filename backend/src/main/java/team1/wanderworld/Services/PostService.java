@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import team1.wanderworld.Models.Hashtag;
 import team1.wanderworld.Models.Post;
 import team1.wanderworld.Models.User;
+import team1.wanderworld.Repositories.UserRepository;
 import team1.wanderworld.Services.HashtagService;
 import team1.wanderworld.Repositories.PostRepository;
 import team1.wanderworld.common.exception.BusinessLogicException;
@@ -17,11 +18,14 @@ import java.util.Optional;
 public class PostService {
     private final PostRepository postRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     public PostService(PostRepository postRepository,
-                       UserService userService) {
+                       UserService userService,
+                       UserRepository userRepository) {
         this.postRepository = postRepository;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Autowired
@@ -100,10 +104,54 @@ public class PostService {
         return postRepository.findByUserId(userId);
     }
 
+    // 좋아요 -> user의 likedPost에 postId 추가
+    //       -> post의 likenum +1
+    public Post likePost(String userId, String postId) {
+
+        User user = userService.findVerifiedUser(userId);
+        Post post = findVerifiedPost(postId);
+
+        //user의 likedPost에 postId 추가
+        List<String> likedPosts = user.getLikedposts();
+        // 이미 좋아요 한 글에는 x
+        if(likedPosts.contains(postId)) throw new BusinessLogicException(ExceptionCode.POST_LIKE_EXIST);
+        likedPosts.add(postId);
+        user.setLikedposts(likedPosts);
+        userRepository.save(user);
+
+        //post의 likenum +1
+        post.setLikenum(post.getLikenum()+1);
+
+        return postRepository.save(post);
+    }
+
+    // 좋아요 취소 -> user의 likedPost에 postId 삭제
+    //           -> post의 likenum -1
+    public Post unlikePost(String userId, String postId) {
+
+        User user = userService.findVerifiedUser(userId);
+        Post post = findVerifiedPost(postId);
+
+        //user의 likedPost에 postId 삭제
+        List<String> likedPosts = user.getLikedposts();
+        //좋아요 한 글이 없을 때에는 x
+        if(!likedPosts.contains(postId)) throw new BusinessLogicException(ExceptionCode.POST_LIKE_NOT_EXIST);
+        likedPosts.remove(postId);
+        user.setLikedposts(likedPosts);
+        userRepository.save(user);
+
+        //post의 likenum -1
+        post.setLikenum(post.getLikenum()-1);
+
+        return postRepository.save(post);
+    }
+
     // Post id matching
     private Post findVerifiedPost(String postId) {
         Optional<Post> optionalPost = postRepository.findById(postId);
         Post findPost = optionalPost.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
         return findPost;
     }
+
+
 }

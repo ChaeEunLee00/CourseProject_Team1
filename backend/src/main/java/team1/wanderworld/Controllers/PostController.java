@@ -84,4 +84,24 @@ public class PostController {
         List<PostDto.GetAllResponseDto> postResponseDtos  = postMapper.postsToGetAllResponseDtos(posts);
         return new ResponseEntity<>(postResponseDtos, HttpStatus.OK);
     }
+
+    // [좋아요]
+    @PostMapping("/{post-id}/like")
+    public ResponseEntity likePost(@PathVariable("post-id") String postId){
+        Map<String,Object> principal = (Map) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId = (String) principal.get("id");
+
+        Post post = postService.likePost(userId,postId);
+        return new ResponseEntity<>(postMapper.postToPostResponseDto(post), HttpStatus.OK);
+    }
+
+    // [좋아요 취소]
+    @PostMapping("/{post-id}/unlike")
+    public ResponseEntity unlikePost(@PathVariable("post-id") String postId){
+        Map<String,Object> principal = (Map) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId = (String) principal.get("id");
+
+        Post post = postService.unlikePost(userId,postId);
+        return new ResponseEntity<>(postMapper.postToPostResponseDto(post), HttpStatus.OK);
+    }
 }

@@ -12,7 +12,9 @@ public enum ExceptionCode {
     COMMENT_USER_DIFFERENT(409, "Comment User Different"),
     USER_FOLLOW_SAME(409, "User Follow Same"),
     USER_UNFOLLOW_SAME(409, "User Unfollow Same"),
-    USER_FOLLOW_EXIST(409, "User Unfollow Exist");
+    USER_FOLLOW_EXIST(409, "User Unfollow Exist"),
+    POST_LIKE_EXIST(409, "Post Like Exist"),
+    POST_LIKE_NOT_EXIST(409, "Post Like Not Exist");
 
 
     @Getter
