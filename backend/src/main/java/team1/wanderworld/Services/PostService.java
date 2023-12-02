@@ -1,6 +1,7 @@
 package team1.wanderworld.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import team1.wanderworld.Models.Hashtag;
 import team1.wanderworld.Models.Post;
@@ -97,7 +98,7 @@ public class PostService {
     }
 
     public List<Post> findPosts() {
-        return postRepository.findAll();
+        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public List<Post> findMyPosts(String userId) {
