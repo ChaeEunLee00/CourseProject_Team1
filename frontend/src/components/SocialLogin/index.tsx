@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import KakaotalkImg from '../../assets/kakaotalk_sharing_btn_medium.png';
 import GoogleImg from '../../assets/googleLogo.png';
-import FacebookImg from '../../assets/페이스북_로고_심볼형_RGB.png';
+import FacebookImg from '../../assets/googleLogo.png';//페이스북_로고_심볼형_RGB.png';
 
 interface Props {
     readonly className: string;
