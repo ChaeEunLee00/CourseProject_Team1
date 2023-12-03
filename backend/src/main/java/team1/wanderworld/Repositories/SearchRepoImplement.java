@@ -40,6 +40,7 @@ public class SearchRepoImplement implements SearchRepository{
                         new BasicDBObject("city", regexQuery),
                         new BasicDBObject("destinations", regexQuery)
                 )
+
         );
 
         FindIterable<Document> result = collection.find(searchQuery);
