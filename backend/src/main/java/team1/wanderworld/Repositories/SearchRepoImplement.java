@@ -36,7 +36,9 @@ public class SearchRepoImplement implements SearchRepository{
         BasicDBObject searchQuery = new BasicDBObject("$or",
                 Arrays.asList(
                         new BasicDBObject("content", regexQuery),
-                        new BasicDBObject("hashtags", regexQuery)
+                        new BasicDBObject("hashtags", regexQuery),
+                        new BasicDBObject("city", regexQuery),
+                        new BasicDBObject("destinations", regexQuery)
                 )
         );
 
