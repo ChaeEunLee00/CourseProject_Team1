@@ -36,7 +36,7 @@ public class HashtagController {
         Hashtag hashtag = hashtagService.createHashtag(name);
         return new ResponseEntity<>(hashtag, HttpStatus.CREATED);
     }
-    @GetMapping("/top5")
+    @GetMapping("/get/top5")
     public ResponseEntity<List<String>> getTop5HashtagNames() {
         List<Hashtag> top5Hashtags = hashtagService.getTop5Hashtags();
         List<String> top5HashtagNames = top5Hashtags.stream()
