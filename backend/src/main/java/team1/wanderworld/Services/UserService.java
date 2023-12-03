@@ -30,6 +30,10 @@ public class UserService {
         // 회원가입시, 사용자 password 암호화
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
+
+        // image가 null 일 때, 기본 이미지
+        if(user.getImageurl() == null) user.setImageurl("https://wanderworld-s3-bucket.s3.ap-northeast-2.amazonaws.com/w%EB%A1%9C%EA%B3%A0.png");
+
         User saveUser = userRepository.save(user);
 
         return saveUser;
