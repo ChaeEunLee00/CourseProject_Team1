@@ -11,6 +11,11 @@
   /* position: absolute; */
   /* text-align: center; */
   white-space: nowrap;
+
+  cursor: pointer; 
+  &:hover {
+      opacity: 60%;
+  }  
 }
 
 .wander-world-logo.login {

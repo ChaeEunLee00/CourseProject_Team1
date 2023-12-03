@@ -7,7 +7,19 @@ interface Props {
 }
 
 export const WanderWorldLogo = ({className}: Props) => {
+    const handleReload = () => {
+        if (className=='login'){
+            window.location.reload();
+        }
+        else if (className=='signup'){
+            window.location.assign('/..');
+        }
+        else{
+            window.location.assign('/main');
+        }
+    };
+
     return (
-        <div className={`wander-world-logo ${className}`}>WanderWorld</div>
+        <div onClick={handleReload} className={`wander-world-logo ${className}`}>WanderWorld</div>
     )
 }

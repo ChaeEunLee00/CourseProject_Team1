@@ -65,19 +65,6 @@ const Main = () => {
             <AddPostButton />
             <InnerContainer>
                 <Post />
-                {/* {hashtags && hashtags.map((tag, index) => (
-                    <div key={index}>{tag}</div>
-                ))}
-                <div>{userId}</div>
-                <div>{accessToken}</div> */}
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
             </InnerContainer>
         </Container>
     );

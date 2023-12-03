@@ -72,7 +72,7 @@ const HashtagButton = styled.button`
 
 
 
-export const Search:React.FC<SearchProps> = ({hashtags}) => {
+export const Search:React.FC<SearchProps> = ({hashtags = []}) => {
     const [selectedHashtag, setSelectedHashtag] = useState('');
 
     const handleHashtagClick = async (hashtag: string) => {
@@ -96,8 +96,8 @@ export const Search:React.FC<SearchProps> = ({hashtags}) => {
                         <HashtagButton
                             key={hashtag}
                             onClick={() => {
-                                setSelectedHashtag(hashtag)
-                                handleHashtagClick(selectedHashtag)
+                                setSelectedHashtag(hashtag);
+                                handleHashtagClick(hashtag);
                             }}
                         >
                             #{hashtag}

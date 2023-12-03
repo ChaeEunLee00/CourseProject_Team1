@@ -134,7 +134,7 @@ export const AddPost = () => {
                 headers: {
                     // "Content-Type" : "application/json",
                     "Authorization" : "Bearer " + accessToken,
-                    // "Refresh" : refreshToken,
+                    "Refresh" : refreshToken,
                 },
                 withCredentials: true
             });
