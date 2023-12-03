@@ -68,11 +68,23 @@ public class PostService {
 
         Optional.ofNullable(post.getContent())
                 .ifPresent(content -> findPost.setContent(content));
-        Optional.ofNullable(post.getHashtags())
-                .ifPresent(hashtags -> {
-                    findPost.setHashtags(hashtags);
-                    hashtagService.updatdHashtag(hashtags, post.getId());}
-                    );
+        Optional.ofNullable(post.getCity())
+                .ifPresent(city -> findPost.setCity(city));
+        Optional.ofNullable(post.getDuration())
+                .ifPresent(duration -> findPost.setDuration(duration));
+        List<String> destinations =  post.getDestinations();
+        if(!destinations.isEmpty()){
+            findPost.setDestinations(destinations);
+        }
+        List<String> pictures =  post.getPictures();
+        if(!pictures.isEmpty()){
+            findPost.setPictures(pictures);
+        }
+        List<String> hashtags =  post.getHashtags();
+        if(!hashtags.isEmpty()){
+            findPost.setHashtags(hashtags);
+            hashtagService.updatdHashtag(hashtags, post.getId());
+        }
 
         return postRepository.save(findPost);
     }
