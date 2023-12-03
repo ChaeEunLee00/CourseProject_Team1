@@ -5,13 +5,16 @@ import { ProfileButton } from '../ProfileButton';
 import { Search } from '../Search';
 import { Link } from 'react-router-dom';
 
+interface NavigationBarProps {
+    hashtags: string[];
+}
 
 const Container = styled.div`
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 80px;
+    height: 100px;
     background-color: #ffffff;
     padding: 10px;
     display: flex;
@@ -19,16 +22,15 @@ const Container = styled.div`
 `;
 
 
-
-const NavigationBar = () => {
-    const handleReload = () => {
-        window.location.reload();
-      };
+const NavigationBar:React.FC<NavigationBarProps> = ({hashtags}) => {
+    // const handleReload = () => {
+    //     window.location.reload();
+    //   };
 
     return (
         <Container>
             <WanderWorldLogo className='navigationBar'/>
-            <Search />
+            <Search hashtags={hashtags} />
             <ProfileButton />
         </Container>
     )

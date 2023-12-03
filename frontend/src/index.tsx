@@ -5,7 +5,9 @@ import App from './App';
 import './Fonts/Font.css';
 
 
+
 const rootElement = document.getElementById('root') as HTMLElement;
+
 
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);

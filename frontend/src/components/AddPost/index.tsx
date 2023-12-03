@@ -5,10 +5,7 @@ import axios from "axios";
 import { PlaceWhenPost } from "../PlaceWhenPost";
 import { ContentWhenPost } from "../ContentWhenPost";
 import { SubmitAddPost } from "../SubmitAddPost";
-
-interface AddPostProps {
-    handleClose: () => void;
-}
+import { AddHashtag } from "../AddHashtag";
 
 const Container = styled.div`
     display: flex;
@@ -24,6 +21,29 @@ const Title = styled.div`
     margin-bottom: 30px;
 `;
 
+const MainRegionContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 600px;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+`;
+
+const MainRegionText = styled.div`
+    width: 180px;
+    height: 50px;
+    font-size: 25px;
+    font-weight: bold;
+`;
+
+const MainRegionInput = styled.input`
+    width: 300px;
+    height: 25px;
+    padding-left: 5px;
+    margin-bottom: 12px;
+`;
+
 const AddPlaceWhenPostButton = styled(PlusCircleOutlined)`
     font-size: 30px;
     margin-bottom: 20px;
@@ -31,20 +51,62 @@ const AddPlaceWhenPostButton = styled(PlusCircleOutlined)`
     heigth: 50px;
 `;
 
+const TripDurationContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 600px;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+`;
 
-export const AddPost: React.FC<AddPostProps> = ({handleClose}) => {
-    const [placeImages, setPlaceImages] = useState<File[]>([]);
+const TripDurationText = styled.div`
+    width: 180px;
+    height: 50px;
+    font-size: 25px;
+    font-weight: bold;
+`;
+
+const TripDurationInput = styled.input`
+    width: 300px;
+    height: 25px;
+    padding-left: 5px;
+    margin-bottom: 12px;
+`;
+
+
+export const AddPost = () => {
+    // AddPost에서 서버로 보내줘야 하는 데이터
+    // content, city, duration, hashtags, destinations,
+    // header에 token,pictures
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    const [content, setContent] = useState('');
+    const [city, setCity] = useState('');
+    const [duration, setDuration] = useState(1);
+    const [placeImageUrls, setPlaceImageUrls] = useState<string[]>([]);
+    // destinations == placeNames
     const [placeNames, setPlaceNames] = useState<string[]>([]);
+    const [hashtags, setHashtags] = useState<string[]>([]);
 
-    const handleImageChange = (file: File, placeName: string) => {
-        if (placeImages.length < 8) {
-            setPlaceImages((prevImages) => [...prevImages, file]);
+    const handleImageChange = (placeImage: string, placeName: string) => {
+        if (placeImageUrls.length < 8) {
+            setPlaceImageUrls((prevImages) => [...prevImages, placeImage]);
             setPlaceNames((prevNames) => [...prevNames, placeName]);
         }
     };
 
+    const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCity(e.target.value);
+    }
+    
+    const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDuration(Number(e.target.value));
+    }
+
+    // 버튼 누를 때마다 PlaceWhenPost 하나씩 추가하기 위한 변수(서버로 보내지지 않음)
     const [placeComponents, setPlaceComponents] = useState([<PlaceWhenPost key={0} onImageChange={handleImageChange} />]);
-    const [content, setContent] = useState('');
+    
 
     
 
@@ -59,27 +121,22 @@ export const AddPost: React.FC<AddPostProps> = ({handleClose}) => {
 
     const handleAddPost = async () => {
         try {
-            // Post 정보를 서버로 전송
-            // 작성한 사용자 객체
-            // 첨부한 이미지와 글
-            // 해시태그
-            const formData = new FormData();
+            const data = {
+                "city": city,
+                "duration": duration,
+                "destinations": placeNames,
+                "content": content,
+                "hashtags": hashtags,
+                "pictures": placeImageUrls,
+            }
 
-            formData.append("content", content);
-
-            placeImages.forEach((image, index) => {
-                formData.append(`placeImage${index + 1}`, image);
-                formData.append(`placeName${index + 1}`, placeNames[index]);
-            });
-
-            // placeNames.forEach((placeName, index) => {
-            //     formData.append(`placeName${index + 1}`, placeName);
-            // });
-
-            const response = await axios.post("/api/post", formData, {
+            const response = await axios.post("http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts", data, {
                 headers: {
-                    "Content-Type" : "multipart/form-data",
+                    // "Content-Type" : "application/json",
+                    "Authorization" : "Bearer " + accessToken,
+                    // "Refresh" : refreshToken,
                 },
+                withCredentials: true
             });
 
             console.log(response.data);
@@ -92,6 +149,14 @@ export const AddPost: React.FC<AddPostProps> = ({handleClose}) => {
     return (
         <Container>
             <Title>Create a Post</Title>
+            <MainRegionContainer>
+                <MainRegionText>Main Region :</MainRegionText>
+                <MainRegionInput type="text" onChange={handleCityChange} placeholder="Enter the main city or country during your trip"/>
+            </MainRegionContainer>
+            <TripDurationContainer>
+                <TripDurationText>Trip Duration :</TripDurationText>
+                <TripDurationInput type="number" onChange={handleDurationChange} placeholder="(     ) Days ?" />
+            </TripDurationContainer>
             {placeComponents}
             <AddPlaceWhenPostButton 
                 onClick={handleClick}
@@ -99,6 +164,7 @@ export const AddPost: React.FC<AddPostProps> = ({handleClose}) => {
             />
             {placeComponents.length === 8 && <div>Reached the max number of destinations</div>}
             <ContentWhenPost setContent={setContent}/>
+            <AddHashtag setHashtags={setHashtags} hashtags={hashtags} />
             <SubmitAddPost handleAddPost={handleAddPost}/>
         </Container>
     )

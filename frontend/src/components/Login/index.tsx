@@ -46,7 +46,7 @@ export const Login = () => {
         // 세션 ID를 localstorage에 저장
         localStorage.setItem('userId', response.data.id);
         localStorage.setItem('accessToken', response.data.access_token);
-
+        localStorage.setItem('refreshToken', response.data.refresh_token);
         // 서버 응답 처리(현재는 콘솔에 데이터를 출력)
         console.log(response.data);
         alert('로그인 성공');

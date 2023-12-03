@@ -19,7 +19,7 @@ const InnerContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 100px;
+    margin-top: 120px;
     margin-bottom: 30px;
     gap: 20px;
 `;
@@ -28,7 +28,7 @@ const InnerContainer = styled.div`
 const Main = () => {
     const [userId, setUserId] = useState<string | null>(null);
     const [accessToken, setAccessToken] = useState<string | null>(null);
-    const [hashtags, setHashtags] = useState<string[] | null>(null);
+    const [hashtags, setHashtags] = useState([]);
 
     useEffect(() => {
         // const fetchData = async () => {
@@ -61,16 +61,15 @@ const Main = () => {
 
     return (
         <Container>
-            <NavigationBar />
+            <NavigationBar hashtags={hashtags}/>
             <AddPostButton />
             <InnerContainer>
                 <Post />
                 {/* {hashtags && hashtags.map((tag, index) => (
                     <div key={index}>{tag}</div>
-                ))} */}
-                <div>{hashtags}</div>
+                ))}
                 <div>{userId}</div>
-                <div>{accessToken}</div>
+                <div>{accessToken}</div> */}
                 <Post />
                 <Post />
                 <Post />

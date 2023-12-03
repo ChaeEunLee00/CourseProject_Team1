@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { AddPost } from "../AddPost";
@@ -67,7 +67,7 @@ export const AddPostButton = () => {
                 style={customModalStyles}
                 contentLabel="Create Post Modal"
             >
-                <AddPost handleClose={closeModal}/>
+                <AddPost />
             </Modal>
         </>
     )
