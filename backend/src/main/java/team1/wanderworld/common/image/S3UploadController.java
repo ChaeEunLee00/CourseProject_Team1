@@ -1,4 +1,4 @@
-package team1.wanderworld.image;
+package team1.wanderworld.common.image;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
