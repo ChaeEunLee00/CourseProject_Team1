@@ -5,6 +5,7 @@ import { useState } from "react";
 
 interface SearchProps {
     hashtags: string[];
+    handleHashtag: (hashtag: string) => void;
 }
 
 const Container = styled.div`
@@ -12,9 +13,6 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    // position: absolute;
-    // left: 345px;
-    // top: 0;
     width: 550px;
     height: 100px;
     margin-left: 200px;
@@ -72,15 +70,17 @@ const HashtagButton = styled.button`
 
 
 
-export const Search:React.FC<SearchProps> = ({hashtags = []}) => {
+export const Search:React.FC<SearchProps> = ({hashtags = [], handleHashtag}) => {
     const [selectedHashtag, setSelectedHashtag] = useState('');
 
     const handleHashtagClick = async (hashtag: string) => {
         try {
-            const response = await fetch(`http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/hashtags/${hashtag}`);
-            const data = await response.json();
-            // main page update
-            console.log(data.postIdList);
+            // const response = await fetch(`http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/hashtags/${hashtag}`);
+            // const data = await response.json();
+            // // main page update
+            // console.log(data.postIdList);
+            handleHashtag(hashtag);
+            console.log(hashtag);
         } catch (error) {
             console.error("Error fetching hashtag data", error);
         }
@@ -96,8 +96,8 @@ export const Search:React.FC<SearchProps> = ({hashtags = []}) => {
                         <HashtagButton
                             key={hashtag}
                             onClick={() => {
-                                setSelectedHashtag(hashtag);
                                 handleHashtagClick(hashtag);
+                                setSelectedHashtag(hashtag);  
                             }}
                         >
                             #{hashtag}

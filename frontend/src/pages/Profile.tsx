@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PhoneImg from '../assets/phone.png';
 import styled from "@emotion/styled";
 import { Profile } from "../components/Profile";
-import { ProfileEdit } from "../components/ProfileEdit";
+// import { ProfileEdit } from "../components/ProfileEdit";
 import "../App.css";
 import '../Fonts/Font.css';
 import NavigationBar from '../components/NavigationBar';
 import { AddPostButton } from '../components/AddPostButton';
 import { Post } from '../components/Post';
+import axios from "axios";
+
+interface Post {
+    id: string;
+    user_id: string;
+    content: string;
+    city: string;
+    duration: number;
+    likenum: number;
+    creationDate: string;
+    destinations: [];
+    hashtags: [];
+    pictures: [];
+    comments: [];
+}
 
 const Container = styled.div`
     background-color: #ffffff;
@@ -19,21 +34,6 @@ const Container = styled.div`
     overflow-y: auto;
 `;
 
-// 스크롤 문제로 좌측 프로필 위치 고정
-// const MainContainer = styled.div`
-//     border: 1px solid #D9D9D9;
-
-//     display: flex;
-//     flex-direction: row;
-//     align-items: center;
-//     margin-top: 100px;
-//     margin-bottom: 30px;
-//     gap: 20px;
-
-//     width: 100vw;
-//     justify-content: space-between;
-// `;
-
 const InnerContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -43,35 +43,40 @@ const InnerContainer = styled.div`
     gap: 20px;
 `;
 
-const PhoneImage = styled.img`
-  height: 782px;
-  left: 45px;
-  object-fit: cover;
-  // position: absolute;
-  top: 91px;
-  width: 36px;
-`;
+
 
 const Home = () => {
-  return (
-      <Container>
-          <NavigationBar hashtags={[]}/>
-          
-          <AddPostButton />
-          <Profile Picture={PhoneImg}/>
-          <InnerContainer>
-              <Post />
-              <Post />
-              <Post />
-              <Post />
-              <Post />
-              <Post />
-              <Post />
-              <Post />
-              <Post />
-          </InnerContainer>
+    const [userPosts, setUserPosts] = useState<Post[]>([]);
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userId = localStorage.getItem('userId');
+                const response = await axios.get(
+                    `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts/user/${userId}`
+                );
+                
+                console.log(response.data);
+                setUserPosts(response.data);
+            } catch (error) {
+                console.log("hashtag 가져오기 실패", error);
+                alert("hashtags 가져오기 실패");
+            }
+        };
+        fetchData();
+    }, []);
+    return (
+        <Container>
+            <NavigationBar hashtags={[]}/>
+            <AddPostButton />
+            <Profile />
+            <InnerContainer>
+                {userPosts.map((p) => (
+                    <Post key={p.id} postId={p.id} />
+                ))}
+            </InnerContainer>
     </Container>
-  );
+    );
 };
 
 export default Home;

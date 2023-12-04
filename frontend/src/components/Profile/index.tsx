@@ -142,7 +142,7 @@ const customModalStyles = {
     }
 }
 
-export const Profile = ({ Picture }: { Picture: string }) => {
+export const Profile = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [ShowFollowing, setIsFollowing] = useState(true);
     const [username, setUsername] = useState<string | null>(null);

@@ -4,6 +4,11 @@ import Modal from "react-modal";
 import { LikeButton } from "../LikeButton";
 import axios from "axios";
 import { useData } from "../../contexts/DataContext";
+import { PostDetail } from "../PostDetail/container";
+
+interface PostProps {
+  readonly postId: string;
+}
 
 interface Post {
   id: string;
@@ -108,51 +113,37 @@ const customModalStyles = {
   },
 };
 
-// PostDetail 컴포넌트 스타일
-const DetailContainer = styled.div``;
 
-export const Post: React.FC = () => {
+export const Post: React.FC<PostProps> = ({postId}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  //const [userId, setUserId] = useState<string | null>(null);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
-  const displayPosts = posts;
+  const [post, setPost] = useState<Post>();
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchPostAndUser = async () => {
       try {
-        const response = await axios.get<Post[]>(
-          "http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts"
-        );
-        setPosts(response.data);
-        console.log("Fetched Posts:", response.data);
-        const userIds = response.data.map((post) => post.user_id);
-        console.log("User IDs:", userIds);
-
-        // Extract unique user IDs from posts
-        const uniqueUserIds = [
-          ...new Set(response.data.map((post) => post.user_id)),
-        ];
-
-        // Fetch user details for each unique user ID
-        const userPromises = uniqueUserIds.map((user_id) =>
-          axios.get<User>(
-            `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/users/${user_id}`
-          )
+        const response = await axios.get<Post>(
+          `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}`
         );
 
-        // Wait for all user details to be fetched
-        const usersData = await Promise.all(userPromises);
+        if (response.data) {
+          setPost(response.data);
+          const userId = response.data.user_id;
+          const userResponse = await axios.get<User>(
+            `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
+          );
 
-        // Set the users state with fetched user details
-        setUsers(usersData.map((response) => response.data));
+          setUser(userResponse.data);
+        } else {
+          console.error("Post data is undefined");
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     // Call the fetchPosts function when the component mounts
-    fetchPosts();
+    fetchPostAndUser();
   }, []); // Empty dependency array ensures it runs only once when the component mounts
 
   const openModal = () => {
@@ -165,57 +156,53 @@ export const Post: React.FC = () => {
 
   return (
     <>
-      {displayPosts.map((p) => (
-        <Container key={p.id}>
-          <Title>
-            <UserInfo>
-              <ProfilePicture
-                src={
-                  users.find((user) => user.id === p.user_id)?.imageurl || "X"
-                }
-              />
-              <Username>
-                {users.find((user) => user.id === p.user_id)?.username ||
-                  "Unknown User"}
-              </Username>
-            </UserInfo>
-            <TravelInfo>
-              {p.city}, {p.duration} Days
-            </TravelInfo>
-            <LikeButton />
-          </Title>
-          <Places onClick={openModal}>
-            {[...Array(10)].map((_, index) => (
-              <Place key={index}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  {p.pictures && p.pictures.length > index && (
-                    <img
-                      src={p.pictures[index]}
-                      alt={`Place ${index + 1}`}
-                      width="120"
-                      height="120"
-                      style={{ borderRadius: "50%" }}
-                    />
-                  )}
-                  {index < p.destinations.length - 1 && (
-                    <span style={{ marginLeft: "5px" }}>&rarr;</span>
-                  )}
-                </div>
-                <div>{p.destinations[index]}</div>
-              </Place>
-            ))}
-          </Places>
-        </Container>
-      ))}
+      <Container>
+        <Title>
+          <UserInfo>
+            <ProfilePicture
+              src={
+                user?.imageurl || "X"
+              }
+            />
+            <Username>
+              {user?.username || "Unknown User"}
+            </Username>
+          </UserInfo>
+          <TravelInfo>
+            {post?.city}, {post?.duration} Days
+          </TravelInfo>
+          <LikeButton />
+        </Title>
+        <Places onClick={openModal}>
+          {[...Array(10)].map((_, index) => (
+            <Place key={index}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                {post?.pictures && post.pictures.length > index && (
+                  <img
+                    src={post.pictures[index]}
+                    alt={`Place ${index + 1}`}
+                    width="120"
+                    height="120"
+                    style={{ borderRadius: "50%" }}
+                  />
+                )}
+                {index < (post?.destinations?.length || 0) - 1 && (
+                  <span style={{ marginLeft: "5px" }}>&rarr;</span>
+                )}
+              </div>
+              <div>{post?.destinations[index]}</div>
+            </Place>
+          ))}
+        </Places>
+      </Container>
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         style={customModalStyles}
         contentLabel="Post Detail Modal"
       >
-        <DetailContainer></DetailContainer>
+        <PostDetail postId={postId}/>
       </Modal>
     </>
   );
 };
-//export default Post;
