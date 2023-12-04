@@ -1,5 +1,8 @@
 import styled from "@emotion/styled";
 import closeButton from "../../assets/closebuttonimg.png"
+import axios from 'axios';
+import { useRef, useState } from "react";
+import { FollowUser } from '../FollowUser';
 
 const Container = styled.div`
     width: 100%;
@@ -8,6 +11,18 @@ const Container = styled.div`
     position: relative;
 `;
 
+const FindContainer = styled.div`
+    width: 470px;
+    height: 110px;
+    background-color: white;
+    position: absolute;
+    top: 70px;
+    left: 100px;
+    padding: 10px;
+    border: 1px solid #D9D9D9;
+`;
+
+
 const Title = styled.div`
     position: absolute;
     top: 20px;
@@ -15,16 +30,16 @@ const Title = styled.div`
     width: 400px;
     height: 80px;
     font-family: "Arial", sans-serif;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: bold;
     letter-spacing: 1px;
 `;
 
 const NameInput = styled.input`
     position: absolute;
-    top: 100px;
+    top: 250px;
     left: 50px;
-    width: 590px;
+    width: 440px;
     height: 30px;
     border-radius: 10px;
     border: 1px solid;
@@ -33,8 +48,8 @@ const NameInput = styled.input`
 
 const SearchButton = styled.button`
     position: absolute;
-    top: 180px;
-    left: 310px;
+    top: 245px;
+    left: 550px;
     width: 80px;
     height: 40px;
     cursor: pointer;
@@ -57,11 +72,49 @@ interface SearchFriendProps {
 }
 
 export const SearchFriend: React.FC<SearchFriendProps> = ({onClose}) => {
+    const [id, setId] = useState('');
+    const [username, setUsername] = useState('');
+
+    const handleOnKeyPress = (e) => {
+        if (e.key == 'Enter') {
+            handleSearch();
+        }
+    }
+
+    const onChange = (e) => {
+        setUsername(e.target.value);
+    };
+ 
+    const handleSearch = async () => {
+        axios
+        .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/search/users/"+username)
+        .then((response => {
+            setId(response.data[0].id)
+            console.log({id})
+            if (id==undefined) {
+                alert('No user');
+            }
+        }))
+        .catch((error)=>{console.log(error); setId('');});
+    }
+    if (id == ''){
+        return (
+            <Container onKeyDown={handleOnKeyPress}>
+                <Title>Search friend by name</Title>
+                <NameInput onChange={onChange} value={username} placeholder="name or username"/>
+                <SearchButton onClick={handleSearch}>Search</SearchButton>
+                <CloseButton alt="close button" src={closeButton} onClick={onClose}/>
+            </Container>
+        )
+    }
     return (
-        <Container>
+        <Container onKeyDown={handleOnKeyPress}>
             <Title>Search friend by name</Title>
-            <NameInput placeholder="name or username"/>
-            <SearchButton>Search</SearchButton>
+            <FindContainer>
+                <FollowUser id={id}/>
+            </FindContainer>
+            <NameInput onChange={onChange} value={username} placeholder="name or username"/>
+            <SearchButton onClick={handleSearch}>Search</SearchButton>
             <CloseButton alt="close button" src={closeButton} onClick={onClose}/>
         </Container>
     )

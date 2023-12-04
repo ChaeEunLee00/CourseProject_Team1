@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { PictureOutlined } from "@ant-design/icons";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { ProfilePictureShow } from '../ProfilePictureShow';
 import Modal from "react-modal";
@@ -36,8 +36,7 @@ const Username = styled.div`
     // border: 1px solid #D9D9D9;
 `;
 
-const DeleteButton = styled.div`
-    background-color: #E0E0E0;
+const Button = styled.div`
     border-radius: 8px;
     height: 30px;
     width: 80px;
@@ -60,10 +59,29 @@ const DeleteButton = styled.div`
     }
 `;
 
+let follow = {
+    backgroundColor: "#F0F0F0"
+}
+
+let unfollow = {
+    backgroundColor: "#CCCCCC"
+    
+}
+
 export const FollowUser = ({ id }: { id: string }) => {
     const [imageURL, setImage] = useState('');
     const [username, setUsername] = useState<string | null>(null);
-    
+    const [followingList, setFollowingList] = useState([]);
+
+    const userId = localStorage.getItem('userId');
+    useEffect(() => {
+        axios
+            .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+userId)
+            .then((response => {
+                setFollowingList(response.data.followinglist)
+            }))
+            .catch((error)=>console.log(error.response.data));
+    }, [])
     axios
     .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+id)
     .then((response => {
@@ -72,15 +90,68 @@ export const FollowUser = ({ id }: { id: string }) => {
     }))
     .catch((error)=>console.log(error.response.data));
 
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    
+    const handleFollowing = async () => {
+        try{
+            const response = await axios
+            .post("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+id+"/follow",
+            {},
+            {
+                headers: {
+                    // "Content-Type" : "application/json",
+                    "Authorization" : "Bearer " + accessToken,
+                    "Refresh" : refreshToken,
+                },
+                withCredentials: true
+            });
+
+            console.log(response.data)
+        } catch(error){
+            console.log(error);
+        }
+    }
+    const handleUnfollowing = async () => {
+        try{
+            const response = await axios
+            .post("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+id+"/unfollow",
+            {},
+            {
+                headers: {
+                    // "Content-Type" : "application/json",
+                    "Authorization" : "Bearer " + accessToken,
+                    "Refresh" : refreshToken,
+                },
+                withCredentials: true
+            });
+
+            console.log(response.data)
+        } catch(error){
+            console.log(error);
+        }
+        console.log(followingList)
+        console.log(typeof(id))
+        console.log("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+id+"/follow")
+    }
+
     return(
         <UserShow>
             <UserPicture src={imageURL}/>
             <Username>
                 {username}
             </Username>
-            <DeleteButton>
-                Delete
-            </DeleteButton>
+            {
+                followingList.includes(id)
+                ?
+                <Button onClick={handleUnfollowing} style={unfollow}>
+                    Delete
+                </Button>
+                :
+                <Button onClick={handleFollowing} style={follow}>
+                    Follow
+                </Button>
+            }
         </UserShow>
     )
 }

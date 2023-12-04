@@ -13,10 +13,11 @@ const Container = styled.div`
   line-height: 23px;
   text-align: center;
   white-space: nowrap;
+  padding-top: 20px;
 `;
 
 export const OrText = ({className}: Props) => {
     return (
-        <Container className={`or-text ${className}`}>또는</Container>
+        <Container className={`or-text ${className}`}>Or</Container>
     )
 }
