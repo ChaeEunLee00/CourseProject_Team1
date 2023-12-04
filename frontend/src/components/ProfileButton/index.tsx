@@ -13,19 +13,28 @@ const Container = styled.div`
     align-items: center;
     width: 300px;
     height: 80px;
-    margin-left: 130px
+    padding-top: 10px;
+    // margin-left: 130px;
+    // border: 1px solid #D9D9D9;
 `;
 const AddFreind = styled.img`
-    width: 55px;
-    height: 55px;
+    width: 45px;
+    height: 45px;
     margin-right: 30px;
-    cursor: pointer;
+    cursor: pointer; 
+    &:hover {
+        opacity: 60%;
+    }
 `;
 
 const LikedPostsButton = styled.img`
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     margin-right: 30px;
+    cursor: pointer; 
+    &:hover {
+        opacity: 60%;
+    }
 `;
 
 const ProfileLink = styled(Link)`
@@ -34,8 +43,13 @@ const ProfileLink = styled(Link)`
 `;
 
 const Profile = styled.img`
-    width: 50px;
-    height: 50px;
+    padding-top: 6px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer; 
+    &:hover {
+        opacity: 60%;
+    }
 `;
 
 

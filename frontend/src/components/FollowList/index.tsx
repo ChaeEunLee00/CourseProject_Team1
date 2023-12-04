@@ -1,10 +1,7 @@
 import styled from "@emotion/styled";
-import { PictureOutlined } from "@ant-design/icons";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { ProfilePictureShow } from '../ProfilePictureShow';
 import { FollowUser } from '../FollowUser';
-import Modal from "react-modal";
 
 const Container = styled.div`
     display: flex;
@@ -17,20 +14,22 @@ const Container = styled.div`
 `;
 
 export const FollowList = ({ ing }: { ing: boolean }) => {
-    const [followingList, setFollowingList] = useState<string[] | null>(null);
-    const [followerList, setFollowerList] = useState<string[] | null>(null);
-    
-    const userId = localStorage.getItem('userId');
-    axios
-    .get("http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/users/"+userId)
-    .then((response => {
-        setFollowingList(response.data.followinglist)
-        setFollowerList(response.data.followerlist)
-    }))
-    .catch((error)=>console.log(error.response.data));
-
+    const [followingList, setFollowingList] = useState([]);
+    const [followerList, setFollowerList] = useState([]);
+    useEffect(() => {
+        const userId = localStorage.getItem('userId');
+        axios
+        .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+userId)
+        .then((response => {
+            setFollowingList(response.data.followinglist)
+            setFollowerList(response.data.followerlist)
+            
+            console.log(1)
+        }))
+        .catch((error)=>console.log(error.response.data));
+    }, [])
     if (ing) {
-        if (followingList == null){
+        if (followingList.length == 0){
             return(
                 <Container>
                     No Following
@@ -46,7 +45,7 @@ export const FollowList = ({ ing }: { ing: boolean }) => {
         )
     }
     else{
-        if (followerList == null){
+        if (followerList.length == 0){
             return(
                 <Container>
                     No Follower

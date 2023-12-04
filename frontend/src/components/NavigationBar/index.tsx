@@ -32,9 +32,11 @@ const Container = styled.div`
     width: 100%;
     height: 100px;
     background-color: #ffffff;
-    padding: 10px;
+    // padding: 10px;
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
+    border-bottom: 1px solid #D9D9D9;
 `;
 
 

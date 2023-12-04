@@ -44,6 +44,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   // justify-content: flex-start;
   // padding-top: 10px;
 `;
@@ -51,7 +52,8 @@ const Container = styled.div`
 const Title = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 90%;
+  padding: 5px;
   height: 60px;
   justify-content: space-between;
   align-items: center;
@@ -68,6 +70,7 @@ const ProfilePicture = styled.img`
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
+  object-fit: cover;
 `;
 
 const Username = styled.div`
@@ -82,7 +85,9 @@ const Places = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  // border: 1px solid #d8d8d8;
   cursor: pointer;
+
 `;
 
 const Place = styled.div`
@@ -123,14 +128,14 @@ export const Post: React.FC<PostProps> = ({postId}) => {
     const fetchPostAndUser = async () => {
       try {
         const response = await axios.get<Post>(
-          `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}`
+          `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}`
         );
 
         if (response.data) {
           setPost(response.data);
           const userId = response.data.user_id;
           const userResponse = await axios.get<User>(
-            `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
+            `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
           );
 
           setUser(userResponse.data);

@@ -65,14 +65,14 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId}) => {
         const fetchPostAndUser = async () => {
             try {
                 const response = await axios.get<Post>(
-                    `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}`
+                    `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}`
                 );
         
                 if (response.data) {
                 setPost(response.data);
                 const userId = response.data.user_id;
                 const userResponse = await axios.get<User>(
-                    `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
+                    `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
                 );
         
                 setUser(userResponse.data);
@@ -86,7 +86,7 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId}) => {
 
         const fetchComments = async () => {
             try {
-                const response = await axios.get<Comment[]>(`http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/comments`);
+                const response = await axios.get<Comment[]>(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/comments`);
                 setComments(response.data);
                 // 디버깅
                 console.log("comments: ", comments);
@@ -102,7 +102,7 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId}) => {
     const addComment = async () => {
         try {
             await axios.post(
-                `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/comments`,
+                `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/comments`,
                 {content: newComment}, 
                 {
                     headers: {
@@ -116,7 +116,7 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId}) => {
             );
             console.log(comments);
             console.log(newComment);
-            const response = await axios.get<Comment[]>(`http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/comments`);
+            const response = await axios.get<Comment[]>(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/comments`);
             setComments(response.data);
             setNewComment("");
             

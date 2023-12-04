@@ -70,7 +70,7 @@ export const PlaceWhenPost: React.FC<PlaceWhenPostProps> = ({onImageChange}) => 
         if (file) {
             const formData = new FormData();
             formData.append('file', file);
-            const response = await axios.post('http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/upload', formData);
+            const response = await axios.post('http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/upload', formData);
             setRealImageUrl(response.data);
             
             const tmpImageUrl = URL.createObjectURL(file);

@@ -65,7 +65,7 @@ export const FollowUser = ({ id }: { id: string }) => {
     const [username, setUsername] = useState<string | null>(null);
     
     axios
-    .get("http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/users/"+id)
+    .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+id)
     .then((response => {
         setImage(response.data.imageurl)
         setUsername(response.data.username)

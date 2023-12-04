@@ -57,7 +57,7 @@ const Main = () => {
                 const userId = localStorage.getItem('userId');
                 const accessToken = localStorage.getItem('accessToken');
                 const allPostRes = await axios.get<Post[]>(
-                    "http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts"
+                    "http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts"
                 );
                 setUserId(userId);
                 setAccessToken(accessToken);
@@ -65,13 +65,13 @@ const Main = () => {
                 
                 // postIds는 현재 모든 Post의 id만을 요소로 가지는 string 배열임
 
-                const hashtagsRes = await axios.get('http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/hashtags/get/top5')
+                const hashtagsRes = await axios.get('http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/hashtags/get/top5')
                 setHashtags(hashtagsRes.data);
 
                 const hashtagsTop5 = hashtagsRes.data;
                 await Promise.all(
                     hashtagsTop5.map(async (tag: string) => { // Promise.all 사용
-                        const res = await axios.get(`http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/hashtags/${tag}`);
+                        const res = await axios.get(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/hashtags/${tag}`);
                         const tagObject = res.data;
                         hashtagPostIdObject[tag] = tagObject.postIdList;
                     })

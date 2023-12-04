@@ -15,7 +15,7 @@ const Container = styled.div`
     align-items: center;
     width: 550px;
     height: 100px;
-    margin-left: 200px;
+    // margin-left: 200px;
     z-index: 1000;
 `;
 
@@ -75,7 +75,7 @@ export const Search:React.FC<SearchProps> = ({hashtags = [], handleHashtag}) => 
 
     const handleHashtagClick = async (hashtag: string) => {
         try {
-            // const response = await fetch(`http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/hashtags/${hashtag}`);
+            // const response = await fetch(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/hashtags/${hashtag}`);
             // const data = await response.json();
             // // main page update
             // console.log(data.postIdList);

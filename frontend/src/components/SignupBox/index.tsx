@@ -50,7 +50,7 @@ export const SignupBox = () => {
                 profileImage: profileImage ? profileImage : null,
             };
 
-            const response = await axios.post("http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/users", requestData, {
+            const response = await axios.post("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users", requestData, {
                 headers: {
                     "Content-Type": "application/json", // 파일 전송 시 필요한 헤더
                 },

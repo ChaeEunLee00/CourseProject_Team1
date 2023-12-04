@@ -10,12 +10,12 @@ import axios from 'axios';
 const Container = styled.div`
     background-color: #FFFFFF;
     position: fixed;
-    top: 80px;
+    top: 120px;
     left: 0;    
     width: 400px;
     height: 80%;
     padding: 10px;
-    padding-top: 80px;
+    padding-top: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -170,7 +170,7 @@ export const Profile = () => {
             const userId = localStorage.getItem('userId');
             // const accessToken = localStorage.getItem('accessToken');        
             axios
-            .get("http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/users/"+userId)
+            .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+userId)
             .then((response => {
                 setUsername(response.data.username)
                 setImage(response.data.imageurl)
@@ -180,7 +180,7 @@ export const Profile = () => {
         } catch (error) {
             console.log(error);
         }
-    })
+    }, [])
     //팔로잉
     if (ShowFollowing){
         return (
