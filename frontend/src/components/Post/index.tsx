@@ -45,6 +45,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   // justify-content: flex-start;
   // padding-top: 10px;
 `;
@@ -52,7 +53,8 @@ const Container = styled.div`
 const Title = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 90%;
+  padding: 5px;
   height: 60px;
   justify-content: space-between;
   align-items: center;
@@ -67,7 +69,9 @@ const Places = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  // border: 1px solid #d8d8d8;
   cursor: pointer;
+
 `;
 
 const Place = styled.div`

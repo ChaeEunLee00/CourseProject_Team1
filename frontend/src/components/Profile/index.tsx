@@ -10,12 +10,12 @@ import axios from 'axios';
 const Container = styled.div`
     background-color: #FFFFFF;
     position: fixed;
-    top: 80px;
+    top: 120px;
     left: 0;    
     width: 400px;
     height: 80%;
     padding: 10px;
-    padding-top: 80px;
+    padding-top: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -180,7 +180,7 @@ export const Profile = () => {
         } catch (error) {
             console.log(error);
         }
-    })
+    }, [])
     //팔로잉
     if (ShowFollowing){
         return (

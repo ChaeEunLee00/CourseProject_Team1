@@ -8,10 +8,34 @@ interface Props {
 }
 
 const Container = styled.div`
+    border: 1px solid #D8D8D8;
+    border-radius: 7px;
     display: flex;
-    gap: 40px;
-    height: 39px;
-    width: 147px;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    width: 290px;
+    left: 33px;
+    margin-top: 360px;
+    position: absolute;
+    transition: background-color 0.3s ease; /* 효과를 부드럽게 만듦 */
+    cursor: pointer;
+    &:hover {
+        background-color: #EEEEEE;
+    }
+`;
+
+const LoginText = styled.div`
+    // -webkit-text-stroke: 0.5px #ffffff;
+    color: #000000;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: -0.38px;
+    line-height: 23px;
+    text-align: center;
+    padding-left: 10px;
+    // width: 72px;
 `;
 
 const KakaotalkLogo = styled.img`
@@ -23,7 +47,7 @@ const KakaotalkLogo = styled.img`
 const GoogleLogo = styled.img`
     height: 32px;
     object-fit: cover;
-    width: 39px;
+    // width: 39px;
 `;
 
 const FacebookLogo = styled.img`
@@ -34,10 +58,9 @@ const FacebookLogo = styled.img`
 
 export const SocialLogin = ({className}: Props) => {
     return (
-        <Container className={`social-login ${className}`}>
-            <KakaotalkLogo src={KakaotalkImg} />
+        <Container>
             <GoogleLogo src={GoogleImg} />
-            <FacebookLogo src={FacebookImg} />
+            <LoginText>Continue with google</LoginText>
         </Container>
     );
 }

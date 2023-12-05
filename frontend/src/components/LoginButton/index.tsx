@@ -53,7 +53,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({handleLogin}) => {
     
     return (
         <Container onClick={handleClick} passwordOk={isPasswordOk}>
-            <LoginText>로그인</LoginText>
+            <LoginText>Log in</LoginText>
         </Container>
     );
 }
