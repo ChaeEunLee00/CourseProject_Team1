@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { UserInfo } from "../UserInfo";
 
-const Container = styled.div``;
 
 interface Comment {
     id: string;
@@ -16,19 +16,93 @@ interface PostDetailCommentProps {
     newComment: string;
     setNewComment: React.Dispatch<React.SetStateAction<string>>;
     addComment: () => void;
+    deleteComment: (userId: string, commentId: string) => void;
 }
 
-export const PostDetailComment: React.FC<PostDetailCommentProps> = ({ comments, newComment, setNewComment, addComment }) => {
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+`;
+
+const Title = styled.div`
+    border-bottom: 1px solid #D8D8D8;
+    width: 700px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+`;
+
+const CommentsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+`;
+
+const Comment = styled.div`
+    width: 500px;
+    font-size: 13px;
+`;
+
+const DeleteCommentButton = styled.button`
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    font-size: 10px;
+`;
+
+
+const NewCommentContainer = styled.div`
+    width: 700px;
+    height: 30px;
+    display: flex;
+    gap: 30px;
+`;
+
+const NewCommentInput = styled.textarea`
+    width: 600px;
+`;
+
+const NewCommentButton = styled.button`
+    font-size: 10px;
+    background-color: #D8D8D8;
+`;
+
+export const PostDetailComment: React.FC<PostDetailCommentProps> = ({ comments, newComment, setNewComment, addComment, deleteComment }) => {
+    const userId = localStorage.getItem("userId");
+    
     return (
         <Container>
+            <Title>Comments</Title>
             {/* 기존 댓글 목록 표시 */}
-            {comments.map((comment) => (
-                <div key={comment.id}>{comment.content}</div>
-            ))}
-
+            <CommentsContainer>
+                {comments.map((comment) => (
+                    <div key={comment.id} className="comment">
+                        <UserInfo userId={comment.userId} />
+                        <Comment key={comment.id}>{comment.content}</Comment>
+                        {userId === comment.userId && (
+                            <DeleteCommentButton onClick={() => deleteComment(comment.userId, comment.id)}>
+                                삭제
+                            </DeleteCommentButton>
+                        )}
+                    </div>
+                ))}
+            </CommentsContainer>
             {/* 새로운 댓글 작성 UI */}
-            <textarea value={newComment} onChange={(e) => setNewComment(e.target.value)} />
-            <button onClick={addComment}>댓글 추가</button>
+            <NewCommentContainer>
+                <NewCommentInput 
+                    value={newComment} 
+                    onChange={(e) => setNewComment(e.target.value)} 
+                    placeholder="댓글 추가.."
+                    // onKeyDown={(e) => {
+                    //     if (e.key === "Enter") {
+                    //         e.preventDefault();
+                    //         addComment();
+                    //     }
+                    // }}
+                />
+                <NewCommentButton onClick={addComment}>등록</NewCommentButton>
+            </NewCommentContainer>
         </Container>
     );
 };

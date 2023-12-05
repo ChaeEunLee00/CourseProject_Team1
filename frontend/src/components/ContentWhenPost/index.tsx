@@ -21,7 +21,7 @@ const QuillContainer = styled(ReactQuill)`
 
 export const ContentWhenPost: React.FC<ContentWhenPostProps> = ({setContent}) => {
     // imageAPI를 url에 저장하고 변수ㅓ럼 사용
-    const imageApi = "http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/upload";
+    const imageApi = "http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/upload";
     const fileInputRef = useRef<ReactQuill | null>(null);
     // const quillRef = useRef(null);
 

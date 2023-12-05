@@ -53,7 +53,7 @@ const Home = () => {
             try {
                 const userId = localStorage.getItem('userId');
                 const response = await axios.get(
-                    `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts/user/${userId}`
+                    `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/user/${userId}`
                 );
                 
                 console.log(response.data);

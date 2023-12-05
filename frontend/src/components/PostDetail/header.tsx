@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import axios from "axios";
 import { LikeButton } from "../LikeButton";
+import { UserInfo } from "../UserInfo";
 
 interface Post {
     id: string;
@@ -31,7 +32,7 @@ interface User {
 
 interface PostDetailHeaderProps {
     post: Post | null;
-    user: User | undefined;
+    userId: string;
 }
 
 const Container = styled.div`
@@ -44,39 +45,14 @@ const Container = styled.div`
     margin-bottom: 10px;
 `;
 
-const UserInfo = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ProfilePicture = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-`;
-
-const Username = styled.div`
-  font-weight: bold;
-`;
-
 const TravelInfo = styled.div`
   font-size: 16px;
 `;
 
-export const PostDetailHeader:React.FC<PostDetailHeaderProps> = ({post, user}) => {
+export const PostDetailHeader:React.FC<PostDetailHeaderProps> = ({post, userId}) => {
     return (
         <Container>
-            <UserInfo>
-                <ProfilePicture
-                src={
-                    user?.imageurl || "X"
-                }
-                />
-                <Username>
-                {user?.username || "Unknown User"}
-                </Username>
-            </UserInfo>
+            <UserInfo userId={userId}/>
             <TravelInfo>
                 {post?.city}, {post?.duration} Days
             </TravelInfo>

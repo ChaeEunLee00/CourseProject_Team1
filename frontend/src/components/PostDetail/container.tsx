@@ -42,6 +42,7 @@ interface Comment {
 
 interface PostDetailProps {
     postId: string;
+    userId: string;
 }
 
 const Container = styled.div`
@@ -51,11 +52,11 @@ const Container = styled.div`
 `;
 
 
-export const PostDetail:React.FC<PostDetailProps> = ({postId}) => {
+export const PostDetail:React.FC<PostDetailProps> = ({postId, userId}) => {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
 
-    const [user, setUser] = useState<User>();
+    // const [user, setUser] = useState<User>();
     const [post, setPost] = useState<Post | null>(null);
     const [comments, setComments] = useState<Comment[]>([]);
     const [newComment, setNewComment] = useState<string>("")
@@ -65,17 +66,17 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId}) => {
         const fetchPostAndUser = async () => {
             try {
                 const response = await axios.get<Post>(
-                    `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}`
+                    `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}`
                 );
         
                 if (response.data) {
                 setPost(response.data);
-                const userId = response.data.user_id;
-                const userResponse = await axios.get<User>(
-                    `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
-                );
+                // const userId = response.data.user_id;
+                // const userResponse = await axios.get<User>(
+                //     `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
+                // );
         
-                setUser(userResponse.data);
+                // setUser(userResponse.data);
                 } else {
                 console.error("Post data is undefined");
                 }
@@ -86,10 +87,9 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId}) => {
 
         const fetchComments = async () => {
             try {
-                const response = await axios.get<Comment[]>(`http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/comments`);
+                const response = await axios.get<Comment[]>(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/comments`);
                 setComments(response.data);
                 // 디버깅
-                console.log("comments: ", comments);
             } catch (error) {
                 console.error("Error fetching comments:", error);
             }
@@ -97,12 +97,12 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId}) => {
     // Call the fetchPosts function when the component mounts
     fetchPostAndUser();
     fetchComments();
-    }, []); // Empty dependency array ensures it runs only once when the component mounts
+    }, [comments]); // Empty dependency array ensures it runs only once when the component mounts
 
     const addComment = async () => {
         try {
             await axios.post(
-                `http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/comments`,
+                `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/comments`,
                 {content: newComment}, 
                 {
                     headers: {
@@ -114,9 +114,7 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId}) => {
                 // withCredentials: true
                 }
             );
-            console.log(comments);
-            console.log(newComment);
-            const response = await axios.get<Comment[]>(`http://ec2-15-164-217-231.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/comments`);
+            const response = await axios.get<Comment[]>(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/comments`);
             setComments(response.data);
             setNewComment("");
             
@@ -126,12 +124,38 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId}) => {
         }
     };
 
+    const deleteComment = async (userId : string, commentId : string) => {
+        try {
+            const userIdLogin = localStorage.getItem("userId");
+            const accessToken = localStorage.getItem('accessToken');
+            const refreshToken = localStorage.getItem('refreshToken');
+
+            await axios.delete(
+                `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/comments/${commentId}`,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Refresh" : refreshToken,
+                    }
+                }
+            );
+        } catch (error) {
+            console.log("Delete comment Error : ", error);
+        }
+    };
+
     return (
         <Container>
-            <PostDetailHeader post={post} user={user}/>
+            <PostDetailHeader post={post} userId={userId}/>
             <PostDetailRoute post={post}/>
             <PostDetailContent post={post}/>
-            <PostDetailComment comments={comments} newComment={newComment} setNewComment={setNewComment} addComment={addComment} />
+            <PostDetailComment 
+                comments={comments} 
+                newComment={newComment} 
+                setNewComment={setNewComment} 
+                addComment={addComment} 
+                deleteComment={deleteComment}
+            />
         </Container>
     )
 }
