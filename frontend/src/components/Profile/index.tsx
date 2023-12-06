@@ -145,31 +145,35 @@ const customModalStyles = {
 export const Profile = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [ShowFollowing, setIsFollowing] = useState(true);
-    const [username, setUsername] = useState<string | null>(null);
-    const [imageURL, setImage] = useState<string | null>(null);
-    const [followingNum, setFollowingNum] = useState<number | null>(null);
-    const [followerNum, setFollowerNum] = useState<number | null>(null);
+    const [username, setUsername] = useState('');
+    const [imageURL, setImage] = useState('');
+    const [followingNum, setFollowingNum] = useState([]);
+    const [followerNum, setFollowerNum] = useState([]);
+    const userId = localStorage.getItem('userId');
 
     const openModal = () => {
         setIsModalOpen(true);
     };
 
     const closeModal = () => {
+        useEffect;
         setIsModalOpen(false);
     };
 
     const openFollowing = () => {
         setIsFollowing(true);
+        console.log(followingNum)
     };
 
     const openFollower = () => {
         setIsFollowing(false);
     };
+
     useEffect(() => {
         try {
-            const userId = localStorage.getItem('userId');
+            
             // const accessToken = localStorage.getItem('accessToken');        
-            axios
+            const response = axios
             .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+userId)
             .then((response => {
                 setUsername(response.data.username)
@@ -180,42 +184,7 @@ export const Profile = () => {
         } catch (error) {
             console.log(error);
         }
-    }, [])
-    //팔로잉
-    if (ShowFollowing){
-        return (
-            <>
-            <Container>
-                <ProfilePictureShow Picture = {imageURL}/>
-                <Text>{username}</Text>
-                <FollowContainer>
-                    <FollowInnerContainer onClick={() => {openModal();openFollowing();}}>
-                        <Text>{followingNum}</Text>
-                        <Text>following</Text>
-                    </FollowInnerContainer>
-                    <FollowInnerContainer onClick={() => {openModal();openFollower();}}>
-                        <Text>{followerNum}</Text>
-                        <Text>follower</Text>
-                    </FollowInnerContainer>
-                </FollowContainer>
-                <MyProfileButton/>
-            </Container>
-            <Modal
-                isOpen={isModalOpen}
-                onRequestClose={closeModal}
-                style={customModalStyles}
-                contentLabel="My Profile"
-            >
-                <FollowTitleContainer>
-                    <TextSelected>Following</TextSelected>
-                    <TextNotSelected onClick={openFollower}>Follower</TextNotSelected>
-                </FollowTitleContainer>
-                <FollowList ing={true}/>
-            </Modal>
-            </>
-        )
-    }
-    // 팔로워
+    }, [isModalOpen])
     return (
         <>
         <Container>
@@ -238,14 +207,27 @@ export const Profile = () => {
             onRequestClose={closeModal}
             style={customModalStyles}
             contentLabel="My Profile"
-        >
+        >   
+        {
+            ShowFollowing
+            ?
+            <>
+            <FollowTitleContainer>
+                <TextSelected>Following</TextSelected>
+                <TextNotSelected onClick={openFollower}>Follower</TextNotSelected>
+            </FollowTitleContainer>
+            <FollowList ing={true}/>
+            </>
+            :
+            <>
             <FollowTitleContainer>
                 <TextNotSelected onClick={openFollowing}>Following</TextNotSelected>
                 <TextSelected>Follower</TextSelected>
             </FollowTitleContainer>
             <FollowList ing={false}/>
+            </>
+        }
         </Modal>
         </>
-    )
-    
+    )    
 }
