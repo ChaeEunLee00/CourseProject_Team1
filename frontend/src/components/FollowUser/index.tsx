@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { ProfilePictureShow } from '../ProfilePictureShow';
 import Modal from "react-modal";
+import { FollowList } from "../FollowList";
 
 const UserShow = styled.div`
     display: flex;
@@ -15,6 +16,7 @@ const UserShow = styled.div`
     padding: 10px;
     // border: 1px solid #D9D9D9;
     width: 450px;
+    background-color: #FFFFFF;
 `;
 
 const UserPicture = styled.img`
@@ -75,6 +77,7 @@ export const FollowUser = ({ id }: { id: string }) => {
 
     const userId = localStorage.getItem('userId');
     useEffect(() => {
+        console.log("user follow block")
         axios
             .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+userId)
             .then((response => {
@@ -94,6 +97,8 @@ export const FollowUser = ({ id }: { id: string }) => {
     const refreshToken = localStorage.getItem('refreshToken');
     
     const handleFollowing = async () => {
+        console.log("handle following")
+
         try{
             const response = await axios
             .post("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+id+"/follow",
@@ -107,12 +112,15 @@ export const FollowUser = ({ id }: { id: string }) => {
                 withCredentials: true
             });
 
-            console.log(response.data)
+            console.log(response.data);
+            setFollowingList(response.data.followinglist);
         } catch(error){
             console.log(error);
         }
     }
     const handleUnfollowing = async () => {
+        console.log("handle unfollowing")
+
         try{
             const response = await axios
             .post("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+id+"/unfollow",
@@ -126,7 +134,9 @@ export const FollowUser = ({ id }: { id: string }) => {
                 withCredentials: true
             });
 
-            console.log(response.data)
+            console.log(response.data);
+            setFollowingList(response.data.followinglist);
+
         } catch(error){
             console.log(error);
         }
@@ -135,23 +145,28 @@ export const FollowUser = ({ id }: { id: string }) => {
         console.log("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+id+"/follow")
     }
 
+    if (followingList.includes(id)) {
+        return(
+            <UserShow>
+                <UserPicture src={imageURL}/>
+                <Username>
+                    {username}
+                </Username>
+                <Button onClick={handleUnfollowing} style={unfollow}>
+                    Delete
+                </Button>
+            </UserShow>
+        )
+    }
     return(
         <UserShow>
             <UserPicture src={imageURL}/>
             <Username>
                 {username}
             </Username>
-            {
-                followingList.includes(id)
-                ?
-                <Button onClick={handleUnfollowing} style={unfollow}>
-                    Delete
-                </Button>
-                :
-                <Button onClick={handleFollowing} style={follow}>
-                    Follow
-                </Button>
-            }
+            <Button onClick={handleFollowing} style={follow}>
+                Follow
+            </Button>
         </UserShow>
     )
 }

@@ -86,30 +86,40 @@ export const SearchFriend: React.FC<SearchFriendProps> = ({onClose}) => {
     };
  
     const handleSearch = async () => {
-        axios
-        .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/search/users/"+username)
-        .then((response => {
-            setId(response.data[0].id)
-            console.log({id})
-            if (id==undefined) {
-                alert('No user');
-            }
-        }))
-        .catch((error)=>{console.log(error); setId('');});
+        try {
+            await axios.get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/search/users/"+username)
+            .then((response => {
+                setId(response.data[0].id)
+                if (id==undefined) {
+                    alert('No user');
+                }
+                console.log(response.data[0].id);
+            }))
+        }
+        catch (error) {
+            console.log(error);
+        }
+}
+    if (id == ''){
+        return (
+            <Container onKeyDown={handleOnKeyPress}>
+                <Title>Search friend by name</Title>
+                <NameInput onChange={onChange} value={username} placeholder="type username"/>
+                <FindContainer>
+                    User not found
+                </FindContainer>
+                <SearchButton onClick={handleSearch}>Search</SearchButton>
+                <CloseButton alt="close button" src={closeButton} onClick={onClose}/>
+            </Container>
+        )
     }
-    
     return (
         <Container>
             <Title>Search friend by name</Title>
             <FindContainer>
                 <FollowUser id={id}/>
             </FindContainer>
-            <NameInput 
-                onChange={onChange} 
-                value={username} 
-                placeholder="name or username"
-                onKeyDown={handleOnKeyPress}
-            />
+            <NameInput onChange={onChange} value={username} placeholder="type username"/>
             <SearchButton onClick={handleSearch}>Search</SearchButton>
             <CloseButton alt="close button" src={closeButton} onClick={onClose}/>
         </Container>
