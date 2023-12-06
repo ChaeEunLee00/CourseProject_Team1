@@ -33,6 +33,8 @@ interface User {
 interface PostDetailHeaderProps {
     post: Post | null;
     userId: string;
+    likeNum: number | undefined;
+    myLikedPosts: string[];
 }
 
 const Container = styled.div`
@@ -49,14 +51,14 @@ const TravelInfo = styled.div`
   font-size: 16px;
 `;
 
-export const PostDetailHeader:React.FC<PostDetailHeaderProps> = ({post, userId}) => {
+export const PostDetailHeader:React.FC<PostDetailHeaderProps> = ({post, userId, likeNum, myLikedPosts}) => {
     return (
         <Container>
             <UserInfo userId={userId}/>
             <TravelInfo>
                 {post?.city}, {post?.duration} Days
             </TravelInfo>
-            <LikeButton />
+            <LikeButton postId={post?.id} likeNum={likeNum} myLikedPosts={myLikedPosts}/>
         </Container>
     )
 }

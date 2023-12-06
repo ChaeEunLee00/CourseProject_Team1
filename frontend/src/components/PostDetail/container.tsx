@@ -43,6 +43,8 @@ interface Comment {
 interface PostDetailProps {
     postId: string;
     userId: string;
+    likeNum: number | undefined;
+    myLikedPosts: string[];
 }
 
 const Container = styled.div`
@@ -52,7 +54,7 @@ const Container = styled.div`
 `;
 
 
-export const PostDetail:React.FC<PostDetailProps> = ({postId, userId}) => {
+export const PostDetail:React.FC<PostDetailProps> = ({postId, userId, likeNum, myLikedPosts}) => {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
 
@@ -120,7 +122,6 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId, userId}) => {
             
         } catch (error) {
             console.error("Error adding comment:", error);
-            console.error("Server response:", error.response); // 추가된 부분
         }
     };
 
@@ -147,7 +148,7 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId, userId}) => {
 
     return (
         <Container>
-            <PostDetailHeader post={post} userId={userId}/>
+            <PostDetailHeader post={post} userId={userId} likeNum={likeNum} myLikedPosts={myLikedPosts}/>
             <PostDetailRoute post={post}/>
             <PostDetailContent post={post}/>
             <PostDetailComment 

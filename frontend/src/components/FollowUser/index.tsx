@@ -73,7 +73,7 @@ let unfollow = {
 export const FollowUser = ({ id }: { id: string }) => {
     const [imageURL, setImage] = useState('');
     const [username, setUsername] = useState<string | null>(null);
-    const [followingList, setFollowingList] = useState([]);
+    const [followingList, setFollowingList] = useState<string[]>([]);
 
     const userId = localStorage.getItem('userId');
     useEffect(() => {

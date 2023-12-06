@@ -7,7 +7,6 @@ import axios from 'axios';
 interface PasswordFormProps {
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   readonly className: string;
-  username: string;
 }
 
 const Input = styled.input`
@@ -19,12 +18,11 @@ const Input = styled.input`
   width: 280px;
 `;
 
-export const PasswordForm: React.FC<PasswordFormProps> = ({ username, setPassword, className }) => {
+export const PasswordForm: React.FC<PasswordFormProps> = ({ setPassword, className }) => {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
   };
-  const navigate = useNavigate();
 
   return (
     <Input

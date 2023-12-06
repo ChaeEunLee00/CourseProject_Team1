@@ -167,7 +167,7 @@ const customModalStyles = {
 export const MyProfile = () => {
     const [name, setName] = useState<string | undefined>(undefined);
     const [username, setUsername] = useState<string | undefined>(undefined);
-    const [imageURL, setImage] = useState<string | null>(null);
+    const [imageURL, setImage] = useState<string | undefined>(undefined);
     
     const [isMain, setIsMain] = useState(true);
     const [isDelete, setIsDelete] = useState(false);
@@ -202,7 +202,7 @@ export const MyProfile = () => {
     if (isMain){
         return (
             <Container>
-                <ProfilePictureShow Picture = {imageURL}/>
+                <ProfilePictureShow picture={imageURL}/>
                 <Category>Name</Category>
                 <Content>{name}</Content>
                 <Category>Username</Category>
@@ -236,7 +236,7 @@ export const MyProfile = () => {
     else {
         return (
             <Container>
-                <ProfilePictureShow Picture = {imageURL}/>
+                <ProfilePictureShow picture={imageURL}/>
                 <Category>Name</Category>
                 <ContentEdit type="text" placeholder={name} />
                 <Category>Username</Category>

@@ -107,9 +107,10 @@ export const Post: React.FC<PostProps> = ({postId}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [post, setPost] = useState<Post>();
   const [userId, setUserId] = useState<string>('');
+  const [myLikedPosts, setMyLikedPosts] = useState([]);
 
   useEffect(() => {
-    const fetchPostAndUser = async () => {
+    const fetchData = async () => {
       try {
         const response = await axios.get<Post>(
           `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}`
@@ -118,11 +119,13 @@ export const Post: React.FC<PostProps> = ({postId}) => {
         if (response.data) {
           setPost(response.data);
           setUserId(response.data.user_id);
-          // const userResponse = await axios.get<User>(
-          //   `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
-          // );
+          const userResponse = await axios.get<User>(
+            `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
+          );
 
-          // setUser(userResponse.data);
+          setMyLikedPosts(userResponse.data.likedposts);
+          console.log(userId);
+          console.log()
         } else {
           console.error("Post data is undefined");
         }
@@ -132,7 +135,7 @@ export const Post: React.FC<PostProps> = ({postId}) => {
     };
 
     // Call the fetchPosts function when the component mounts
-    fetchPostAndUser();
+    fetchData();
   }, []); // Empty dependency array ensures it runs only once when the component mounts
 
   const openModal = () => {
@@ -151,7 +154,7 @@ export const Post: React.FC<PostProps> = ({postId}) => {
           <TravelInfo>
             {post?.city}, {post?.duration} Days
           </TravelInfo>
-          <LikeButton postId={post?.id}/>
+          <LikeButton postId={post?.id} likeNum={post?.likenum} myLikedPosts={myLikedPosts}/>
         </Title>
         <Places onClick={openModal}>
           {[...Array(10)].map((_, index) => (
@@ -181,7 +184,7 @@ export const Post: React.FC<PostProps> = ({postId}) => {
         style={customModalStyles}
         contentLabel="Post Detail Modal"
       >
-        <PostDetail userId ={userId} postId={postId}/>
+        <PostDetail userId ={userId} postId={postId} likeNum={post?.likenum} myLikedPosts={myLikedPosts}/>
       </Modal>
     </>
   );

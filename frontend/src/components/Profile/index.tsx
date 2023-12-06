@@ -188,7 +188,7 @@ export const Profile = () => {
     return (
         <>
         <Container>
-            <ProfilePictureShow Picture = {imageURL}/>
+            <ProfilePictureShow picture={imageURL}/>
             <Text>{username}</Text>
             <FollowContainer>
                 <FollowInnerContainer onClick={() => {openModal();openFollowing();}}>

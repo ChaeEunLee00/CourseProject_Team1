@@ -11,21 +11,31 @@ const Container = styled.div`
 
 interface LikeButtonProps {
     readonly postId: string | undefined;
+    likeNum: number | undefined;
+    myLikedPosts: string[];
 }
 
-export const LikeButton:React.FC<LikeButtonProps>  = ({postId}) => {
+export const LikeButton:React.FC<LikeButtonProps>  = ({postId, likeNum, myLikedPosts}) => {
+    const userId = localStorage.getItem("userId");
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
     const [isChecked, setIsChecked] = useState(false);
+    const [isInMyLikedPosts, setIsInMyLikedPosts] = useState(false);
     const [count, setCount] = useState(0);
+
+
+    console.log(isChecked);
+    console.log(myLikedPosts)
+    const postIdToUse = postId || '';
+    if (myLikedPosts.includes(postIdToUse)) {
+        setIsChecked(true);
+    }  
+    console.log(isChecked);
 
     const handleLikeButtonClicked = async () => {
         try {
-            console.log("좋아요 클릭됨");
-            console.log(postId);
-            console.log("accessToken : ", accessToken);
-            console.log("refreshToken : ", refreshToken);
-            console.log(isChecked);
+            // 페이지 새로고침하면 isChecked 무조건 다 false 나옴
+            
             const endPoint = isChecked
             ? `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/unlike`
             : `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/like`;
@@ -56,7 +66,7 @@ export const LikeButton:React.FC<LikeButtonProps>  = ({postId}) => {
                 <HeartFilled className='like-button red' onClick={handleLikeButtonClicked} />
                 : <HeartOutlined className='like-button' onClick={handleLikeButtonClicked} />
             }
-            <h3>{count}</h3>
+            <h3>{likeNum}</h3>
         </Container>
     );
 };

@@ -9,7 +9,7 @@ const CircleImage = styled.img`
     border: 2px solid #fff;
 `;
 
-const ProfilePicture = ({ file }) => {
+const ProfilePicture = ({ file }: {file : File}) => {
     const imageUrl = file ? URL.createObjectURL(file) : undefined;
 
     return (

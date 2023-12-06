@@ -32,7 +32,7 @@ export const Login = () => {
     const passwordLength = password.length;
     const navigate = useNavigate();
 
-    const handleOnKeyPress = (e) => {
+    const handleOnKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key == 'Enter') {
             handleLogin();
         }
@@ -71,7 +71,7 @@ export const Login = () => {
                 <WanderWorldLogo className='login' />
                 <LoginButton handleLogin={handleLogin} passwordLength={passwordLength} />
                 <UsernameForm setUsername={setUsername} className='login'/>
-                <PasswordForm username={username} setPassword={setPassword} className="login"/>
+                <PasswordForm setPassword={setPassword} className="login"/>
                 <OrText className='login'/>
                 {/* <ForgotPassword /> */}
                 <SocialLogin className='login'/>

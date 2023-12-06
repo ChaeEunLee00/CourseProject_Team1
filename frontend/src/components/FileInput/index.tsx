@@ -1,9 +1,15 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 
-const FileInput = ({ onFileChange }) => {
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        onFileChange(file);
+interface FileInputProps {
+    onFileChange: (file: File) => void;
+}
+
+const FileInput: React.FC<FileInputProps> = ({ onFileChange }) => {
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            onFileChange(file);
+        }
     };
 
     return (

@@ -33,10 +33,10 @@ export const SignupBox = () => {
     const [username, setUsername] = useState<string>('');
     const [name, setName] = useState<string>('');
     const {password, setPassword} = useData();
-    const [profileImage, setProfileImage] = useState(null);
+    const [profileImage, setProfileImage] = useState<File | null>(null);
     const passwordLength = password.length;
 
-    const handleFileChange = (file) => {
+    const handleFileChange = (file : File) => {
         setProfileImage(file);
     };
 

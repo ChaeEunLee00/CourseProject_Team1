@@ -80,10 +80,6 @@ export const SearchFriend: React.FC<SearchFriendProps> = ({onClose}) => {
             handleSearch();
         }
     };
-
-    const onChange = (e) => {
-        setUsername(e.target.value);
-    };
  
     const handleSearch = async () => {
         try {
@@ -104,7 +100,7 @@ export const SearchFriend: React.FC<SearchFriendProps> = ({onClose}) => {
         return (
             <Container onKeyDown={handleOnKeyPress}>
                 <Title>Search friend by name</Title>
-                <NameInput onChange={onChange} value={username} placeholder="type username"/>
+                <NameInput onChange={(e) => setUsername(e.target.value)} value={username} placeholder="type username"/>
                 <FindContainer>
                     User not found
                 </FindContainer>
@@ -119,7 +115,7 @@ export const SearchFriend: React.FC<SearchFriendProps> = ({onClose}) => {
             <FindContainer>
                 <FollowUser id={id}/>
             </FindContainer>
-            <NameInput onChange={onChange} value={username} placeholder="type username"/>
+            <NameInput onChange={(e) => setUsername(e.target.value)} value={username} placeholder="type username"/>
             <SearchButton onClick={handleSearch}>Search</SearchButton>
             <CloseButton alt="close button" src={closeButton} onClick={onClose}/>
         </Container>
