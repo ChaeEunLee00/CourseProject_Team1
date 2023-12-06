@@ -75,11 +75,11 @@ export const SearchFriend: React.FC<SearchFriendProps> = ({onClose}) => {
     const [id, setId] = useState('');
     const [username, setUsername] = useState('');
 
-    const handleOnKeyPress = (e) => {
-        if (e.key == 'Enter') {
+    const handleOnKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
             handleSearch();
         }
-    }
+    };
 
     const onChange = (e) => {
         setUsername(e.target.value);
@@ -97,23 +97,19 @@ export const SearchFriend: React.FC<SearchFriendProps> = ({onClose}) => {
         }))
         .catch((error)=>{console.log(error); setId('');});
     }
-    if (id == ''){
-        return (
-            <Container onKeyDown={handleOnKeyPress}>
-                <Title>Search friend by name</Title>
-                <NameInput onChange={onChange} value={username} placeholder="name or username"/>
-                <SearchButton onClick={handleSearch}>Search</SearchButton>
-                <CloseButton alt="close button" src={closeButton} onClick={onClose}/>
-            </Container>
-        )
-    }
+    
     return (
-        <Container onKeyDown={handleOnKeyPress}>
+        <Container>
             <Title>Search friend by name</Title>
             <FindContainer>
                 <FollowUser id={id}/>
             </FindContainer>
-            <NameInput onChange={onChange} value={username} placeholder="name or username"/>
+            <NameInput 
+                onChange={onChange} 
+                value={username} 
+                placeholder="name or username"
+                onKeyDown={handleOnKeyPress}
+            />
             <SearchButton onClick={handleSearch}>Search</SearchButton>
             <CloseButton alt="close button" src={closeButton} onClick={onClose}/>
         </Container>

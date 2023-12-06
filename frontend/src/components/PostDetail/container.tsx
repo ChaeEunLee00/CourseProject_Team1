@@ -136,7 +136,8 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId, userId}) => {
                     headers: {
                         "Authorization": `Bearer ${accessToken}`,
                         "Refresh" : refreshToken,
-                    }
+                    },
+                    withCredentials: true
                 }
             );
         } catch (error) {
