@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { PlusCircleOutlined } from "@ant-design/icons";
-import React, { useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { PlaceWhenPost } from "../PlaceWhenPost";
 import { ContentWhenPost } from "../ContentWhenPost";
@@ -74,8 +75,12 @@ const TripDurationInput = styled.input`
     margin-bottom: 12px;
 `;
 
+interface AddPostProps {
+    setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+    setModalState: Dispatch<SetStateAction<number>>;
+}
 
-export const AddPost = () => {
+export const AddPost:React.FC<AddPostProps> = ({setIsModalOpen, setModalState}) => {
     // AddPost에서 서버로 보내줘야 하는 데이터
     // content, city, duration, hashtags, destinations,
     // header에 token,pictures
@@ -141,8 +146,10 @@ export const AddPost = () => {
 
             console.log(response.data);
             alert("post 성공");
+            setModalState(1);
+            setIsModalOpen(false);
         } catch (error) {
-            alert("post 실패" + error);
+            alert("세션이 만료되었습니다. 다시 로그인해주세요");
             console.log("post 실패", error);
         }
     };

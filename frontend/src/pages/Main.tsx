@@ -47,8 +47,8 @@ const Main = () => {
     let postIds: string[] = [];
     const [hashtags, setHashtags] = useState([]);
     const hashtagPostIdObject: {[key: string]: string[]} = {};
-    const [hashtagClicked, setHashtagClicked] = useState(false);
-    const [clickedHashtag, setClickedHashtag] = useState('');
+    const [AddPostClosedBefore, setAddPostClosedBefore] = useState(false);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -76,7 +76,6 @@ const Main = () => {
                         hashtagPostIdObject[tag] = tagObject.postIdList;
                     })
                 );
-                console.log(hashtagPostIdObject);
             } catch (error) {
                 console.log("hashtag 가져오기 실패", error);
                 alert("hashtags 가져오기 실패");
@@ -85,20 +84,19 @@ const Main = () => {
         fetchData();
     }, []);
 
-    const handleHashtagClick = (hashtag: string) => {
-        postIds = hashtagPostIdObject[hashtag];
-    }
-
-    console.log("allPosts: ", allPosts);
     allPosts.map((p) => (
         postIds.push(p.id)
     ))
-    console.log("postIds : ", postIds);
-    console.log("hashtagPostIdObject: ", hashtagPostIdObject);
+    if (AddPostClosedBefore) {
+        window.location.reload();
+    }
+    // const handleRefresh = () => {
+        
+    // };
 
     return (
         <Container>
-            <NavigationBar hashtags={hashtags} handleHashtag={handleHashtagClick}/>
+            <NavigationBar hashtags={hashtags}/>
             <AddPostButton />
             <InnerContainer>
                 {/* {hashtagClicked && (clickedHashtag in hashtagPostIdObject) ? 

@@ -5,6 +5,7 @@ import { LikeButton } from "../LikeButton";
 import axios from "axios";
 import { useData } from "../../contexts/DataContext";
 import { PostDetail } from "../PostDetail/container";
+import { UserInfo } from "../UserInfo";
 
 interface PostProps {
   readonly postId: string;
@@ -60,23 +61,6 @@ const Title = styled.div`
   margin-bottom: 10px;
 `;
 
-const UserInfo = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ProfilePicture = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-  object-fit: cover;
-`;
-
-const Username = styled.div`
-  font-weight: bold;
-`;
-
 const TravelInfo = styled.div`
   font-size: 16px;
 `;
@@ -122,7 +106,7 @@ const customModalStyles = {
 export const Post: React.FC<PostProps> = ({postId}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [post, setPost] = useState<Post>();
-  const [user, setUser] = useState<User>();
+  const [userId, setUserId] = useState<string>('');
 
   useEffect(() => {
     const fetchPostAndUser = async () => {
@@ -133,12 +117,12 @@ export const Post: React.FC<PostProps> = ({postId}) => {
 
         if (response.data) {
           setPost(response.data);
-          const userId = response.data.user_id;
-          const userResponse = await axios.get<User>(
-            `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
-          );
+          setUserId(response.data.user_id);
+          // const userResponse = await axios.get<User>(
+          //   `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
+          // );
 
-          setUser(userResponse.data);
+          // setUser(userResponse.data);
         } else {
           console.error("Post data is undefined");
         }
@@ -163,20 +147,11 @@ export const Post: React.FC<PostProps> = ({postId}) => {
     <>
       <Container>
         <Title>
-          <UserInfo>
-            <ProfilePicture
-              src={
-                user?.imageurl || "X"
-              }
-            />
-            <Username>
-              {user?.username || "Unknown User"}
-            </Username>
-          </UserInfo>
+          <UserInfo userId={userId} />
           <TravelInfo>
             {post?.city}, {post?.duration} Days
           </TravelInfo>
-          <LikeButton />
+          <LikeButton postId={postId}/>
         </Title>
         <Places onClick={openModal}>
           {[...Array(10)].map((_, index) => (
@@ -206,7 +181,7 @@ export const Post: React.FC<PostProps> = ({postId}) => {
         style={customModalStyles}
         contentLabel="Post Detail Modal"
       >
-        <PostDetail postId={postId}/>
+        <PostDetail userId ={userId} postId={postId}/>
       </Modal>
     </>
   );
