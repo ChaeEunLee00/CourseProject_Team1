@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import styled from '@emotion/styled';
-import NavigationBar from '../components/NavigationBar';
-import { AddPostButton } from '../components/AddPostButton';
-import { Post } from '../components/Post';
-import axios from 'axios';
+import styled from "@emotion/styled";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import NavigationBar from "../components/NavigationBar";
+import { AddPostButton } from "../components/AddPostButton";
+import { Post } from "../components/Post";
+import axios from "axios";
 
 interface Post {
     id: string;
@@ -13,8 +14,8 @@ interface Post {
     duration: number;
     likenum: number;
     creationDate: string;
-    destinations: [];
-    hashtags: [];
+    destinations: string[];
+    hashtags: string[];
     pictures: [];
     comments: [];
 }
@@ -38,32 +39,42 @@ const InnerContainer = styled.div`
     gap: 20px;
 `;
 
-
-const Main = () => {
-    const [userId, setUserId] = useState<string | null>(null);
-    const [accessToken, setAccessToken] = useState<string | null>(null);
+const SearchResult = () => {
+    const { keyword } = useParams<{ keyword : string }>() || { keyword: ""};
+    // const [userId, setUserId] = useState<string | null>(null);
+    // const [accessToken, setAccessToken] = useState<string | null>(null);
     const [allPosts, setAllPosts] = useState<Post[]>([]);
-    // const [postIds, setPostIds] = useState<string[]>([]);
-    let postIds: string[] = [];
+    const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
     const [hashtags, setHashtags] = useState([]);
     const hashtagPostIdObject: {[key: string]: string[]} = {};
-    const [AddPostClosedBefore, setAddPostClosedBefore] = useState(false);
-
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // localStorage에서 세션 ID와 Access Token을 가져와서 userId와 accessToken 상태 업데이트
-                const userId = localStorage.getItem('userId');
-                const accessToken = localStorage.getItem('accessToken');
+                // const userId = localStorage.getItem('userId');
+                // const accessToken = localStorage.getItem('accessToken');
                 const allPostRes = await axios.get<Post[]>(
                     "http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts"
                 );
-                setUserId(userId);
-                setAccessToken(accessToken);
+                // setUserId(userId);
+                // setAccessToken(accessToken);
                 setAllPosts(allPostRes.data);
-                
-                // postIds는 현재 모든 Post의 id만을 요소로 가지는 string 배열임
+
+                // 검색 결과에 맞는 Post 필터링
+                const filtered = allPosts.filter((p) => {
+                    // keyword가 p의 hashtags, destinations, content, city 중 하나에 포함되는지 확인
+                    const keywordToUse = keyword || ''; // 만약 keyword가 undefined이면 빈 문자열로 대체
+                    const keywordIncluded =
+                        (p.hashtags && p.hashtags.includes(keywordToUse)) ||
+                        (p.destinations && p.destinations.some((destination) => destination.includes(keywordToUse))) ||
+                        (p.content && p.content.includes(keywordToUse)) ||
+                        (p.city && p.city.includes(keywordToUse));
+
+                    return keywordIncluded;
+                });
+
+                setFilteredPosts(filtered);
 
                 const hashtagsRes = await axios.get('http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/hashtags/get/top5')
                 setHashtags(hashtagsRes.data);
@@ -77,22 +88,12 @@ const Main = () => {
                     })
                 );
             } catch (error) {
-                console.log("hashtag 가져오기 실패", error);
-                alert("hashtags 가져오기 실패");
+                console.log(error);
             }
         };
-        fetchData();
-    }, []);
 
-    allPosts.map((p) => (
-        postIds.push(p.id)
-    ))
-    if (AddPostClosedBefore) {
-        window.location.reload();
-    }
-    // const handleRefresh = () => {
-        
-    // };
+        fetchData();
+    }, [keyword, allPosts]);
 
     return (
         <Container>
@@ -107,12 +108,12 @@ const Main = () => {
                         <Post key={p.id} postId={p.id}/>
                     ))
                 } */}
-                {postIds.map((pId: string) => (
-                    <Post key={pId} postId={pId} />
+                {filteredPosts.map((p) => (
+                    <Post key={p.id} postId={p.id} />
                 ))}
             </InnerContainer>
         </Container>
-    );
-};
+    )
+}
 
-export default Main;
+export default SearchResult;

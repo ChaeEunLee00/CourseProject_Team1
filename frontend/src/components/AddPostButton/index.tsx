@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { AddPost } from "../AddPost";
@@ -41,8 +41,15 @@ const customModalStyles = {
     }
 }
 
+
 export const AddPostButton = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalState, setModalState] = useState(2);
+
+    // 페이지 새로고침 함수
+    const refreshPage = () => {
+        window.location.reload();
+    };
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -56,10 +63,18 @@ export const AddPostButton = () => {
         }
     };
 
+    useEffect(() => {
+        if (modalState === 1) {
+            setModalState(2);
+            refreshPage();
+        }
+    }, [modalState]); 
+
+
     return (
         <>
             <Container>
-                <AddButton onClick={openModal} />
+                <AddButton onClick={openModal}/>
             </Container>
             <Modal
                 isOpen={isModalOpen}
@@ -67,7 +82,7 @@ export const AddPostButton = () => {
                 style={customModalStyles}
                 contentLabel="Create Post Modal"
             >
-                <AddPost />
+                <AddPost setIsModalOpen={setIsModalOpen} setModalState={setModalState}/>
             </Modal>
         </>
     )

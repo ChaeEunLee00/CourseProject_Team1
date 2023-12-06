@@ -7,6 +7,8 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Main from './Pages/Main';
 import Profile from './Pages/Profile';
+import SearchResult  from './Pages/SearchResult';
+
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/main" element={<Main />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/search-results/:keyword" element={<SearchResult />} />
       </Routes>
     </Router>
   );

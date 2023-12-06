@@ -151,7 +151,7 @@ export const Post: React.FC<PostProps> = ({postId}) => {
           <TravelInfo>
             {post?.city}, {post?.duration} Days
           </TravelInfo>
-          <LikeButton />
+          <LikeButton postId={postId}/>
         </Title>
         <Places onClick={openModal}>
           {[...Array(10)].map((_, index) => (

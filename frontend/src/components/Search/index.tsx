@@ -2,10 +2,10 @@ import styled from "@emotion/styled";
 import searchLogo from "../../assets/searchLogo.png";
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface SearchProps {
     hashtags: string[];
-    handleHashtag: (hashtag: string) => void;
 }
 
 const Container = styled.div`
@@ -70,17 +70,21 @@ const HashtagButton = styled.button`
 
 
 
-export const Search:React.FC<SearchProps> = ({hashtags = [], handleHashtag}) => {
-    const [selectedHashtag, setSelectedHashtag] = useState('');
+export const Search:React.FC<SearchProps> = ({hashtags = []}) => {
+    const [searchKeyword, setSearchKeyword] = useState("");
+    const navigate = useNavigate();
 
-    const handleHashtagClick = async (hashtag: string) => {
+    const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter" && searchKeyword.trim() !== "") {
+            // Enter키 눌렀을 때 동작 정의
+            // 검색 결과 페이지로 이동하고 검색어 전달
+            navigate(`/search-results/${encodeURIComponent(searchKeyword)}`);
+        }
+    };
+
+    const handleHashtagClick = (hashtag: string) => {
         try {
-            // const response = await fetch(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/hashtags/${hashtag}`);
-            // const data = await response.json();
-            // // main page update
-            // console.log(data.postIdList);
-            handleHashtag(hashtag);
-            console.log(hashtag);
+            navigate(`/search-results/${encodeURIComponent(hashtag)}`);
         } catch (error) {
             console.error("Error fetching hashtag data", error);
         }
@@ -89,15 +93,20 @@ export const Search:React.FC<SearchProps> = ({hashtags = [], handleHashtag}) => 
     return (
         <Container>
             <SearchBarContainer>
-                <SearchBar type="text" placeholder="Search" />
+                <SearchBar 
+                    type="text" 
+                    placeholder="Search"
+                    value={searchKeyword}
+                    onChange={(e) => setSearchKeyword(e.target.value)}
+                    onKeyDown={handleEnterKeyPress}
+                />
                 <SearchLogo alt="searchImg" src={searchLogo} />
                 <HashtagsContainer>
                     {hashtags.map((hashtag) => (
                         <HashtagButton
                             key={hashtag}
                             onClick={() => {
-                                handleHashtagClick(hashtag);
-                                setSelectedHashtag(hashtag);  
+                                handleHashtagClick(hashtag); 
                             }}
                         >
                             #{hashtag}
