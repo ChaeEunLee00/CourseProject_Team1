@@ -58,7 +58,7 @@ const FacebookLogo = styled.img`
 
 export const SocialLogin = ({className}: Props) => {
     return (
-        <Container>
+        <Container className={`social-login ${className}`}>
             <GoogleLogo src={GoogleImg} />
             <LoginText>Continue with google</LoginText>
         </Container>

@@ -44,7 +44,6 @@ const Home = () => {
   return (
     <Container>
       <InnerContainer>
-        <PhoneImage alt="Page image" src={PageImage}/>
         <DataProvider>
           <Login />
         </DataProvider>

@@ -11,6 +11,7 @@ import { OrText } from "../OrText";
 import { SocialLogin } from "../SocialLogin";
 import { ToLogin } from "../ToLogin";
 import { AddProfileImg } from "../AddProfileImg";
+import { useNavigate } from "react-router-dom";
 
 
 const Container = styled.div`
@@ -35,6 +36,7 @@ export const SignupBox = () => {
     const {password, setPassword} = useData();
     const [profileImage, setProfileImage] = useState<File | null>(null);
     const passwordLength = password.length;
+    const navigate = useNavigate();
 
     const handleFileChange = (file : File) => {
         setProfileImage(file);
@@ -61,6 +63,7 @@ export const SignupBox = () => {
             // 서버 응답 처리(현재는 콘솔에 데이터를 출력)
             console.log(response.data)
             alert("회원가입 성공");
+            navigate('/main');
         } catch (error) {
             alert('회원가입 실패' + error);
             console.log('회원가입 실패', error);

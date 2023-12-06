@@ -85,25 +85,25 @@
 }
 
 .social-login.login {
-  left: 95px;
+  left: 30px;
   position: absolute;
-  top: 328px;
+  top: 40px;
 }
 
 .social-login.signup {
   position: absolute;
-  top: 470px;
-  left: 90px;
+  top: 120px;
+  left: 30px;
 }
 
 .or-text.login {
-  top: 288px;
+  top: 310px;
   position: absolute;
   left: 165px;
 }
 
 .or-text.signup {
-  top: 430px;
+  top: 415px;
   left: 160px;
   position: absolute;
 }
