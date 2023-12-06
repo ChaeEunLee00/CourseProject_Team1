@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Typography, Button, TextField } from "@mui/material";
-import PhoneImg from '../assets/phone.png';
+import PageImage from '../assets/wanderworldPage.png';
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Login } from "../components/Login";
@@ -33,12 +33,10 @@ const InnerContainer = styled.div`
 `;
 
 const PhoneImage = styled.img`
-  height: 584px;
-  // left: 321px;
+  height: 340px;
   object-fit: cover;
-  // position: absolute;
-  // top: 60px;
-  width: 400px;
+  width: 600px;
+  margin-top: 100px;
 `;
 
 
@@ -46,7 +44,7 @@ const Home = () => {
   return (
     <Container>
       <InnerContainer>
-        <PhoneImage alt="Phone image" src={PhoneImg}/>
+        <PhoneImage alt="Page image" src={PageImage}/>
         <DataProvider>
           <Login />
         </DataProvider>
