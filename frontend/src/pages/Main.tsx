@@ -47,7 +47,6 @@ const Main = () => {
     let postIds: string[] = [];
     const [hashtags, setHashtags] = useState([]);
     const hashtagPostIdObject: {[key: string]: string[]} = {};
-    const [AddPostClosedBefore, setAddPostClosedBefore] = useState(false);
 
 
     useEffect(() => {
@@ -84,31 +83,13 @@ const Main = () => {
         fetchData();
     }, []);
 
-    allPosts.map((p) => (
-        postIds.push(p.id)
-    ))
-    if (AddPostClosedBefore) {
-        window.location.reload();
-    }
-    // const handleRefresh = () => {
-        
-    // };
-
     return (
         <Container>
             <NavigationBar hashtags={hashtags}/>
             <AddPostButton />
             <InnerContainer>
-                {/* {hashtagClicked && (clickedHashtag in hashtagPostIdObject) ? 
-                    hashtagPostIdObject[clickedHashtag]?.map((pId: string) => (
-                        <Post key={pId} postId={pId}/>
-                    )) :
-                    posts.map((p) => (
-                        <Post key={p.id} postId={p.id}/>
-                    ))
-                } */}
-                {postIds.map((pId: string) => (
-                    <Post key={pId} postId={pId} />
+                {allPosts.map((p) => (
+                    <Post key={p.id} postId={p.id} likeNum={p.likenum}/>
                 ))}
             </InnerContainer>
         </Container>

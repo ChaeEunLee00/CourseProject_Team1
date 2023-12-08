@@ -34,7 +34,7 @@ interface PostDetailHeaderProps {
     post: Post | null;
     userId: string;
     likeNum: number | undefined;
-    myLikedPosts: string[];
+    isInMyLikedPosts: boolean;
 }
 
 const Container = styled.div`
@@ -51,14 +51,14 @@ const TravelInfo = styled.div`
   font-size: 16px;
 `;
 
-export const PostDetailHeader:React.FC<PostDetailHeaderProps> = ({post, userId, likeNum, myLikedPosts}) => {
+export const PostDetailHeader:React.FC<PostDetailHeaderProps> = ({post, userId, likeNum, isInMyLikedPosts}) => {
     return (
         <Container>
             <UserInfo userId={userId}/>
             <TravelInfo>
                 {post?.city}, {post?.duration} Days
             </TravelInfo>
-            <LikeButton postId={post?.id} likeNum={likeNum} myLikedPosts={myLikedPosts}/>
+            <LikeButton postId={post?.id} likeNum={likeNum} isInMyLikedPosts={isInMyLikedPosts}/>
         </Container>
     )
 }

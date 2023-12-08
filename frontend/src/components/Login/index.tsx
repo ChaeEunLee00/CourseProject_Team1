@@ -11,6 +11,18 @@ import { SocialLogin } from '../SocialLogin';
 import { ToSignup } from '../ToSignup';
 import { useData } from '../../contexts/DataContext';
 
+interface User {
+    id: string;
+    name: string;
+    username: string;
+    password: string;
+    imageurl: string;
+    followerlist: [];
+    followinglist: [];
+    likedposts: [];
+    myposts: [];
+}
+
 const Container = styled.div`
     height: 575px;
     display: flex;
@@ -47,18 +59,26 @@ export const Login = () => {
                 },
                 withCredentials: true
             }
-        );
+            );
 
-        // 세션 ID를 localge에 저장
-        localStorage.setItem('userId', response.data.id);
-        localStorage.setItem('accessToken', response.data.access_token);
-        localStorage.setItem('refreshToken', response.data.refresh_token);
-        // 서버 응답 처리(현재는 콘솔에 데이터를 출력)
-        console.log(response.data);
-        alert('로그인 성공');
+            const userId = response.data.id;
+            const userResponse = await axios.get<User>(
+                `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
+            );
 
-        // 로그인 성공 후 main 페이지로 이동
-        navigate('/main');
+
+            // 세션 ID를 localge에 저장
+            localStorage.setItem('userId', response.data.id);
+            localStorage.setItem('accessToken', response.data.access_token);
+            localStorage.setItem('refreshToken', response.data.refresh_token);
+            localStorage.setItem('myLikedPosts', JSON.stringify(userResponse.data.likedposts));
+            // 서버 응답 처리(현재는 콘솔에 데이터를 출력)
+            console.log(response.data);
+            console.log(localStorage.getItem("myLikedPosts"));
+            alert('로그인 성공');
+
+            // 로그인 성공 후 main 페이지로 이동
+            navigate('/main');
         } catch (error) {
         console.log('로그인 실패', error);
         alert('로그인 실패');

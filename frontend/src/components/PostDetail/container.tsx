@@ -44,7 +44,7 @@ interface PostDetailProps {
     postId: string;
     userId: string;
     likeNum: number | undefined;
-    myLikedPosts: string[];
+    isInMyLikedPosts: boolean;
 }
 
 const Container = styled.div`
@@ -54,7 +54,7 @@ const Container = styled.div`
 `;
 
 
-export const PostDetail:React.FC<PostDetailProps> = ({postId, userId, likeNum, myLikedPosts}) => {
+export const PostDetail:React.FC<PostDetailProps> = ({postId, userId, likeNum, isInMyLikedPosts}) => {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
 
@@ -148,7 +148,7 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId, userId, likeNum, m
 
     return (
         <Container>
-            <PostDetailHeader post={post} userId={userId} likeNum={likeNum} myLikedPosts={myLikedPosts}/>
+            <PostDetailHeader post={post} userId={userId} likeNum={likeNum} isInMyLikedPosts={isInMyLikedPosts}/>
             <PostDetailRoute post={post}/>
             <PostDetailContent post={post}/>
             <PostDetailComment 
