@@ -33,9 +33,9 @@ const InnerContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 120px;
+    margin-top: 140px;
     margin-bottom: 30px;
-    gap: 20px;
+    gap: 25px;
 `;
 
 

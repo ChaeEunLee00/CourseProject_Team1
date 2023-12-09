@@ -4,9 +4,27 @@ import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import axios from 'axios';
 
 const Container = styled.div`
-    width: 40px;
+    width: 200px;
     height: 40px;
     margin-right: 10px;
+    text-align: right;
+    // border: 1px solid #D9D9D9;
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    align-items: flex-end;
+`;
+const Liketext = styled.div`
+    color: #034070;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.57px;
+    line-height: 34.5px;
+    width: 30px;
+    // border: 1px solid #D9D9D9;
+    text-align: center;
+    vertical-align: top;
 `;
 
 interface LikeButtonProps {
@@ -14,7 +32,10 @@ interface LikeButtonProps {
     likeNum: number | undefined;
     isInMyLikedPosts: boolean;
 }
-
+// const LikeIcon = styled.div`
+//     font-size: 20px;
+//     cursor: pointer;
+// `;
 export const LikeButton:React.FC<LikeButtonProps>  = ({postId, likeNum, isInMyLikedPosts}) => {
     const userId = localStorage.getItem("userId");
     const accessToken = localStorage.getItem("accessToken");
@@ -59,7 +80,7 @@ export const LikeButton:React.FC<LikeButtonProps>  = ({postId, likeNum, isInMyLi
                 <HeartFilled className='like-button red' onClick={handleLikeButtonClicked} />
                 : <HeartOutlined className='like-button' onClick={handleLikeButtonClicked} />
             }
-            <h3>{count}</h3>
+            <Liketext>{count}</Liketext>
         </Container>
     );
 };

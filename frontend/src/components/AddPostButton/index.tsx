@@ -8,8 +8,8 @@ const Container = styled.div`
     width: 100px;
     height: 50px;
     position: fixed;
-    top: 125px;
-    margin-left: 750px;
+    top: 140px;
+    margin-left: 850px;
 `;
 
 const AddButton = styled(PlusCircleOutlined)`
