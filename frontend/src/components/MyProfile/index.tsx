@@ -1,8 +1,16 @@
 import styled from "@emotion/styled";
 import { PictureOutlined } from "@ant-design/icons";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { ProfilePictureShow } from '../ProfilePictureShow';
+
+import { UsernameEdit } from '../MyProfileEditForm';
+import { NameEdit } from '../MyProfileEditForm';
+import { PasswordEdit } from '../MyProfileEditForm';
+import { ImageEdit } from '../MyProfileEditForm';
+import { AddProfileImg } from "../AddProfileImg";
+
+
 import Modal from "react-modal";
 import { Link } from "react-router-dom";
 
@@ -123,25 +131,6 @@ const Content = styled.div`
     border: 1px solid #D9D9D9;
 `;
 
-const ContentEdit = styled.input`
-    border-radius: 5px;
-    height: 3px;
-    width: 200px;
-
-    color: #000000;
-    font-family: "Inter-Regular", Helvetica;
-    font-size: 18px;
-    font-weight: 400;
-    letter-spacing: -0.38px;
-    line-height: 3px;
-    width: 200px;
-    text-align: center;
-    padding-top: 15px;   
-    padding-bottom: 15px;   
-    margin-bottom: 30px;
-    border: 1px solid #D9D9D9;
-`;
-
 const customModalStyles = {
     content: {
         top: "50%",
@@ -165,9 +154,9 @@ const customModalStyles = {
 }
 
 export const MyProfile = () => {
-    const [name, setName] = useState<string | undefined>(undefined);
-    const [username, setUsername] = useState<string | undefined>(undefined);
-    const [imageURL, setImage] = useState<string | undefined>(undefined);
+    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [imageURL, setImage] = useState('');
     
     const [isMain, setIsMain] = useState(true);
     const [isDelete, setIsDelete] = useState(false);
@@ -198,11 +187,87 @@ export const MyProfile = () => {
     }))
     .catch((error)=>console.log(error.response.data));
 
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    
+    const [new_name, setNewName] = useState<string>('');
+    const [new_username, setNewUsername] = useState('');
+    const [new_password, setNewPassword] = useState('');
+    const [new_imageURL, setNewImage] = useState('');
+    
+    const handleEdit = async () => {
+        try {
+            let data = {}
+            if (new_name!=''){
+                if (new_username!=''){
+                    data = {
+                        "username": new_username,
+                        "name": new_name,
+                    }
+                }
+                else{
+                    data = {
+                        "name": new_name,
+                    }
+                }
+            }
+            else if (new_username!=''){
+                data = {
+                    "username": new_username,
+                }
+            }
+            console.log(new_name)
+            console.log(typeof new_username)
+            
+            const response = await axios.put('http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/edit', data, {
+                headers: {
+                    // "Content-Type" : "application/json",
+                    "Authorization" : "Bearer " + accessToken,
+                    "Refresh" : refreshToken,
+                },
+                withCredentials: true
+            // edit 하면 id가 바뀌는가?!
+            
+        });
+        alert('Edit succesfully');
+
+        } catch (error) {
+        console.log('Edit fail', error);
+        alert('Edit Fail');
+        }
+    };
+
+    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewUsername(e.target.value);
+    };
+
+    const handleFileChange = (file) => {
+        setImage(file);
+    };
+
+    const handleDelete = async () => {
+        try {
+            const response = await axios.delete('http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/delete', {
+                headers: {
+                    // "Content-Type" : "application/json",
+                    "Authorization" : "Bearer " + accessToken,
+                    "Refresh" : refreshToken,
+                },
+                withCredentials: true
+            
+        });
+        alert('Delete succesfully');
+
+        } catch (error) {
+        console.log('Delete fail', error);
+        alert('Delete Fail');
+        }
+    };
 
     if (isMain){
         return (
             <Container>
-                <ProfilePictureShow picture={imageURL}/>
+                <ProfilePictureShow picture = {imageURL}/>
                 <Category>Name</Category>
                 <Content>{name}</Content>
                 <Category>Username</Category>
@@ -220,9 +285,9 @@ export const MyProfile = () => {
                     style={customModalStyles}
                     contentLabel="Delete the account?"
                 >
-                    <Text>Are you sure 삭제?</Text>
+                    <Text>Are you sure you want to DELETE?</Text>
                     <ButtonContainer>
-                        <DeleteButton to={'/'} style={red}>
+                        <DeleteButton to={'/'} onClick={handleDelete} style={red}>
                             <ButtonText>Delete</ButtonText>
                         </DeleteButton>
                         <Button onClick={closeDelete} style={blue}>
@@ -236,14 +301,15 @@ export const MyProfile = () => {
     else {
         return (
             <Container>
-                <ProfilePictureShow picture={imageURL}/>
+                {/* <AddProfileImg handleFileChange={handleFileChange}/> */}
+                <ProfilePictureShow picture = {imageURL}/>
                 <Category>Name</Category>
-                <ContentEdit type="text" placeholder={name} />
+                <NameEdit setting={setNewName} parameter={name} />
                 <Category>Username</Category>
-                <ContentEdit type="text" placeholder={username} />
-                <Category>Password</Category>
-                <ContentEdit type="text" placeholder="********" />
-                <Button onClick={openMain} style={blue}>
+                <UsernameEdit setting={setNewUsername} parameter={username}/>
+                {/* <Category>Password</Category>
+                <PasswordEdit setting={setNewPassword} parameter='********'/> */}
+                <Button onClick={() => { openMain(); handleEdit(); }} style={blue}>
                     <ButtonText color='#034070'>Save Account</ButtonText>
                 </Button>
             </Container>

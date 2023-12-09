@@ -28,7 +28,7 @@ const LoginLink = styled(Link)`
 export const ToLogin = ({toLogin}: {toLogin: string}) => {
     return (
         <Container>
-            <LoginLink to={toLogin}>계정이 있으신가요? 로그인</LoginLink>
+            <LoginLink to={toLogin}>Do you have an account?</LoginLink>
         </Container>
     );
 };

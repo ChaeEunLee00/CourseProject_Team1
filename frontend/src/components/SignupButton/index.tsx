@@ -46,7 +46,7 @@ export const SignupButton: React.FC<SignupButtonProps> = ({handleSignup}) => {
 
     return (
         <Container onClick={isPasswordOk? handleSignup : () => {}} passwordOk={isPasswordOk}>
-            <SignupText>가입</SignupText>
+            <SignupText>Sign up</SignupText>
         </Container>
     )
 }
