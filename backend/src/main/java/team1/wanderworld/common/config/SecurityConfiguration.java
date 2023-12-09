@@ -20,6 +20,9 @@ import team1.wanderworld.auth.handler.UserAuthenticationSuccessHandler;
 import team1.wanderworld.auth.filter.JwtAuthenticationFilter;
 import team1.wanderworld.auth.jwt.JwtTokenizer;
 import team1.wanderworld.auth.filter.JwtVerificationFilter;
+import team1.wanderworld.auth.oauth.handler.OAuth2LoginFailureHandler;
+import team1.wanderworld.auth.oauth.handler.OAuth2LoginSuccessHandler;
+import team1.wanderworld.auth.oauth.service.CustomOAuth2UserService;
 import team1.wanderworld.auth.userdetail.UserDetailService;
 
 import java.util.Arrays;
@@ -32,20 +35,38 @@ public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
     private final UserDetailService userDetailService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
-    public SecurityConfiguration(JwtTokenizer jwtTokenizer, UserDetailService userDetailService) {
+    public SecurityConfiguration(JwtTokenizer jwtTokenizer, UserDetailService userDetailService,
+                                 OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler,
+                                 OAuth2LoginFailureHandler oAuth2LoginFailureHandler,
+                                 CustomOAuth2UserService customOAuth2UserService) {
         this.jwtTokenizer = jwtTokenizer;
         this.userDetailService = userDetailService;
+        this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
+        this.oAuth2LoginFailureHandler = oAuth2LoginFailureHandler;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+
                 .headers((headers) -> headers
                                 .frameOptions((frameOptions) -> frameOptions.sameOrigin()))
+
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/**").permitAll())
+
+                .oauth2Login(oauth -> oauth
+                        .successHandler(oAuth2LoginSuccessHandler)
+                        .failureHandler(oAuth2LoginFailureHandler)
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)))
+                
                 .csrf((csrf) -> csrf.disable())
                 .cors(withDefaults())
                 .sessionManagement((sessionManagement) ->
@@ -55,13 +76,11 @@ public class SecurityConfiguration {
                 .httpBasic(withDefaults())
                 .exceptionHandling(exceptionHandle -> exceptionHandle
                         .authenticationEntryPoint(new UserAuthenticationEntryPoint()))
-                .apply(new CustomFilterConfigurer());
+                .apply(new CustomFilterConfigurer())
+
+                ;
 
         return http.build();
-    }
-    @Bean // 사용자 비밀번호를 암호화 하기 위한 PasswordEncoder 생성메서드를 Bean 으로 등록
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean

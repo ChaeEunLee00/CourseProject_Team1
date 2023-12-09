@@ -45,13 +45,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             user.setId(loginId);
             user.setName(oAuth2User.getAttribute("name"));
             user.setUsername(oAuth2User.getAttribute("email"));
+            user.setPassword(""); //비밀번호가 null 일 때, 인코딩할 때 에러가 남
             user.setImageurl(oAuth2User.getAttribute("picture"));
 
             userService.createUser(user);
-            return CustomOAuth2User.of(user, oAuth2User.getAttributes(), providerId);
+            return CustomOAuth2User.of(user, oAuth2User.getAttributes(), "sub");
         } else {
             User findUser = optionalUser.get();
-            return CustomOAuth2User.of(findUser, oAuth2User.getAttributes(), providerId);
+            return CustomOAuth2User.of(findUser, oAuth2User.getAttributes(), "sub");
         }
     }
 
