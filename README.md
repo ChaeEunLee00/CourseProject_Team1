@@ -185,6 +185,46 @@ The `SearchController` manages the search operations.
 
 ## Development-Frontend
 
+The frontend of this project is developed using React, a powerful JavaScript library for building user interfaces. It interacts with the backend to provide a dynamic and responsive user experience.
+### Project Structure
+
+```plaintext
+/frontend
+│
+├── public
+│   ├── index.html
+│   ├── vite.svg
+│   └── manifest.json
+│
+├── src
+│   ├── assets
+│   │   ├── // 
+│   │   └── ...
+│   │
+│   ├── components
+│   │   ├── // Reusable UI components
+│   │   └── ...
+│   │
+│   ├── contexts
+│   │   ├── // Reusable UI components
+│   │   └── ...
+│   │
+│   ├── Fonts
+│   │   ├── // Reusable UI components
+│   │   └── ...
+│   │
+│   ├── pages
+│   │   ├── // Main pages of the application
+│   │   └── ...
+│   ├── App.css
+│   ├── App.tsx
+│   ├── index.css
+│   ├── index.tsx
+│   ├── main.tsx
+│   ├── reportWebvitals.ts
+│   └── vite-end.d.ts
+```
+
 ## Features
 ### Log-in
 Users can login through basic log-in for the website or social log-in through Google.
