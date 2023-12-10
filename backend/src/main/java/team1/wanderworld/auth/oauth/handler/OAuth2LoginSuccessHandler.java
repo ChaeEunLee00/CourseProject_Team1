@@ -69,12 +69,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String result = mapper.writeValueAsString(loginResponseDto);
         response.getWriter().write(result);
-        response.sendRedirect(createURI(accessToken, refreshToken));
+        response.sendRedirect(createURI(oAuth2User.getId(), accessToken, refreshToken));
     }
-    private String createURI(String accessToken, String refreshToken) {
+    private String createURI(String userId, String accessToken, String refreshToken) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("access_token", accessToken);
         queryParams.add("refresh_token", refreshToken);
+        queryParams.add("user_id", userId);
 
         return UriComponentsBuilder.newInstance()
                 .scheme("http")
