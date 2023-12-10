@@ -1,15 +1,16 @@
 import styled from '@emotion/styled';
-import KakaotalkImg from '../../assets/kakaotalk_sharing_btn_medium.png';
 import GoogleImg from '../../assets/googleLogo.png';
-import FacebookImg from '../../assets/googleLogo.png';//페이스북_로고_심볼형_RGB.png';
 import axios from "axios";
+import { GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Link } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
 
 interface Props {
     readonly className: string;
 }
 
-const Container = styled.button`
+const Container = styled.a`
     border: 1px solid #D8D8D8;
     border-radius: 7px;
     display: flex;
@@ -30,7 +31,7 @@ const Container = styled.button`
 
 `;
 
-const LoginText = styled.div`
+const LoginText = styled.a`
     // -webkit-text-stroke: 0.5px #ffffff;
     color: #000000;
     font-family: "Inter-Regular", Helvetica;
@@ -43,22 +44,10 @@ const LoginText = styled.div`
     // width: 72px;
 `;
 
-const KakaotalkLogo = styled.img`
-    height: 33px;
-    object-fit: cover;
-    width: 33px;
-`;
-
 const GoogleLogo = styled.img`
     height: 32px;
     object-fit: cover;
     // width: 39px;
-`;
-
-const FacebookLogo = styled.img`
-    height: 32px;
-    object-fit: cover;
-    width: 32px;
 `;
 
 interface User {
@@ -75,23 +64,54 @@ interface User {
 
 export const SocialLogin = ({className}: Props) => {
 
-    const handleLogin = async () => {
-        try {
-            const response = await axios.get<User>('http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google');
+    // const handleLogin = async () => {
+    //     try {
+    //         console.log(1);
+    //         const response = await axios.get<User>('http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google',
+    //             {
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                 },
+    //                 withCredentials: true
+    //             }
+    //         );
             
-            console.log(response)
-            alert('Signup succesfully');
+    //         console.log("response : ", response);
+    //         alert('Signup succesfully');
 
-        } catch (error) {
-        console.log('Signup fail', error);
-        alert('Signup Fail');
-        }
-    };
+    //     } catch (error) {
+    //         console.log('Signup fail', error);
+    //         alert('Signup Fail');
+    //     }
+    // };
 
     return (
-        <Container onClick={handleLogin} className={`social-login ${className}`}>
+        // <Container onClick={handleLogin} className={`social-login ${className}`}>
+        <Container href='http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google' className={`social-login ${className}`}>
             <GoogleLogo src={GoogleImg} />
             <LoginText>Continue with google</LoginText>
         </Container>
     );
 }
+
+// export const SocialLogin = () => {
+//     const clientId = '135931039101-e336dl04g4qgj5btod68qghuvm4n0ds2.apps.googleusercontent.com'
+//     return (
+//         <>
+//             <GoogleOAuthProvider clientId={clientId}>
+//                 <GoogleLogin
+//                     onSuccess={(res) => {
+//                         console.log(res);
+//                         if (res.credential !== undefined) {
+//                             const USER_CREDENTIAL = jwtDecode(res.credential);
+//                             console.log(USER_CREDENTIAL);
+//                         }
+//                     }}
+//                     onError={() => {
+//                         console.log("login failed");
+//                     }}
+//                 />
+//             </GoogleOAuthProvider>
+//         </>
+//     );
+// };

@@ -42,22 +42,22 @@ const InnerContainer = styled.div`
 const SearchResult = () => {
     const { keyword } = useParams<{ keyword : string }>() || { keyword: ""};
     // const [userId, setUserId] = useState<string | null>(null);
-    // const [accessToken, setAccessToken] = useState<string | null>(null);
+    const [accessToken, setAccessToken] = useState<string | null>(null);
     const [allPosts, setAllPosts] = useState<Post[]>([]);
     const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
     const [hashtags, setHashtags] = useState([]);
-    const hashtagPostIdObject: {[key: string]: string[]} = {};
+    const [userId, setUserId] = useState<string | undefined>('')
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // localStorage에서 세션 ID와 Access Token을 가져와서 userId와 accessToken 상태 업데이트
-                // const userId = localStorage.getItem('userId');
+                const userId = localStorage.getItem('userId') ?? undefined;
                 // const accessToken = localStorage.getItem('accessToken');
                 const allPostRes = await axios.get<Post[]>(
                     "http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts"
                 );
-                // setUserId(userId);
+                setUserId(userId);
                 // setAccessToken(accessToken);
                 setAllPosts(allPostRes.data);
 
@@ -88,7 +88,7 @@ const SearchResult = () => {
 // keyword, allPosts
     return (
         <Container>
-            <NavigationBar hashtags={hashtags}/>
+            <NavigationBar hashtags={hashtags} userId={userId}/>
             <AddPostButton />
             <InnerContainer>
                 {/* {hashtagClicked && (clickedHashtag in hashtagPostIdObject) ? 

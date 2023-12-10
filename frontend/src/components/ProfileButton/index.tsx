@@ -3,7 +3,7 @@ import addfriendImg from "../../assets/addPerson.png";
 import heartLogo from "../../assets/heart.png";
 import profileLogo from "../../assets/profileImg.png";
 import Modal from "react-modal";
-import { useState } from "react";
+import React, { useState } from "react";
 import { SearchFriend } from "../SearchFriend";
 import { Link } from "react-router-dom";
 
@@ -75,7 +75,11 @@ const customModalStyles = {
     }
 }
 
-export const ProfileButton = () => {
+interface ProfileButtonProps {
+    readonly userId: string | undefined;
+}
+
+export const ProfileButton: React.FC<ProfileButtonProps> = ({userId}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => {
@@ -91,7 +95,7 @@ export const ProfileButton = () => {
             <Container>
                 <AddFreind alt="add friend" src={addfriendImg} onClick={openModal} />
                 <LikedPostsButton alt="liked post button" src={heartLogo} />
-                <ProfileLink to="/profile">
+                <ProfileLink to={`/profile/${userId}`}>
                     <Profile alt="profile" src={profileLogo}/>
                 </ProfileLink>
             </Container>

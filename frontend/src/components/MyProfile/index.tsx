@@ -241,7 +241,7 @@ export const MyProfile = () => {
         setNewUsername(e.target.value);
     };
 
-    const handleFileChange = (file) => {
+    const handleFileChange = (file : string) => {
         setImage(file);
     };
 

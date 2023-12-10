@@ -47,10 +47,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  // justify-content: flex-start;
   padding-top: 10px;
-  // padding-bottom: 30px;
+
 `;
 
 const Title = styled.div`
@@ -100,15 +98,16 @@ const EditButton = styled.button`
   width: 80px;
   height: 40px;
   background-color: white;
-  font-size: 15px;
+  font-size: 12px;
   text-align: center;
+  margin-right: 10px;
 `;
 
 const DeleteButton = styled.button`
   width: 80px;
   height: 40px;
   background-color: white;
-  font-size: 15px;
+  font-size: 12px;
   text-align: center;
 `;
 
@@ -146,8 +145,6 @@ export const Post: React.FC<PostProps> = ({postId, likeNum}) => {
   const isCurrentUserPost = userId === localStorage.getItem("userId");
 
   const handleDelete = () => {
-    // 게시물을 삭제하는 논리를 구현합니다.
-    // API 요청 전에 확인 대화 상자를 표시할 수 있습니다.
     if (window.confirm("이 게시물을 삭제하시겠습니까?")) {
       axios
         .delete(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/delete`, {
@@ -215,7 +212,7 @@ export const Post: React.FC<PostProps> = ({postId, likeNum}) => {
     <>
       <Container>
         <Title>
-          <UserInfo userId={userId} />
+          <UserInfo userId={userId}/>
           <TravelInfo>
             {post?.city}, {post?.duration} Days
           </TravelInfo>

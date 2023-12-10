@@ -15,10 +15,10 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/oauth" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/main" element={<Main />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:keyword" element={<Profile />} />
         <Route path="/search-results/:keyword" element={<SearchResult />} />
       </Routes>
     </Router>

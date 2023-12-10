@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 interface NavigationBarProps {
     hashtags: string[];
+    readonly userId: string | undefined;
 }
   
 const Container = styled.div`
@@ -24,12 +25,12 @@ const Container = styled.div`
 `;
 
 
-const NavigationBar:React.FC<NavigationBarProps> = ({hashtags}) => {
+const NavigationBar:React.FC<NavigationBarProps> = ({hashtags, userId}) => {
     return (
         <Container>
             <WanderWorldLogo className='navigationBar'/>
             <Search hashtags={hashtags}/>
-            <ProfileButton />
+            <ProfileButton userId={userId}/>
         </Container>
     )
 }

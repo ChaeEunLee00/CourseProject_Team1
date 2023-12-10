@@ -13,7 +13,7 @@ const Container = styled.div`
     position: fixed;
     top: 120px;
     left: 0;    
-    width: 400px;
+    width: 300px;
     height: 80%;
     padding: 10px;
     padding-top: 40px;
@@ -170,14 +170,18 @@ const ProfileText = styled.div`
     // border: 1px solid #D9D9D9;
 `;
 
-export const Profile = () => {
+interface ProfileProps {
+    readonly userId: string | undefined;
+}
+
+export const Profile: React.FC<ProfileProps> = ({userId}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [ShowFollowing, setIsFollowing] = useState(true);
     const [username, setUsername] = useState('');
     const [imageURL, setImage] = useState('');
     const [followingNum, setFollowingNum] = useState([]);
     const [followerNum, setFollowerNum] = useState([]);
-    const userId = localStorage.getItem('userId');
+
 
     const openModal = () => {
         setIsModalOpen(true);

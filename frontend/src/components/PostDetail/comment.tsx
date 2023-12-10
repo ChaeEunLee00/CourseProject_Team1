@@ -23,6 +23,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 20px;
+    width: 700px;
 `;
 
 const Title = styled.div`

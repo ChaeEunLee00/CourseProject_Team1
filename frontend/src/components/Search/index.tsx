@@ -86,7 +86,7 @@ export const Search:React.FC<SearchProps> = ({hashtags = []}) => {
         try {
             navigate(`/search-results/${encodeURIComponent(hashtag)}`);
         } catch (error) {
-            console.error("Error fetching hashtag data", error);
+            console.error("Error hashtag click", error);
         }
     };
 
