@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { MyProfile } from "../MyProfile";
+import axios from 'axios';
 
 const Container = styled.div`
     background-color: #B1D2E8;
@@ -56,24 +57,40 @@ const customModalStyles = {
 }
 
 export const MyProfileButton = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
 
-    const openModal = () => {
-        setIsModalOpen(true);
+    const openEdit = () => {
+        setIsEditOpen(true);
     };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
+    const closeEdit = () => {
+        setIsEditOpen(false);
     };
 
+    // const userId = localStorage.getItem('userId');
+    // const [username, setUsername] = useState('');
+    // useEffect(() => {
+    //     console.log("modal change")
+    //     try {
+            
+    //         // const accessToken = localStorage.getItem('accessToken');        
+    //         const response = axios
+    //         .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+userId)
+    //         .then((response => {
+    //             setUsername(response.data.username)
+    //         }));
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }, [isModalOpen])
     return (
         <>
-            <Container onClick={openModal}>
+            <Container onClick={openEdit}>
                 <ProfileText>My Profile</ProfileText>
             </Container>
             <Modal
-                isOpen={isModalOpen}
-                onRequestClose={closeModal}
+                isOpen={isEditOpen}
+                onRequestClose={closeEdit}
                 style={customModalStyles}
                 contentLabel="My Profile"
             >

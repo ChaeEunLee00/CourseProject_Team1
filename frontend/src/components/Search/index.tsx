@@ -31,7 +31,7 @@ const SearchBarContainer = styled.div`
 const SearchBar = styled.input`
     border: 1px solid #D8D8D8;
     border-radius: 10px;
-    width: 540px;
+    width: 550px;
     height: 12px;
     padding: 8px;
     padding-left: 45px; /* 돋보기 이미지를 고려한 왼쪽 패딩 추가 */

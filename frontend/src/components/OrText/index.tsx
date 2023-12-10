@@ -13,7 +13,7 @@ const Container = styled.div`
   line-height: 23px;
   text-align: center;
   white-space: nowrap;
-  padding-top: 20px;
+  padding-top: 10px;
 `;
 
 export const OrText = ({className}: Props) => {

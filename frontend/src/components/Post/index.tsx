@@ -39,7 +39,7 @@ interface User {
 }
 
 const Container = styled.div`
-  width: 600px;
+  width: 700px;
   border: 1px solid #d8d8d8;
   border-radius: 30px;
   text-align: center;
@@ -48,13 +48,14 @@ const Container = styled.div`
   align-items: center;
 
   // justify-content: flex-start;
-  // padding-top: 10px;
+  padding-top: 10px;
+  // padding-bottom: 30px;
 `;
 
 const Title = styled.div`
   display: flex;
   flex-direction: row;
-  width: 90%;
+  width: 93%;
   padding: 5px;
   height: 60px;
   justify-content: space-between;
@@ -63,6 +64,10 @@ const Title = styled.div`
 `;
 
 const TravelInfo = styled.div`
+  width: 400px;
+  // border: 1px solid #d8d8d8;
+
+  // padding-right: 70px;
   font-size: 16px;
 `;
 
@@ -72,12 +77,22 @@ const Places = styled.div`
   justify-content: center;
   // border: 1px solid #d8d8d8;
   cursor: pointer;
+  padding: 10px;
 
 `;
 
 const Place = styled.div`
-  margin: 5px;
+  // margin: 5px;
+  // padding: 5px;
   text-align: center;
+`;
+
+const PlaceName = styled.div`
+  max-width: 120px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  text-align: center;
+  // border: 1px solid #d8d8d8;
 `;
 
 // 모달 스타일
@@ -163,18 +178,21 @@ export const Post: React.FC<PostProps> = ({postId, likeNum}) => {
               <div style={{ display: "flex", alignItems: "center" }}>
                 {post?.pictures && post.pictures.length > index && (
                   <img
-                    src={post.pictures[index]}
-                    alt={`Place ${index + 1}`}
-                    width="120"
-                    height="120"
-                    style={{ borderRadius: "50%" }}
+                      style={{
+                        objectFit: "cover",
+                        width: "120px",
+                        height: "120px",
+                        borderRadius: "50%",
+                      }}
+                      src={post.pictures[index]}
+                      alt={`Place ${index + 1}`}
                   />
                 )}
                 {index < (post?.destinations?.length || 0) - 1 && (
-                  <span style={{ marginLeft: "5px" }}>&rarr;</span>
+                  <span style={{margin: "10px" }}>&rarr;</span> // 
                 )}
               </div>
-              <div>{post?.destinations[index]}</div>
+              <PlaceName>{post?.destinations[index]}</PlaceName>
             </Place>
           ))}
         </Places>

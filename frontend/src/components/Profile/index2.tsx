@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { FollowList } from '../FollowList';
 import axios from 'axios';
-import { MyProfile } from "../MyProfile";
 
 const Container = styled.div`
     background-color: #FFFFFF;
@@ -142,33 +141,6 @@ const customModalStyles = {
         justifyContent: "center",
     }
 }
-const ProfileContainer = styled.div`
-    background-color: #B1D2E8;
-    border-radius: 13px;
-    height: 40px;
-    width: 200px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    cursor: pointer;
-
-    &:hover {
-        opacity: 80%;
-    }
-`;
-const ProfileText = styled.div`
-    color: #034070;
-    font-family: "Inter-Regular", Helvetica;
-    font-size: 18px;
-    font-weight: 400;
-    letter-spacing: -0.57px;
-    line-height: 34.5px;
-    text-align: center;
-    vertical-align: center;
-    // border: 1px solid #D9D9D9;
-`;
 
 export const Profile = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -184,7 +156,6 @@ export const Profile = () => {
     };
 
     const closeModal = () => {
-        console.log("close modal");
         useEffect;
         setIsModalOpen(false);
     };
@@ -196,15 +167,6 @@ export const Profile = () => {
 
     const openFollower = () => {
         setIsFollowing(false);
-    };
-    const [isEditOpen, setIsEditOpen] = useState(false);
-
-    const openEdit = () => {
-        setIsEditOpen(true);
-    };
-
-    const closeEdit = () => {
-        setIsEditOpen(false);
     };
 
     useEffect(() => {
@@ -222,13 +184,13 @@ export const Profile = () => {
         } catch (error) {
             console.log(error);
         }
-    }, [isModalOpen, isEditOpen])
-    console.log(isModalOpen)
-    
+    }, [isModalOpen])
+
+    console.log(imageURL)
     return (
         <>
         <Container>
-            <ProfilePictureShow picture={imageURL}/>
+            <ProfilePictureShow Picture = {imageURL}/>
             <Text>{username}</Text>
             <FollowContainer>
                 <FollowInnerContainer onClick={() => {openModal();openFollowing();}}>
@@ -240,19 +202,8 @@ export const Profile = () => {
                     <Text>follower</Text>
                 </FollowInnerContainer>
             </FollowContainer>
-            {/* <MyProfileButton/> */}
-            <ProfileContainer onClick={openEdit}>
-                <ProfileText>My Profile</ProfileText>
-            </ProfileContainer>
+            <MyProfileButton/>
         </Container>
-        <Modal
-                isOpen={isEditOpen}
-                onRequestClose={closeEdit}
-                style={customModalStyles}
-                contentLabel="My Profile"
-            >
-                <MyProfile/>
-            </Modal>
         <Modal
             isOpen={isModalOpen}
             onRequestClose={closeModal}

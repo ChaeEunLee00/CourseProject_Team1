@@ -19,6 +19,8 @@ interface UserInfoProps {
 }
 
 const Container = styled.div`
+  width: 200px;
+//   border: 1px solid #D9D9D9;
   display: flex;
   align-items: center;
 `;
@@ -28,10 +30,15 @@ const ProfilePicture = styled.img`
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
+  object-fit: cover;
+  border: 1px solid #EEEEEE;
+
 `;
 
 const Username = styled.div`
   font-weight: bold;
+  padding-left: 5px;
+  padding-bottom: 5px;
 `;
 
 export const UserInfo:React.FC<UserInfoProps> = ({userId}) => {

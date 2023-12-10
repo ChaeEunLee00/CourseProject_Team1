@@ -12,9 +12,8 @@ const CircleImage = styled.img`
     margin: 50px;
 `;
 
-export const ProfilePictureShow = ({ picture }: { picture: string | undefined }) => {
-    console.log(picture)
+export const ProfilePictureShow = ({ Picture }: { Picture: string }) => {
     return (
-        <CircleImage src={picture}/>
+        <CircleImage src={Picture}/> //alt="No Image" 
     )
 };

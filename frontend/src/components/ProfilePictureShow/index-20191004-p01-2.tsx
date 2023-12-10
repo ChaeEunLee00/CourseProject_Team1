@@ -12,9 +12,10 @@ const CircleImage = styled.img`
     margin: 50px;
 `;
 
-export const ProfilePictureShow = ({ picture }: { picture: string | undefined }) => {
-    console.log(picture)
+export const ProfilePictureShow = ({ Picture }: { Picture: string }) => {
+    console.log(Picture)
+
     return (
-        <CircleImage src={picture}/>
+        <CircleImage src={"https://wanderworld-s3-bucket.s3.ap-northeast-2.amazonaws.com/ui2_img4.jpg"}/> //alt="No Image" 
     )
 };
