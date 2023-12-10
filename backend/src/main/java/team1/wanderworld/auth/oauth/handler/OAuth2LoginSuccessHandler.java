@@ -1,6 +1,7 @@
 package team1.wanderworld.auth.oauth.handler;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
+import team1.wanderworld.auth.dto.LoginResponseDto;
 import team1.wanderworld.auth.jwt.JwtTokenizer;
 import team1.wanderworld.auth.oauth.CustomOAuth2User;
 
@@ -25,9 +27,11 @@ import java.util.Map;
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtTokenizer jwtTokenizer;
+    private ObjectMapper mapper;
 
-    public OAuth2LoginSuccessHandler(JwtTokenizer jwtTokenizer){
+    public OAuth2LoginSuccessHandler(JwtTokenizer jwtTokenizer, ObjectMapper mapper){
         this.jwtTokenizer =jwtTokenizer;
+        this.mapper = mapper;
     }
 
     @Override
@@ -53,9 +57,18 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Refresh", refreshToken);
+
         log.info("accessToken : {}", accessToken);
         log.info("refreshToken : {}", refreshToken);
 
+        LoginResponseDto loginResponseDto = new LoginResponseDto();
+        loginResponseDto.setId(oAuth2User.getId());
+        loginResponseDto.setUsername(oAuth2User.getUsername());
+        loginResponseDto.setAccessToken(accessToken);
+        loginResponseDto.setRefreshToken(refreshToken);
+
+        String result = mapper.writeValueAsString(loginResponseDto);
+        response.getWriter().write(result);
         response.sendRedirect(createURI(accessToken, refreshToken));
     }
     private String createURI(String accessToken, String refreshToken) {
