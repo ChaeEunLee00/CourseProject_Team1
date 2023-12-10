@@ -198,24 +198,25 @@ The frontend of this project is developed using React, a powerful JavaScript lib
 │
 ├── src
 │   ├── assets
-│   │   ├── // 
-│   │   └── ...
+│   │   └── (Reusable UI materials) ...
 │   │
 │   ├── components
-│   │   ├── // Reusable UI components
-│   │   └── ...
+│   │   └── (Reusable UI components) ...
 │   │
 │   ├── contexts
-│   │   ├── // Reusable UI components
-│   │   └── ...
+│   │   └── DataContext.tsx
 │   │
 │   ├── Fonts
-│   │   ├── // Reusable UI components
-│   │   └── ...
+│   │   └── font.css
 │   │
 │   ├── pages
-│   │   ├── // Main pages of the application
-│   │   └── ...
+│   │   ├── Home.tsx
+│   │   ├── index.tsx
+│   │   ├── Login.tsx
+│   │   ├── Main.tsx
+│   │   ├── Profile.tsx
+│   │   ├── SearchResult.tsx
+│   │   └── Signup.tsx
 │   ├── App.css
 │   ├── App.tsx
 │   ├── index.css
