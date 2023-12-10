@@ -46,7 +46,6 @@ const Main = () => {
     // const [postIds, setPostIds] = useState<string[]>([]);
     let postIds: string[] = [];
     const [hashtags, setHashtags] = useState([]);
-    const hashtagPostIdObject: {[key: string]: string[]} = {};
 
 
     useEffect(() => {

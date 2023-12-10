@@ -6,6 +6,7 @@ import axios from "axios";
 import { useData } from "../../contexts/DataContext";
 import { PostDetail } from "../PostDetail/container";
 import { UserInfo } from "../UserInfo";
+import { EditPost } from "../EditPost";
 
 interface PostProps {
   readonly postId: string;
@@ -95,6 +96,22 @@ const PlaceName = styled.div`
   // border: 1px solid #d8d8d8;
 `;
 
+const EditButton = styled.button`
+  width: 80px;
+  height: 40px;
+  background-color: white;
+  font-size: 15px;
+  text-align: center;
+`;
+
+const DeleteButton = styled.button`
+  width: 80px;
+  height: 40px;
+  background-color: white;
+  font-size: 15px;
+  text-align: center;
+`;
+
 // 모달 스타일
 const customModalStyles = {
   content: {
@@ -121,10 +138,36 @@ const customModalStyles = {
 
 export const Post: React.FC<PostProps> = ({postId, likeNum}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditPostModalOpen, setIsEditPostModalOpen] = useState(false);
   const [post, setPost] = useState<Post>();
   const [userId, setUserId] = useState<string>('');
   const myLikedPosts = localStorage.getItem("myLikedPosts");
   const isInMyLikedPosts = (myLikedPosts && myLikedPosts.includes(postId)) ? true : false;
+  const isCurrentUserPost = userId === localStorage.getItem("userId");
+
+  const handleDelete = () => {
+    // 게시물을 삭제하는 논리를 구현합니다.
+    // API 요청 전에 확인 대화 상자를 표시할 수 있습니다.
+    if (window.confirm("이 게시물을 삭제하시겠습니까?")) {
+      axios
+        .delete(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/delete`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Refresh: localStorage.getItem("refreshToken"),
+          },
+        })
+        .then((response) => {
+          // 성공적인 삭제 처리, 가령 UI에서 게시물을 제거
+          alert("게시물이 성공적으로 삭제되었습니다.");
+          window.location.reload();
+          console.log("게시물이 성공적으로 삭제되었습니다:", postId);
+        })
+        .catch((error) => {
+          // Post 삭제 중 오류 처리
+          console.error("게시물 삭제 중 오류:", error);
+        });
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -150,6 +193,16 @@ export const Post: React.FC<PostProps> = ({postId, likeNum}) => {
     fetchData();
   }, []); // Empty dependency array ensures it runs only once when the component mounts
 
+  const openEditPostModal = () => {
+    if (window.confirm("이 게시물을 수정하시겠습니까?")) {
+      setIsEditPostModalOpen(true);
+    }
+  }
+
+  const closeEditPostModal = () => {
+    setIsEditPostModalOpen(false);
+  }
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -166,6 +219,12 @@ export const Post: React.FC<PostProps> = ({postId, likeNum}) => {
           <TravelInfo>
             {post?.city}, {post?.duration} Days
           </TravelInfo>
+          {isCurrentUserPost && (
+            <>
+              <EditButton onClick={openEditPostModal}>편집</EditButton>
+              <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
+            </>
+          )}
           <LikeButton 
             postId={post?.id} 
             likeNum={likeNum} 
@@ -204,6 +263,14 @@ export const Post: React.FC<PostProps> = ({postId, likeNum}) => {
         contentLabel="Post Detail Modal"
       >
         <PostDetail userId ={userId} postId={postId} likeNum={post?.likenum} isInMyLikedPosts={isInMyLikedPosts}/>
+      </Modal>
+      <Modal
+        isOpen={isEditPostModalOpen}
+        onRequestClose={closeEditPostModal}
+        style={customModalStyles}
+        contentLabel="Edit Post Modal"
+      >
+        <EditPost postId={postId} setIsEditPostModalOpen={setIsEditPostModalOpen}/>
       </Modal>
     </>
   );
