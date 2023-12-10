@@ -82,7 +82,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .host("localhost")
 //                .host("front-deploy.s3-website.ap-northeast-2.amazonaws.com")
                 .port(5173)
-                .path("/oauth")
+                .path("/main")
                 .queryParams(queryParams)
                 .encode(StandardCharsets.UTF_8)
                 .build()
