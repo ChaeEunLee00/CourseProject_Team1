@@ -2,12 +2,25 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import axios from 'axios';
+import { error } from 'console';
 
 const Container = styled.div`
     width: 40px;
     height: 40px;
     margin-right: 10px;
 `;
+
+interface User {
+    id: string;
+    name: string;
+    username: string;
+    password: string;
+    imageurl: string;
+    followerlist: [];
+    followinglist: [];
+    likedposts: [];
+    myposts: [];
+}
 
 interface LikeButtonProps {
     readonly postId: string | undefined;
@@ -19,16 +32,19 @@ export const LikeButton:React.FC<LikeButtonProps>  = ({postId, likeNum, isInMyLi
     const userId = localStorage.getItem("userId");
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
-    const [isChecked, setIsChecked] = useState(isInMyLikedPosts);
+    const [likedPosts, setLikedPosts] = useState<string[] | undefined>([]);
+    const [inMyLikedPosts, setInMyLikedPosts] = useState(isInMyLikedPosts);
+    const [isChecked, setIsChecked] = useState(inMyLikedPosts);
     const [count, setCount] = useState<number | undefined>(likeNum);
 
-    console.log(count);
-    console.log("isInMyLikedPosts : ", isInMyLikedPosts);
+
     console.log("isChecked : ", isChecked);
+    console.log("isInMyLikedPosts : ", isInMyLikedPosts);
+    console.log("count : ", count);
+    console.log("likeNum : ", likeNum);
+
     const handleLikeButtonClicked = async () => {
         try {
-            // 페이지 새로고침하면 isChecked 무조건 다 false 나옴
-            
             const endPoint = isChecked
             ? `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/unlike`
             : `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/like`;

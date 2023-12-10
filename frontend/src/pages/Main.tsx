@@ -67,14 +67,6 @@ const Main = () => {
                 const hashtagsRes = await axios.get('http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/hashtags/get/top5')
                 setHashtags(hashtagsRes.data);
 
-                const hashtagsTop5 = hashtagsRes.data;
-                await Promise.all(
-                    hashtagsTop5.map(async (tag: string) => { // Promise.all 사용
-                        const res = await axios.get(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/hashtags/${tag}`);
-                        const tagObject = res.data;
-                        hashtagPostIdObject[tag] = tagObject.postIdList;
-                    })
-                );
             } catch (error) {
                 console.log("hashtag 가져오기 실패", error);
                 alert("hashtags 가져오기 실패");

@@ -78,15 +78,6 @@ const SearchResult = () => {
 
                 const hashtagsRes = await axios.get('http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/hashtags/get/top5')
                 setHashtags(hashtagsRes.data);
-
-                const hashtagsTop5 = hashtagsRes.data;
-                await Promise.all(
-                    hashtagsTop5.map(async (tag: string) => { // Promise.all 사용
-                        const res = await axios.get(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/hashtags/${tag}`);
-                        const tagObject = res.data;
-                        hashtagPostIdObject[tag] = tagObject.postIdList;
-                    })
-                );
             } catch (error) {
                 console.log(error);
             }
@@ -94,7 +85,7 @@ const SearchResult = () => {
 
         fetchData();
     }, [keyword, allPosts]);
-
+// keyword, allPosts
     return (
         <Container>
             <NavigationBar hashtags={hashtags}/>
@@ -109,7 +100,7 @@ const SearchResult = () => {
                     ))
                 } */}
                 {filteredPosts.map((p) => (
-                    <Post key={p.id} postId={p.id} />
+                    <Post key={p.id} postId={p.id} likeNum={p.likenum}/>
                 ))}
             </InnerContainer>
         </Container>
