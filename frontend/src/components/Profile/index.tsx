@@ -252,7 +252,6 @@ export const Profile: React.FC<ProfileProps> = ({userId}) => {
              </ProfileContainer>
             : <div></div>
             }
-            
         </Container>
         <Modal
                 isOpen={isEditOpen}

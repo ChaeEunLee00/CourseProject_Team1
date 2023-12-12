@@ -8,6 +8,7 @@ import Signup from "./Pages/Signup";
 import Main from './Pages/Main';
 import Profile from './Pages/Profile';
 import SearchResult  from './Pages/SearchResult';
+import LikedPosts from './Pages/LikedPosts';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/main" element={<Main />} />
         <Route path="/profile/:keyword" element={<Profile />} />
         <Route path="/search-results/:keyword" element={<SearchResult />} />
+        <Route path="/likedposts" element={<LikedPosts />} />
       </Routes>
     </Router>
   );

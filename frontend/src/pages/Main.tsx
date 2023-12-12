@@ -20,18 +20,6 @@ interface Post {
     comments: [];
 }
 
-interface User {
-    id: string;
-    name: string;
-    username: string;
-    password: string;
-    imageurl: string;
-    followerlist: [];
-    followinglist: [];
-    likedposts: [];
-    myposts: [];
-}
-
 const Container = styled.div`
     background-color: #ffffff;
     display: flex;

@@ -18,7 +18,7 @@ const SaveButton = styled.button`
 `;
 
 interface EditPostProps {
-    readonly postId: string;
+    readonly postId: string | undefined;
     setIsEditPostModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 

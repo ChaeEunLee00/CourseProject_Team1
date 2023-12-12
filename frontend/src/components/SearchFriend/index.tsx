@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import closeButton from "../../assets/closebuttonimg.png"
+import closeButton from "../../assets/closebuttonimg.png";
 import axios from 'axios';
 import { useRef, useState } from "react";
 import { FollowUser } from '../FollowUser';
@@ -95,8 +95,9 @@ export const SearchFriend: React.FC<SearchFriendProps> = ({onClose}) => {
         catch (error) {
             console.log(error);
         }
-}
-    if (id == ''){
+    }
+
+    if (id == '') {
         return (
             <Container onKeyDown={handleOnKeyPress}>
                 <Title>Search friend by name</Title>
@@ -113,7 +114,7 @@ export const SearchFriend: React.FC<SearchFriendProps> = ({onClose}) => {
         <Container>
             <Title>Search friend by name</Title>
             <FindContainer>
-                <FollowUser id={id}/>
+                <FollowUser id={id} isFollowing={true}/>
             </FindContainer>
             <NameInput onChange={(e) => setUsername(e.target.value)} value={username} placeholder="type username"/>
             <SearchButton onClick={handleSearch}>Search</SearchButton>

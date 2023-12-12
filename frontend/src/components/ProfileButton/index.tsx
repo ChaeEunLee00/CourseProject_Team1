@@ -30,11 +30,17 @@ const AddFreind = styled.img`
 const LikedPostsButton = styled.img`
     width: 40px;
     height: 40px;
-    margin-right: 30px;
+    // margin-right: 30px;
     cursor: pointer; 
     &:hover {
         opacity: 60%;
     }
+`;
+
+const LikedPostsLink = styled(Link)`
+    width: 40px;
+    height: 40px;
+    margin-right: 30px;
 `;
 
 const ProfileLink = styled(Link)`
@@ -94,7 +100,9 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({userId}) => {
         <>
             <Container>
                 <AddFreind alt="add friend" src={addfriendImg} onClick={openModal} />
-                <LikedPostsButton alt="liked post button" src={heartLogo} />
+                <LikedPostsLink to={'/likedposts'}>
+                    <LikedPostsButton alt="liked post button" src={heartLogo} />
+                </LikedPostsLink>
                 <ProfileLink to={`/profile/${userId}`}>
                     <Profile alt="profile" src={profileLogo}/>
                 </ProfileLink>

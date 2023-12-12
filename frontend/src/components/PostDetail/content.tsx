@@ -9,8 +9,8 @@ interface Post {
     duration: number;
     likenum: number;
     creationDate: string;
-    destinations: [];
-    hashtags: [];
+    destinations: string[];
+    hashtags: string[];
     pictures: [];
     comments: [];
 }

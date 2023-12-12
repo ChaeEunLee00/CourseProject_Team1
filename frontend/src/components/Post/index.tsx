@@ -23,7 +23,7 @@ const Container = styled.div`
 const Title = styled.div`
   display: flex;
   flex-direction: row;
-  width: 93%;
+  width: 95%;
   padding: 5px;
   height: 60px;
   justify-content: space-between;
@@ -32,10 +32,7 @@ const Title = styled.div`
 `;
 
 const TravelInfo = styled.div`
-  width: 400px;
-  // border: 1px solid #d8d8d8;
-
-  // padding-right: 70px;
+  width: 200px;
   font-size: 16px;
 `;
 
@@ -61,23 +58,6 @@ const PlaceName = styled.div`
   padding-bottom: 20px;
   text-align: center;
   // border: 1px solid #d8d8d8;
-`;
-
-const EditButton = styled.button`
-  width: 80px;
-  height: 40px;
-  background-color: white;
-  font-size: 12px;
-  text-align: center;
-  margin-right: 10px;
-`;
-
-const DeleteButton = styled.button`
-  width: 80px;
-  height: 40px;
-  background-color: white;
-  font-size: 12px;
-  text-align: center;
 `;
 
 const LikeButton = styled.div`
@@ -161,41 +141,17 @@ interface PostProps {
 
 export const Post: React.FC<PostProps> = ({p}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditPostModalOpen, setIsEditPostModalOpen] = useState(false);
-  const [post, setPost] = useState<Post>(p);
+  // const [isEditPostModalOpen, setIsEditPostModalOpen] = useState(false);
+  // const [post, setPost] = useState<Post>(p);
   // const [userId, setUserId] = useState<string>(p.user_id);
   const userId = p.user_id;
-  const isCurrentUserPost = userId === localStorage.getItem("userId");
-  const postId = post.id;
+  const postId = p.id;
 
   // likeButton 관련
   const [myLikedPosts, setMyLikedPosts] = useState<string[]>([]);
   const [count, setCount] = useState<number | undefined>(p.likenum);
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
-
-  // 게시물 삭제
-  const handleDelete = () => {
-    if (window.confirm("이 게시물을 삭제하시겠습니까?")) {
-      axios
-        .delete(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/delete`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            Refresh: localStorage.getItem("refreshToken"),
-          },
-        })
-        .then((response) => {
-          // 성공적인 삭제 처리, 가령 UI에서 게시물을 제거
-          alert("게시물이 성공적으로 삭제되었습니다.");
-          window.location.reload();
-          console.log("게시물이 성공적으로 삭제되었습니다:", postId);
-        })
-        .catch((error) => {
-          // Post 삭제 중 오류 처리
-          console.error("게시물 삭제 중 오류:", error);
-        });
-    }
-  };
 
   // 좋아요 버튼 클릭시 함수
   const handleLikeButtonClicked = async () => {
@@ -238,7 +194,6 @@ export const Post: React.FC<PostProps> = ({p}) => {
           `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${localStorage.getItem("userId")}`
         );
         setMyLikedPosts(userResponse.data.likedposts);
-
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -247,17 +202,6 @@ export const Post: React.FC<PostProps> = ({p}) => {
 
     fetchData();
   }, [count]);
-
-
-  const openEditPostModal = () => {
-    if (window.confirm("이 게시물을 수정하시겠습니까?")) {
-      setIsEditPostModalOpen(true);
-    }
-  }
-
-  const closeEditPostModal = () => {
-    setIsEditPostModalOpen(false);
-  }
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -273,16 +217,8 @@ export const Post: React.FC<PostProps> = ({p}) => {
         <Title>
           <UserInfo userId={userId}/>
           <TravelInfo>
-            {post?.city}, {post?.duration} Days
+            {p?.city}, {p?.duration} Days
           </TravelInfo>
-          {isCurrentUserPost && (
-            <>
-              <EditButton onClick={openEditPostModal}>편집</EditButton>
-              <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
-            </>
-          )}
-          {/* <LikeButton postId={postId} likeNum={likeNum} userId={userId}/>
-           */}
           <LikeButton>
             {myLikedPosts.includes(postId) ? 
                 <HeartFilled className='like-button red' onClick={handleLikeButtonClicked} />
@@ -295,7 +231,7 @@ export const Post: React.FC<PostProps> = ({p}) => {
           {[...Array(10)].map((_, index) => (
             <Place key={index}>
               <div style={{ display: "flex", alignItems: "center" }}>
-                {post?.pictures && post.pictures.length > index && (
+                {p?.pictures && p.pictures.length > index && (
                   <img
                       style={{
                         objectFit: "cover",
@@ -303,15 +239,15 @@ export const Post: React.FC<PostProps> = ({p}) => {
                         height: "120px",
                         borderRadius: "50%",
                       }}
-                      src={post.pictures[index]}
+                      src={p.pictures[index]}
                       alt={`Place ${index + 1}`}
                   />
                 )}
-                {index < (post?.destinations?.length || 0) - 1 && (
+                {index < (p?.destinations?.length || 0) - 1 && (
                   <span style={{margin: "10px" }}>&rarr;</span> // 
                 )}
               </div>
-              <PlaceName>{post?.destinations[index]}</PlaceName>
+              <PlaceName>{p?.destinations[index]}</PlaceName>
             </Place>
           ))}
         </Places>
@@ -322,15 +258,7 @@ export const Post: React.FC<PostProps> = ({p}) => {
         style={customModalStyles}
         contentLabel="Post Detail Modal"
       >
-        <PostDetail userId ={userId} postId={postId} likeNum={post?.likenum} />
-      </Modal>
-      <Modal
-        isOpen={isEditPostModalOpen}
-        onRequestClose={closeEditPostModal}
-        style={customModalStyles}
-        contentLabel="Edit Post Modal"
-      >
-        <EditPost postId={postId} setIsEditPostModalOpen={setIsEditPostModalOpen}/>
+        <PostDetail userId ={userId} p={p} likeNum={p?.likenum} />
       </Modal>
     </>
   );

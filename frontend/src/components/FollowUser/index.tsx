@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { PictureOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ProfilePictureShow } from '../ProfilePictureShow';
 import Modal from "react-modal";
@@ -70,7 +70,12 @@ let unfollow = {
     
 }
 
-export const FollowUser = ({ id }: { id: string }) => {
+interface FollowUserProps {
+    readonly id: string;
+    isFollowing: boolean;
+}
+
+export const FollowUser: React.FC<FollowUserProps> = ({ id, isFollowing}) => {
     const [imageURL, setImage] = useState('');
     const [username, setUsername] = useState<string | null>(null);
     const [followingList, setFollowingList] = useState<string[]>([]);
@@ -153,9 +158,14 @@ export const FollowUser = ({ id }: { id: string }) => {
                 <Username>
                     {username}
                 </Username>
+                {isFollowing
+                ?
                 <Button onClick={handleUnfollowing} style={unfollow}>
                     Delete
                 </Button>
+                :
+                <div></div>
+                }
             </UserShow>
         )
     }

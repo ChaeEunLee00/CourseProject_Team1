@@ -43,7 +43,7 @@ export const FollowList: React.FC<FollowListProps> = ({ ing, userId}) => {
         return(
             <Container>
                 {followingList.map((id, index) => (
-                    <FollowUser id={id}/>
+                    <FollowUser id={id} isFollowing={true}/>
                 ))}
             </Container>
         )
@@ -59,7 +59,7 @@ export const FollowList: React.FC<FollowListProps> = ({ ing, userId}) => {
         return(
             <Container>
                 {followerList.map((id, index) => (
-                    <FollowUser id={id}/>
+                    <FollowUser id={id} isFollowing={false}/>
                 ))}
             </Container>
         )

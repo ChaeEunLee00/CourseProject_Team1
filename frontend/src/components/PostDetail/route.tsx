@@ -2,18 +2,19 @@ import React from "react";
 import styled from "@emotion/styled";
 
 interface Post {
-    id: string;
-    user_id: string;
-    content: string;
-    city: string;
-    duration: number;
-    likenum: number;
-    creationDate: string;
-    destinations: [];
-    hashtags: [];
-    pictures: [];
-    comments: [];
+  id: string;
+  user_id: string;
+  content: string;
+  city: string;
+  duration: number;
+  likenum: number;
+  creationDate: string;
+  destinations: string[];
+  hashtags: string[];
+  pictures: [];
+  comments: [];
 }
+
 const Places = styled.div`
   display: flex;
   flex-wrap: wrap;

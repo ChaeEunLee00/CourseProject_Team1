@@ -14,8 +14,8 @@ interface Post {
     duration: number;
     likenum: number;
     creationDate: string;
-    destinations: [];
-    hashtags: [];
+    destinations: string[];
+    hashtags: string[];
     pictures: [];
     comments: [];
 }
@@ -41,7 +41,7 @@ interface Comment {
 }
 
 interface PostDetailProps {
-    postId: string;
+    p: Post;
     userId: string;
     likeNum: number | undefined;
 }
@@ -53,38 +53,34 @@ const Container = styled.div`
 `;
 
 
-export const PostDetail:React.FC<PostDetailProps> = ({postId, userId, likeNum}) => {
+export const PostDetail:React.FC<PostDetailProps> = ({p, userId, likeNum}) => {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
 
     // const [user, setUser] = useState<User>();
-    const [post, setPost] = useState<Post | null>(null);
+    // const [post, setPost] = useState<Post | null>(null);
+    const post = p;
+    const postId = p.id;
     const [comments, setComments] = useState<Comment[]>([]);
     const [newComment, setNewComment] = useState<string>("")
 
 
     useEffect(() => {
-        const fetchPostAndUser = async () => {
-            try {
-                const response = await axios.get<Post>(
-                    `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}`
-                );
+        // const fetchPostAndUser = async () => {
+        //     try {
+        //         const response = await axios.get<Post>(
+        //             `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}`
+        //         );
         
-                if (response.data) {
-                setPost(response.data);
-                // const userId = response.data.user_id;
-                // const userResponse = await axios.get<User>(
-                //     `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
-                // );
-        
-                // setUser(userResponse.data);
-                } else {
-                console.error("Post data is undefined");
-                }
-            } catch (error) {
-                    console.error("Error fetching data:", error);
-            }
-        };
+        //         if (response.data) {
+        //         setPost(response.data);
+        //         } else {
+        //         console.error("Post data is undefined");
+        //         }
+        //     } catch (error) {
+        //             console.error("Error fetching data:", error);
+        //     }
+        // };
 
         const fetchComments = async () => {
             try {
@@ -96,7 +92,7 @@ export const PostDetail:React.FC<PostDetailProps> = ({postId, userId, likeNum}) 
             }
         }
     // Call the fetchPosts function when the component mounts
-    fetchPostAndUser();
+    // fetchPostAndUser();
     fetchComments();
     }, [comments]); // Empty dependency array ensures it runs only once when the component mounts
 
