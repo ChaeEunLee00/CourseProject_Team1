@@ -1,20 +1,21 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import axios from 'axios';
 import { error } from 'console';
 
 const Container = styled.div`
-    width: 200px;
-    height: 40px;
-    margin-right: 10px;
-    text-align: right;
-    // border: 1px solid #D9D9D9;
-    display: flex;
-    flex-direction: column;
-    justify-content: right;
-    align-items: flex-end;
+  width: 200px;
+  height: 40px;
+  margin-right: 10px;
+  text-align: right;
+  // border: 1px solid #D9D9D9;
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  align-items: flex-end;
 `;
+
 const Liketext = styled.div`
     color: #034070;
     font-family: "Inter-Regular", Helvetica;
@@ -27,6 +28,7 @@ const Liketext = styled.div`
     text-align: center;
     vertical-align: top;
 `;
+
 
 interface User {
     id: string;
@@ -43,26 +45,18 @@ interface User {
 interface LikeButtonProps {
     readonly postId: string | undefined;
     likeNum: number | undefined;
-    isInMyLikedPosts: boolean;
+    readonly userId: string;
 }
 // const LikeIcon = styled.div`
 //     font-size: 20px;
 //     cursor: pointer;
 // `;
-export const LikeButton:React.FC<LikeButtonProps>  = ({postId, likeNum, isInMyLikedPosts}) => {
-    const userId = localStorage.getItem("userId");
+export const LikeButton:React.FC<LikeButtonProps>  = ({postId, likeNum, userId}) => {
+    const [myLikedPosts, setMyLikedPosts] = useState<string[]>([]);
+    const [isChecked, setIsChecked] = useState(false);
+    const [count, setCount] = useState<number | undefined>(likeNum);
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
-    const [likedPosts, setLikedPosts] = useState<string[] | undefined>([]);
-    const [inMyLikedPosts, setInMyLikedPosts] = useState(isInMyLikedPosts);
-    const [isChecked, setIsChecked] = useState(inMyLikedPosts);
-    const [count, setCount] = useState<number | undefined>(likeNum);
-
-
-    console.log("isChecked : ", isChecked);
-    console.log("isInMyLikedPosts : ", isInMyLikedPosts);
-    console.log("count : ", count);
-    console.log("likeNum : ", likeNum);
 
     const handleLikeButtonClicked = async () => {
         try {
@@ -80,15 +74,37 @@ export const LikeButton:React.FC<LikeButtonProps>  = ({postId, likeNum, isInMyLi
                 withCredentials: true
             });
 
-            console.log("post 요청 끝");
-
-            // 좋아요 상태를 토글하고, 좋아요 수 업데이트
+                    // 좋아요 상태를 토글하고, 좋아요 수 업데이트
             setIsChecked(!isChecked);
             setCount((prevCount) => (prevCount !== undefined ? (isChecked ? prevCount - 1 : prevCount + 1) : 0));
         } catch (error) {
             console.error('Like Button', error);
         }
-    };
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userResponse = await axios.get<User>(
+                    `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${userId}`
+                );
+                if (userResponse.data) {
+                    setMyLikedPosts(userResponse.data.likedposts);
+                }
+                if (postId !== undefined) {
+                    if (myLikedPosts.includes(postId)) {
+                        setIsChecked(true);
+                    }
+                }
+                console.log(isChecked);
+            } catch (error) {
+                console.log('Error fetching user', error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    
 
     return (
         <Container>

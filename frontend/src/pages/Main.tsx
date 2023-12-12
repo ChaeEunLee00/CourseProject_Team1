@@ -20,6 +20,18 @@ interface Post {
     comments: [];
 }
 
+interface User {
+    id: string;
+    name: string;
+    username: string;
+    password: string;
+    imageurl: string;
+    followerlist: [];
+    followinglist: [];
+    likedposts: [];
+    myposts: [];
+}
+
 const Container = styled.div`
     background-color: #ffffff;
     display: flex;
@@ -89,7 +101,6 @@ const Main = () => {
 
                 const hashtagsRes = await axios.get('http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/hashtags/get/top5')
                 setHashtags(hashtagsRes.data);
-
             } catch (error) {
                 console.log("hashtag 가져오기 실패", error);
                 alert("hashtags 가져오기 실패");
@@ -104,7 +115,8 @@ const Main = () => {
             <AddPostButton />
             <InnerContainer>
                 {allPosts.map((p) => (
-                    <Post key={p.id} postId={p.id} likeNum={p.likenum}/>
+                    // <Post key={p.id} postId={p.id} likeNum={p.likenum}/>
+                    <Post key={p.id} p={p} />
                 ))}
             </InnerContainer>
         </Container>

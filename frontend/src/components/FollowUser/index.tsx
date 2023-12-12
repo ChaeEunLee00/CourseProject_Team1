@@ -77,13 +77,13 @@ export const FollowUser = ({ id }: { id: string }) => {
 
     const userId = localStorage.getItem('userId');
     useEffect(() => {
-        console.log("user follow block")
         axios
             .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+userId)
             .then((response => {
                 setFollowingList(response.data.followinglist)
             }))
             .catch((error)=>console.log(error.response.data));
+            console.log("user follow block");
     }, [])
     axios
     .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+id)
@@ -101,8 +101,8 @@ export const FollowUser = ({ id }: { id: string }) => {
 
         try{
             const response = await axios
-            .post("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+id+"/follow",
-            {},
+            .post(`http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${id}/follow`,
+            null,
             {
                 headers: {
                     // "Content-Type" : "application/json",
@@ -116,6 +116,7 @@ export const FollowUser = ({ id }: { id: string }) => {
             setFollowingList(response.data.followinglist);
         } catch(error){
             console.log(error);
+            alert('세션이 만료되었습니다. 다시 로그인해주세요..!');
         }
     }
     const handleUnfollowing = async () => {

@@ -181,6 +181,7 @@ export const Profile: React.FC<ProfileProps> = ({userId}) => {
     const [imageURL, setImage] = useState('');
     const [followingNum, setFollowingNum] = useState([]);
     const [followerNum, setFollowerNum] = useState([]);
+    const myUserId = localStorage.getItem('userId');
 
 
     const openModal = () => {
@@ -245,18 +246,22 @@ export const Profile: React.FC<ProfileProps> = ({userId}) => {
                 </FollowInnerContainer>
             </FollowContainer>
             {/* <MyProfileButton/> */}
-            <ProfileContainer onClick={openEdit}>
+            {myUserId === userId
+            ? <ProfileContainer onClick={openEdit}>
                 <ProfileText>My Profile</ProfileText>
-            </ProfileContainer>
+             </ProfileContainer>
+            : <div></div>
+            }
+            
         </Container>
         <Modal
                 isOpen={isEditOpen}
                 onRequestClose={closeEdit}
                 style={customModalStyles}
                 contentLabel="My Profile"
-            >
+        >
                 <MyProfile/>
-            </Modal>
+        </Modal>
         <Modal
             isOpen={isModalOpen}
             onRequestClose={closeModal}
@@ -271,7 +276,7 @@ export const Profile: React.FC<ProfileProps> = ({userId}) => {
                 <TextSelected>Following</TextSelected>
                 <TextNotSelected onClick={openFollower}>Follower</TextNotSelected>
             </FollowTitleContainer>
-            <FollowList ing={true}/>
+            <FollowList ing={true} userId={userId}/>
             </>
             :
             <>
@@ -279,7 +284,7 @@ export const Profile: React.FC<ProfileProps> = ({userId}) => {
                 <TextNotSelected onClick={openFollowing}>Following</TextNotSelected>
                 <TextSelected>Follower</TextSelected>
             </FollowTitleContainer>
-            <FollowList ing={false}/>
+            <FollowList ing={false} userId={userId}/>
             </>
         }
         </Modal>

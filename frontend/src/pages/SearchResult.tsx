@@ -91,16 +91,8 @@ const SearchResult = () => {
             <NavigationBar hashtags={hashtags} userId={userId}/>
             <AddPostButton />
             <InnerContainer>
-                {/* {hashtagClicked && (clickedHashtag in hashtagPostIdObject) ? 
-                    hashtagPostIdObject[clickedHashtag]?.map((pId: string) => (
-                        <Post key={pId} postId={pId}/>
-                    )) :
-                    posts.map((p) => (
-                        <Post key={p.id} postId={p.id}/>
-                    ))
-                } */}
                 {filteredPosts.map((p) => (
-                    <Post key={p.id} postId={p.id} likeNum={p.likenum}/>
+                    <Post key={p.id} p={p}/>
                 ))}
             </InnerContainer>
         </Container>

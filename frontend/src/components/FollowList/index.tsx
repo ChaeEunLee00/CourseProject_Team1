@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FollowUser } from '../FollowUser';
 
@@ -13,11 +13,15 @@ const Container = styled.div`
     // border: 1px solid #D9D9D9;
 `;
 
-export const FollowList = ({ ing }: { ing: boolean }) => {
+interface FollowListProps {
+    ing: boolean;
+    readonly userId: string | undefined;
+}
+
+export const FollowList: React.FC<FollowListProps> = ({ ing, userId}) => {
     const [followingList, setFollowingList] = useState([]);
     const [followerList, setFollowerList] = useState([]);
     useEffect(() => {
-        const userId = localStorage.getItem('userId');
         axios
         .get("http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/"+userId)
         .then((response => {

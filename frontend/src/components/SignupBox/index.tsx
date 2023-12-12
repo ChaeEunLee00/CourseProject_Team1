@@ -30,6 +30,18 @@ const InnerContainer = styled.div`
     position: relative;
 `;
 
+interface User {
+    id: string;
+    name: string;
+    username: string;
+    password: string;
+    imageurl: string;
+    followerlist: [];
+    followinglist: [];
+    likedposts: [];
+    myposts: [];
+}
+
 export const SignupBox = () => {
     const [username, setUsername] = useState<string>('');
     const [name, setName] = useState<string>('');
@@ -62,6 +74,24 @@ export const SignupBox = () => {
 
             // 서버 응답 처리(현재는 콘솔에 데이터를 출력)
             console.log(response.data)
+            
+            const loginResponse = await axios.post('http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/login', {username, password}, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                withCredentials: true
+                }
+            );
+
+            // const userId = response.data.id;
+            console.log(loginResponse.data);
+            // 세션 ID를 localge에 저장
+            localStorage.setItem('userId', loginResponse.data.id);
+            localStorage.setItem('accessToken', loginResponse.data.access_token);
+            localStorage.setItem('refreshToken', loginResponse.data.refresh_token);
+            // 서버 응답 처리(현재는 콘솔에 데이터를 출력)
+            console.log(response.data);
+
             alert("회원가입 성공");
             navigate('/main');
         } catch (error) {

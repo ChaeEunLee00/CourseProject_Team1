@@ -1,43 +1,12 @@
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
-import { LikeButton } from "../LikeButton";
 import axios from "axios";
-import { useData } from "../../contexts/DataContext";
+// import { LikeButton } from "../LikeButton";
 import { PostDetail } from "../PostDetail/container";
 import { UserInfo } from "../UserInfo";
 import { EditPost } from "../EditPost";
-
-interface PostProps {
-  readonly postId: string;
-  likeNum: number;
-}
-
-interface Post {
-  id: string;
-  user_id: string;
-  content: string;
-  city: string;
-  duration: number;
-  likenum: number;
-  creationDate: string;
-  destinations: [];
-  hashtags: [];
-  pictures: [];
-  comments: [];
-}
-
-interface User {
-  id: string;
-  name: string;
-  username: string;
-  password: string;
-  imageurl: string;
-  followerlist: [];
-  followinglist: [];
-  likedposts: [];
-  myposts: [];
-}
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 
 const Container = styled.div`
   width: 700px;
@@ -111,6 +80,31 @@ const DeleteButton = styled.button`
   text-align: center;
 `;
 
+const LikeButton = styled.div`
+  width: 200px;
+  height: 40px;
+  margin-right: 10px;
+  text-align: right;
+  // border: 1px solid #D9D9D9;
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  align-items: flex-end;
+`;
+
+const Liketext = styled.div`
+    color: #034070;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.57px;
+    line-height: 34.5px;
+    width: 30px;
+    // border: 1px solid #D9D9D9;
+    text-align: center;
+    vertical-align: top;
+`;
+
 // 모달 스타일
 const customModalStyles = {
   content: {
@@ -134,16 +128,52 @@ const customModalStyles = {
   },
 };
 
+interface Post {
+  id: string;
+  user_id: string;
+  content: string;
+  city: string;
+  duration: number;
+  likenum: number;
+  creationDate: string;
+  destinations: string[];
+  hashtags: string[];
+  pictures: [];
+  comments: [];
+}
 
-export const Post: React.FC<PostProps> = ({postId, likeNum}) => {
+interface User {
+  id: string;
+  name: string;
+  username: string;
+  password: string;
+  imageurl: string;
+  followerlist: [];
+  followinglist: [];
+  likedposts: string[];
+  myposts: [];
+}
+
+interface PostProps {
+  readonly p: Post;
+}
+
+
+export const Post: React.FC<PostProps> = ({p}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditPostModalOpen, setIsEditPostModalOpen] = useState(false);
-  const [post, setPost] = useState<Post>();
-  const [userId, setUserId] = useState<string>('');
-  const myLikedPosts = localStorage.getItem("myLikedPosts");
-  const isInMyLikedPosts = (myLikedPosts && myLikedPosts.includes(postId)) ? true : false;
+  const [post, setPost] = useState<Post>(p);
+  const [userId, setUserId] = useState<string>(p.user_id);
   const isCurrentUserPost = userId === localStorage.getItem("userId");
+  const postId = post.id;
 
+  // likeButton 관련
+  const [myLikedPosts, setMyLikedPosts] = useState<string[]>([]);
+  const [count, setCount] = useState<number | undefined>(p.likenum);
+  const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  // 게시물 삭제
   const handleDelete = () => {
     if (window.confirm("이 게시물을 삭제하시겠습니까?")) {
       axios
@@ -166,29 +196,57 @@ export const Post: React.FC<PostProps> = ({postId, likeNum}) => {
     }
   };
 
+  // 좋아요 버튼 클릭시 함수
+  const handleLikeButtonClicked = async () => {
+    try {
+      if (myLikedPosts.includes(postId)) {
+        await axios.post(
+          `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/unlike`, null, {
+            headers: {
+              "Authorization": `Bearer ${accessToken}`,
+              "Refresh": refreshToken,
+              "Content-Type": "application/json",
+            },
+            withCredentials: true
+          }
+        );
+        setCount((prevCount) => (prevCount !== undefined ? prevCount - 1 : 0));
+      } else {
+        await axios.post(
+          `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}/like`, null, {
+            headers: {
+              "Authorization": `Bearer ${accessToken}`,
+              "Refresh": refreshToken,
+              "Content-Type": "application/json",
+            },
+            withCredentials: true
+          }
+        );
+        setCount((prevCount) => (prevCount !== undefined ? prevCount + 1 : 0));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // 데이터 axios로 가져오기
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<Post>(
-          `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/posts/${postId}`
+        const userResponse = await axios.get<User>(
+          `http://ec2-52-79-243-141.ap-northeast-2.compute.amazonaws.com:8080/users/${localStorage.getItem("userId")}`
         );
-        
-        if (response.data) {
-          setPost(response.data);
-          setUserId(response.data.user_id);
-        } else {
-          console.error("Post data is undefined");
-        }
+        setMyLikedPosts(userResponse.data.likedposts);
 
-        
       } catch (error) {
         console.error("Error fetching data:", error);
       }
+      
     };
 
-    // Call the fetchPosts function when the component mounts
     fetchData();
-  }, []); // Empty dependency array ensures it runs only once when the component mounts
+  }, [count]);
+
 
   const openEditPostModal = () => {
     if (window.confirm("이 게시물을 수정하시겠습니까?")) {
@@ -222,11 +280,15 @@ export const Post: React.FC<PostProps> = ({postId, likeNum}) => {
               <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
             </>
           )}
-          <LikeButton 
-            postId={post?.id} 
-            likeNum={likeNum} 
-            isInMyLikedPosts={isInMyLikedPosts}
-          />
+          {/* <LikeButton postId={postId} likeNum={likeNum} userId={userId}/>
+           */}
+          <LikeButton>
+            {myLikedPosts.includes(postId) ? 
+                <HeartFilled className='like-button red' onClick={handleLikeButtonClicked} />
+                : <HeartOutlined className='like-button' onClick={handleLikeButtonClicked} />
+            }
+            <Liketext>{count}</Liketext>
+          </LikeButton>
         </Title>
         <Places onClick={openModal}>
           {[...Array(10)].map((_, index) => (
@@ -259,7 +321,7 @@ export const Post: React.FC<PostProps> = ({postId, likeNum}) => {
         style={customModalStyles}
         contentLabel="Post Detail Modal"
       >
-        <PostDetail userId ={userId} postId={postId} likeNum={post?.likenum} isInMyLikedPosts={isInMyLikedPosts}/>
+        <PostDetail userId ={userId} postId={postId} likeNum={post?.likenum} />
       </Modal>
       <Modal
         isOpen={isEditPostModalOpen}
