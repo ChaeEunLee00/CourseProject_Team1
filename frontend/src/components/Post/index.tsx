@@ -163,7 +163,8 @@ export const Post: React.FC<PostProps> = ({p}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditPostModalOpen, setIsEditPostModalOpen] = useState(false);
   const [post, setPost] = useState<Post>(p);
-  const [userId, setUserId] = useState<string>(p.user_id);
+  // const [userId, setUserId] = useState<string>(p.user_id);
+  const userId = p.user_id;
   const isCurrentUserPost = userId === localStorage.getItem("userId");
   const postId = post.id;
 

@@ -80,7 +80,7 @@ const User = () => {
             <Profile userId={keyword}/>
             <InnerContainer>
                 {userPosts.map((p) => (
-                    <Post key={p.id} postId={p.id} likeNum={p.likenum}/>
+                    <Post key={p.id} p={p}/>
                 ))}
             </InnerContainer>
         </Container>
