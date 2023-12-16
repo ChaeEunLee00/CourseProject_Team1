@@ -79,8 +79,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         return UriComponentsBuilder.newInstance()
                 .scheme("http")
-                .host("localhost")
-//                .host("front-deploy.s3-website.ap-northeast-2.amazonaws.com")
+//                .host("localhost")
+                .host("front-deploy.s3-website.ap-northeast-2.amazonaws.com")
                 .port(5173)
                 .path("/main")
                 .queryParams(queryParams)
