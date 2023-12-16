@@ -1,33 +1,55 @@
-import React from "react";
-import { Typography, Button } from "@mui/material";
+import React, { useState } from "react";
+import { Typography, Button, TextField } from "@mui/material";
+import PageImage from '../assets/wanderworldPage.png';
 import { Link } from "react-router-dom";
+import styled from "@emotion/styled";
+import { Login } from "../components/Login";
 import "../App.css";
+import '../Fonts/Font.css';
+import { AboutWanderWorld } from "../components/AboutWanderWorld/div";
+import { ToSignup } from "../components/ToSignup";
+import axios from "axios";
+import { DataProvider } from "../contexts/DataContext";
+
+const Container = styled.div`
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+`;
+
+const InnerContainer = styled.div`
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-top: 50px;
+  gap: 30px;
+  justify-content: center;
+  position: relative;
+  width: 1300px;
+  height: 550px;
+`;
+
+const PhoneImage = styled.img`
+  height: 340px;
+  object-fit: cover;
+  width: 600px;
+  margin-top: 100px;
+`;
+
 
 const Home = () => {
   return (
-    <div>
-      <Typography sx={{ margin: "5%" }} variant="h3" align="center">
-        WanderWorld
-      </Typography>
-      <div>
-        <ul className="ul">
-          <li>
-          <Button sx={{ margin:"2% 3%"}} variant="outlined">
-            <Link to="/login">
-              LogIn
-            </Link>
-            </Button>
-          </li>
-          <li>
-          <Button sx={{ margin:"2% 3%"}} variant="outlined">
-            <Link to="/signup">
-              SignUp 
-            </Link>
-            </Button>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <Container>
+      <InnerContainer>
+        <DataProvider>
+          <Login />
+        </DataProvider>
+        <AboutWanderWorld className="login"/>
+      </InnerContainer>
+    </Container>
   );
 };
 
