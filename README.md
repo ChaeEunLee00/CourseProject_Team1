@@ -190,6 +190,7 @@ The `SearchController` manages the search operations.
 ## Development-Frontend
 
 The frontend of this project is developed using React, a powerful JavaScript library for building user interfaces. It interacts with the backend to provide a dynamic and responsive user experience.
++ We had difficulty making our UI prettier because it's our first time using react also developing frontend.
 ### Project Structure
 
 ```plaintext
