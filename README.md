@@ -2,6 +2,8 @@
 Our web ‘WanderWorld’ is a blog like site for prospective travelers and travel recorders.
 
 Link to the website: http://front-deploy.s3-website.ap-northeast-2.amazonaws.com/
+- frontend deploy: aws s3
+- backend deploy: aws ec2
 
 ## Table of Contents
 - [Introduction](#introduction)  
