@@ -1,6 +1,8 @@
 # WanderWorld
 Our web ‘WanderWorld’ is a blog like site for prospective travelers and travel recorders.
 
+Link to the website: http://front-deploy.s3-website.ap-northeast-2.amazonaws.com/
+
 ## Table of Contents
 - [Introduction](#introduction)  
 - [Development-Backend](#development-backend)
